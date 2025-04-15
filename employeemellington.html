@@ -4,6 +4,26 @@
   <meta charset="UTF-8">
   <title>Mellington Employee Profile</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    #spotify-player {
+      display: none;
+      margin-top: 1em;
+    }
+
+    .mel-song button {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 0.6em 1.2em;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .mel-song button:hover {
+      background-color: #666;
+    }
+  </style>
 </head>
 <body class="night">
   <header>
@@ -17,24 +37,29 @@
     <section class="mel-song">
       <h2>Melancholy Stork’s Favorite Song 🎵</h2>
       <p>“Birdhouse in Your Soul” by They Might Be Giants</p>
-      <iframe 
-        width="100%" 
-        height="315" 
-        src="https://www.youtube.com/embed/vn_or9gEB6g?autoplay=1&loop=1&playlist=vn_or9gEB6g&rel=0" 
-        title="Birdhouse in Your Soul" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-        allowfullscreen 
-        referrerpolicy="strict-origin-when-cross-origin">
-      </iframe>
-      <p style="font-style: italic;">“Make a little birdhouse in your soul...” — Mel’s favorite line 🕊️</p>
+      <button onclick="revealSong()">Standard protocol: Begin with their theme song. Proceed only if you have a birdhouse in your soul.</button>
+      
+      <div id="spotify-player">
+        <iframe style="border-radius:12px" 
+          src="https://open.spotify.com/embed/track/6pmuu4qSz2WrtGkBjUfyuz?utm_source=generator" 
+          width="100%" height="352" frameborder="0" allowfullscreen="" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy">
+        </iframe>
+        <p style="font-style: italic;">“Make a little birdhouse in your soul...” — Mel’s favorite line 🕊️</p>
+      </div>
     </section>
 
     <section class="profile">
       <h2>About Mel</h2>
       <p>Mel is the night shift receptionist with a glass of tea always in reach and an aura of sweet sorrow. He knows the names of every spider in the hallway.</p>
-      <!-- Add more lore here -->
     </section>
   </main>
+
+  <script>
+    function revealSong() {
+      document.getElementById('spotify-player').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
