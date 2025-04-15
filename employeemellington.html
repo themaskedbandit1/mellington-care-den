@@ -13,7 +13,9 @@
     }
 
     .scroll {
-      background: rgba(255, 248, 220, 0.8);
+      background: url('https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/7dade5b3d5534c0ec536cc3393915bdd6116476f/d6b686d2-2c91-406b-95ed-bd24a02df8bc.png') center/cover no-repeat;
+      background-blend-mode: lighten;
+      background-color: rgba(255, 248, 220, 0.9);
       border: 10px double #7c5e3b;
       padding: 2em;
       max-width: 900px;
@@ -60,8 +62,27 @@
 
     .summon-response {
       text-align: center;
-      margin-top: 1em;
+      margin-top: 2em;
       font-style: italic;
+      display: none;
+    }
+
+    .teleporting {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.5em;
+      animation: flash 1s infinite;
+      margin-top: 2em;
+    }
+
+    @keyframes flash {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    .portrait {
+      max-width: 200px;
+      margin: 1em auto;
       display: none;
     }
 
@@ -141,16 +162,32 @@
       left: -9999px;
       top: -9999px;
     }
+
+    .back-button {
+      display: none;
+      margin: 2em auto;
+      background: #4a3225;
+      color: white;
+      padding: 0.75em 1.5em;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .back-button:hover {
+      background: #6e4d3c;
+    }
   </style>
 </head>
 
 <body>
   <main>
-    <!-- SCROLL -->
     <div class="scroll mel-song" id="melSongSection">
       <h1>By decree of the Grand Digital Order, let it be known across the Realms…</h1>
       <h2>The Birthday of <span class="easter-egg" data-egg="Melancholy Stork’s Favorite Song: 🎵 ‘Birdhouse in Your Soul’ by They Might Be Giants">Mellington the TechOps Mage</span> is upon us!</h2>
 
+      <!-- Character Sheet -->
       <section class="character-sheet">
         <h3>Mellington of Clan Storks4Life</h3>
         <ul style="list-style: none; padding: 0; text-align: center;">
@@ -175,6 +212,7 @@
         </table>
       </section>
 
+      <!-- Fun Facts -->
       <section class="fun-facts">
         <h3>✨ Magical Fun Facts</h3>
         <table>
@@ -195,38 +233,37 @@
         </table>
       </section>
 
+      <!-- Lore -->
       <section class="lore">
         <h3>📜 The Lore</h3>
-        <p>
-          No one remembers when Mellington first appeared — only that shortly after, systems ran smoother, things were more… cute, and for some reason, rabbits started appearing in the tech office.
-          Some say he was born from a USB port. Others whisper he emerged fully formed from a 3D printer, wielding a coffee mug and a critical update.
-          He moves between dimensions: designing sigils in Figma, conjuring duplicates in the Maker’s Forge, and sprinting away from responsibility whenever someone says “Can you join this quick call?”
-        </p>
-        <p>
-          The only certainty is this: if there’s a mysterious fix, a sleek new logo, or a tiny printed sword on your desk... Mellington has been here.
-        </p>
-        <p>
-          Though he jokes that he is “medium-low importance,” the scrolls say otherwise. He is a node of light in the network — a man of infinite tabs open, of kindness repeated, and of great strength and courage. He brews sleepytime tea with the help of a unicorn with pooping problems.
-        </p>
+        <p>No one remembers when Mellington first appeared — only that shortly after, systems ran smoother, things were more… cute, and for some reason, rabbits started appearing in the tech office.</p>
+        <p>Some say he was born from a USB port. Others whisper he emerged fully formed from a 3D printer, wielding a coffee mug and a critical update.</p>
+        <p>Though he jokes that he is “medium-low importance,” the scrolls say otherwise...</p>
       </section>
 
+      <!-- Invocation -->
       <section class="invocation">
         <h3>🎂 Birthday Invocation</h3>
-        <p>Let us celebrate this cycle of your birth, brave mage.</p>
-        <p>May your logs be clean, your uptime eternal, and your inbox silent.</p>
-        <p>You are appreciated more than let on, and we all know the realms would fall without you.</p>
+        <p>Let us celebrate this cycle of your birth, brave mage...</p>
         <p>— Signed, The Autonomous Committee of Unattended Background Processes</p>
       </section>
 
+      <!-- SUMMON -->
       <button class="summon-button" onclick="summonMel()">SUMMON MELLINGTON</button>
+      <div id="teleport" class="teleporting" style="display:none;">Teleporting in 3... 2...</div>
+
       <div class="summon-response" id="summonResponse">
-        <p>Sorry, the Archmage is currently engaged with the Firewall Phoenix, printing something wildly inappropriate in the TechOps Mage and Wizard Offices, or chasing bunnies...We don’t know. He has AUDHD.</p>
+        <p>Sorry, the Archmage is currently engaged with the Firewall Phoenix...</p>
         <img src="https://media.giphy.com/media/5xtDarzq5h8i1ZxhFRq/giphy.gif" alt="Squirrel!" style="max-width: 100px;">
         <p>Summon Failed! Please try again after nap or tea. ✨</p>
       </div>
+
+      <img class="portrait" id="melPortrait" src="https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/19c4a1d041bde126cfa90ba54fb23cc1dce46a20/ChatGPT%20Image%20Apr%2015%2C%202025%2C%2010_55_13%20PM.png" alt="Mellington Portrait">
+
+      <button class="back-button" id="backBtn" onclick="window.location.href='index.html'">← Back to Lobby</button>
     </div>
 
-    <!-- Hidden YouTube Audio -->
+    <!-- Hidden Audio -->
     <div id="youtube-player">
       <iframe 
         width="560" 
@@ -234,12 +271,12 @@
         src="https://www.youtube.com/embed/vn_or9gEB6g?autoplay=1&mute=0&controls=0&loop=1&playlist=vn_or9gEB6g" 
         title="They Might Be Giants - Birdhouse In Your Soul" 
         frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allow="autoplay" 
         allowfullscreen>
       </iframe>
     </div>
 
-    <!-- Popup overlay -->
+    <!-- Pop-Up -->
     <div id="overlay"></div>
     <div id="popup">
       <p>Standard protocol: Begin with their theme song.<br>Proceed only if you have a birdhouse in your soul.</p>
@@ -255,7 +292,25 @@
     }
 
     function summonMel() {
-      document.getElementById('summonResponse').style.display = 'block';
+      const teleport = document.getElementById('teleport');
+      const response = document.getElementById('summonResponse');
+      const portrait = document.getElementById('melPortrait');
+      const backBtn = document.getElementById('backBtn');
+
+      teleport.style.display = 'block';
+      response.style.display = 'none';
+      portrait.style.display = 'none';
+      backBtn.style.display = 'none';
+
+      setTimeout(() => {
+        teleport.style.display = 'none';
+        response.style.display = 'block';
+      }, 2000);
+
+      setTimeout(() => {
+        portrait.style.display = 'block';
+        backBtn.style.display = 'inline-block';
+      }, 3500);
     }
 
     window.onload = function () {
@@ -265,3 +320,4 @@
   </script>
 </body>
 </html>
+
