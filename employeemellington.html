@@ -13,15 +13,12 @@
     }
 
     .scroll {
-      background: url('https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/7dade5b3d5534c0ec536cc3393915bdd6116476f/d6b686d2-2c91-406b-95ed-bd24a02df8bc.png') center/cover no-repeat;
-      background-blend-mode: lighten;
-      background-color: rgba(255, 248, 220, 0.9);
-      border: 10px double #7c5e3b;
-      padding: 2em;
-      max-width: 900px;
-      margin: auto;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      border-radius: 20px;
+      background-image: url('https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/7dade5b3d5534c0ec536cc3393915bdd6116476f/d6b686d2-2c91-406b-95ed-bd24a02df8bc.png') center/cover no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      transition: background 0.5s ease;
     }
 
     h1, h2, h3 {
@@ -78,12 +75,6 @@
     @keyframes flash {
       0%, 100% { opacity: 0; }
       50% { opacity: 1; }
-    }
-
-    .portrait {
-      max-width: 200px;
-      margin: 1em auto;
-      display: none;
     }
 
     .easter-egg {
@@ -178,6 +169,22 @@
     .back-button:hover {
       background: #6e4d3c;
     }
+
+    .portrait-block {
+      text-align: center;
+      margin-top: 3em;
+    }
+
+    .portrait-block img {
+      display: block;
+      margin: 1em auto;
+      max-width: 200px;
+    }
+
+    .portrait-block p {
+      font-style: italic;
+      margin-top: 1em;
+    }
   </style>
 </head>
 
@@ -253,14 +260,21 @@
       <div id="teleport" class="teleporting" style="display:none;">Teleporting in 3... 2...</div>
 
       <div class="summon-response" id="summonResponse">
-        <p>Sorry, the Archmage is currently engaged with the Firewall Phoenix...</p>
+        <p>Sorry, the Archmage is currently engaged with the Firewall Phoenix, printing something wildly inappropriate in the TechOps Mage and Wizard Offices, or chasing bunnies...We don’t know. He has AUDHD.</p>
         <img src="https://media.giphy.com/media/5xtDarzq5h8i1ZxhFRq/giphy.gif" alt="Squirrel!" style="max-width: 100px;">
         <p>Summon Failed! Please try again after nap or tea. ✨</p>
       </div>
 
-      <img class="portrait" id="melPortrait" src="https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/19c4a1d041bde126cfa90ba54fb23cc1dce46a20/ChatGPT%20Image%20Apr%2015%2C%202025%2C%2010_55_13%20PM.png" alt="Mellington Portrait">
-
-      <button class="back-button" id="backBtn" onclick="window.location.href='index.html'">← Back to Lobby</button>
+      <!-- Final Portrait -->
+      <section class="portrait-block" id="melPortraitSection">
+        <h2>📖 Mellington, Archmage of TechOps</h2>
+        <img 
+          src="https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/19c4a1d041bde126cfa90ba54fb23cc1dce46a20/ChatGPT%20Image%20Apr%2015%2C%202025%2C%2010_55_13%20PM.png" 
+          alt="Mellington Portrait"
+        >
+        <p>“If a system crashes and no one's around to hear it... blame the cleric.”</p>
+        <button class="back-button" id="backBtn" onclick="window.location.href='index.html'">← Return to Main Lobby</button>
+      </section>
     </div>
 
     <!-- Hidden Audio -->
@@ -294,12 +308,12 @@
     function summonMel() {
       const teleport = document.getElementById('teleport');
       const response = document.getElementById('summonResponse');
-      const portrait = document.getElementById('melPortrait');
+      const portraitSection = document.getElementById('melPortraitSection');
       const backBtn = document.getElementById('backBtn');
 
       teleport.style.display = 'block';
       response.style.display = 'none';
-      portrait.style.display = 'none';
+      portraitSection.style.display = 'none';
       backBtn.style.display = 'none';
 
       setTimeout(() => {
@@ -308,7 +322,7 @@
       }, 2000);
 
       setTimeout(() => {
-        portrait.style.display = 'block';
+        portraitSection.style.display = 'block';
         backBtn.style.display = 'inline-block';
       }, 3500);
     }
@@ -320,4 +334,3 @@
   </script>
 </body>
 </html>
-
