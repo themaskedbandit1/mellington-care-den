@@ -1,224 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mel Storkington’s Cozy Forest🌿🌳</title>
+  <meta charset="UTF-8">
+  <title>Mellington Employee Profile</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      font-family: 'Georgia', serif;
-      background-color: #f3efe5;
-      color: #333;
-      padding: 2rem;
-      line-height: 1.6;
-      background-image: url('https://i.imgur.com/mDMdseW.jpeg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      transition: background 0.5s ease;
-    }
-
-    .night {
-      background-color: #1f1f1f;
-      background-image: url('https://i.imgur.com/Sh2lqDr.jpeg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: #e0e0e0;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.85);
-      padding: 2rem;
-      border-radius: 15px;
-      max-width: 700px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      transition: background 0.5s ease;
-    }
-
-    .night .container {
-      background: rgba(30, 30, 30, 0.85);
-    }
-
-    h1 {
-      font-size: 2rem;
-      color: #4b3f28;
-    }
-
-    .night h1 {
-      color: #ffebcd;
-    }
-
-    p {
-      font-size: 1.2rem;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
+    #popup {
       display: block;
-      margin: 1.5rem auto;
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    li a {
-      text-decoration: none;
-      color: #4b3f28;
-      font-weight: bold;
-      display: block;
-      margin: 0.5rem 0;
-      transition: color 0.3s;
-    }
-
-    .night li a {
-      color: #ffe4b5;
-    }
-
-    li a:hover {
-      color: #7b5e3b;
-    }
-
-    /* Modal styles */
-    #audioModal {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s ease;
-    }
-
-    #audioModal.show {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal-box {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 15px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
       text-align: center;
-      max-width: 400px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      animation: fadeInUp 0.6s ease;
     }
 
-    @keyframes fadeInUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .modal-box button, .night-toggle {
-      padding: 0.6rem 1.2rem;
-      background-color: #4b3f28;
+    #popup button {
+      background-color: #444;
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+      padding: 10px 20px;
+      border-radius: 6px;
       cursor: pointer;
-      margin-top: 1rem;
-    }
-
-    /* Hiding the YouTube video */
-    #youtube-video {
-      display: none;
-    }
-
-    /* Showing Spotify Embed */
-    #spotify-player {
-      display: none;
+      font-size: 1em;
       margin-top: 1em;
+    }
+
+    #popup button:hover {
+      background-color: #666;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 999;
+    }
+
+    /* Hidden YouTube player */
+    #youtube-player {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      left: -9999px;
+      top: -9999px;
+    }
+
+    /* Fade-in content */
+    .mel-song {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .mel-song.visible {
+      opacity: 1;
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Welcome to the Forest🌸</h1>
-    <p>You have landed in a hidden nook of the internet, the den of none other than Melancholy Stork, himself. This is a place of quiet and magic... Melancholy Stork watches over this sacred space, lantern in hand, bunnies safe at his side.</p>
-    <p>Inside this grove, you’ll find a bedtime kit, affirmations, blessings, and pieces of love and care sprinkled about everywhere like glitter.</p>
-    <img src="https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/e63b4efabfedf419a6c80fc687ba0faa55d12a3a/A_traditional_painting%2C_likely_created_with_oil_or.png.png" alt="Forest Grove Entry">
-    <p>Scroll slowly. Breathe deeply. You are safe here.</p>
 
-    <p class="section-title">Explore:</p>
-    <ul>
-      <li><a href="#">Virtual Care Package</a></li>
-      <li><a href="#">Forest Guardian Birthday Package</a></li>
-      <li><a href="#">For The Love Of Mel</a></li>
-      <li><a href="#">Bedtime Ritual Kit</a></li>
-      <li><a href="employeemellington.html">Mellington Employee Profile</a></li>
-    </ul>
+<body class="night">
+  <main>
+    <section class="mel-song" id="melSongSection">
+      <h2>Melancholy Stork’s Favorite Song 🎵</h2>
+      <p>“Birdhouse in Your Soul” by They Might Be Giants</p>
 
-    <button class="night-toggle" onclick="toggleNightMode()">🌙 Toggle Night Mode</button>
-  </div>
+      <!-- Hidden autoplay YouTube embed -->
+      <div id="youtube-player">
+        <iframe 
+          width="560" 
+          height="315" 
+          src="https://www.youtube.com/embed/vn_or9gEB6g?autoplay=1&mute=0&controls=0&loop=1&playlist=vn_or9gEB6g" 
+          title="They Might Be Giants - Birdhouse In Your Soul (Official Music Video)" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen>
+        </iframe>
+      </div>
 
-  <!-- Modal -->
-  <div id="audioModal">
-    <div class="modal-box">
-      <h2>Welcome to the Forest 🌿</h2>
-      <p>Permission to enter the forest?</p>
-      <button onclick="playAudio()">Enter Forest 🌲</button>
+      <p style="font-style: italic;">“Make a little birdhouse in your soul...” — Mel’s favorite line 🕊️</p>
+      <p style="font-style: italic;">“Gucci gang” — Mel’s favorite line probably (not backed by evidence)</p>
+    </section>
+
+    <!-- Popup overlay -->
+    <div id="overlay"></div>
+    <div id="popup">
+      <p>Standard protocol: Begin with their theme song.<br>Proceed only if you have a birdhouse in your soul.</p>
+      <button onclick="playSong()">Proceed</button>
     </div>
-  </div>
-
-  <!-- YouTube Video (Hidden initially) -->
-  <div id="youtube-video">
-    <iframe width="100%" height="315" 
-      src="https://www.youtube.com/embed/vn_or9gEB6g?autoplay=1&loop=1&playlist=vn_or9gEB6g&rel=0" 
-      title="Birdhouse in Your Soul" frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <!-- Spotify Embed (Hidden initially) -->
-  <div id="spotify-player">
-    <iframe style="border-radius:12px" 
-      src="https://open.spotify.com/embed/track/6pmuu4qSz2WrtGkBjUfyuz?utm_source=generator" 
-      width="100%" height="352" frameborder="0" allowfullscreen="" 
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-      loading="lazy">
-    </iframe>
-  </div>
-
-  <audio id="forestAudio" loop>
-    <source src="https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/e63b4efabfedf419a6c80fc687ba0faa55d12a3a/autumn-morning-woodland-with-birdsong-and-distant-waterfall-173326.mp3" type="audio/mpeg">
-  </audio>
+  </main>
 
   <script>
+    function playSong() {
+      // Hide modal and overlay
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+
+      // Fade in content
+      document.getElementById('melSongSection').classList.add('visible');
+    }
+
+    // Automatically show popup on page load
     window.onload = function () {
-      document.getElementById('audioModal').classList.add('show');
+      document.getElementById('popup').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
     };
-
-    function playAudio() {
-      // Hide YouTube video and show Spotify player
-      document.getElementById('youtube-video').style.display = 'none';
-      document.getElementById('spotify-player').style.display = 'block';
-
-      // Close the modal
-      const modal = document.getElementById('audioModal');
-      const audio = document.getElementById('forestAudio');
-      audio.play();
-      modal.classList.remove('show');
-    }
-
-    function toggleNightMode() {
-      document.body.classList.toggle('night');
-    }
   </script>
 </body>
 </html>
-
-
