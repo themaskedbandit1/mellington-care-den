@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mellington Employee Profile</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="night">
+  <header>
+    <h1>Meet Mellington</h1>
+    <nav>
+      <a href="index.html">← Back to Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="mel-song">
+      <h2>Melancholy Stork’s Favorite Song 🎵</h2>
+      <p>“Birdhouse in Your Soul” by They Might Be Giants</p>
+      <iframe width="100%" height="166" 
+        src="https://www.youtube.com/embed/NAbZzdalZh4?autoplay=1&loop=1&playlist=NAbZzdalZh4" 
+        title="Birdhouse in Your Soul" frameborder="0" 
+        allow="autoplay; encrypted-media" allowfullscreen>
+      </iframe>
+      <p style="font-style: italic;">“Make a little birdhouse in your soul...” — Mel’s favorite line 🕊️</p>
+    </section>
+
+    <section class="profile">
+      <h2>About Mel</h2>
+      <p>Mel is the night shift receptionist with a glass of tea always in reach and an aura of sweet sorrow. He knows the names of every spider in the hallway.</p>
+      <!-- Add more lore here -->
+    </section>
+  </main>
+</body>
+</html>
