@@ -5,6 +5,96 @@
   <title>Mellington Employee Profile</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      font-family: 'IM Fell English', serif;
+      background: url('https://www.transparenttextures.com/patterns/old-mathematics.png'), #f5f0e6;
+      color: #2c1e1e;
+      padding: 2em;
+    }
+
+    .scroll {
+      background: rgba(255, 248, 220, 0.8);
+      border: 10px double #7c5e3b;
+      padding: 2em;
+      max-width: 900px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      border-radius: 20px;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Cinzel Decorative', cursive;
+      text-align: center;
+    }
+
+    .character-sheet, .fun-facts, .lore, .invocation {
+      margin-top: 2em;
+    }
+
+    .character-sheet table, .fun-facts table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .character-sheet th, .fun-facts th {
+      background: #e2d3b3;
+    }
+
+    th, td {
+      border: 1px solid #a38967;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .summon-button {
+      display: block;
+      margin: 3em auto;
+      background: #5c4438;
+      color: white;
+      padding: 1em 2em;
+      border-radius: 10px;
+      font-size: 1.2em;
+      cursor: pointer;
+      border: none;
+    }
+
+    .summon-response {
+      text-align: center;
+      margin-top: 1em;
+      font-style: italic;
+      display: none;
+    }
+
+    .easter-egg {
+      border-bottom: 1px dashed #000;
+      cursor: help;
+      position: relative;
+    }
+
+    .easter-egg:hover::after {
+      content: attr(data-egg);
+      position: absolute;
+      background: #fffbe8;
+      border: 1px solid #888;
+      padding: 0.5em;
+      font-size: 0.9em;
+      white-space: nowrap;
+      top: 120%;
+      left: 0;
+      z-index: 10;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .mel-song {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      margin-top: 2em;
+    }
+
+    .mel-song.visible {
+      opacity: 1;
+    }
+
     #popup {
       display: block;
       position: fixed;
@@ -44,7 +134,6 @@
       z-index: 999;
     }
 
-    /* Hidden YouTube player */
     #youtube-player {
       position: absolute;
       width: 1px;
@@ -52,41 +141,103 @@
       left: -9999px;
       top: -9999px;
     }
-
-    /* Fade-in content */
-    .mel-song {
-      opacity: 0;
-      transition: opacity 1.5s ease;
-    }
-
-    .mel-song.visible {
-      opacity: 1;
-    }
   </style>
 </head>
 
-<body class="night">
+<body>
   <main>
-    <section class="mel-song" id="melSongSection">
-      <h2>Melancholy Stork’s Favorite Song 🎵</h2>
-      <p>“Birdhouse in Your Soul” by They Might Be Giants</p>
+    <!-- SCROLL -->
+    <div class="scroll mel-song" id="melSongSection">
+      <h1>By decree of the Grand Digital Order, let it be known across the Realms…</h1>
+      <h2>The Birthday of <span class="easter-egg" data-egg="Melancholy Stork’s Favorite Song: 🎵 ‘Birdhouse in Your Soul’ by They Might Be Giants">Mellington the TechOps Mage</span> is upon us!</h2>
 
-      <!-- Hidden autoplay YouTube embed -->
-      <div id="youtube-player">
-        <iframe 
-          width="560" 
-          height="315" 
-          src="https://www.youtube.com/embed/vn_or9gEB6g?autoplay=1&mute=0&controls=0&loop=1&playlist=vn_or9gEB6g" 
-          title="They Might Be Giants - Birdhouse In Your Soul (Official Music Video)" 
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-          allowfullscreen>
-        </iframe>
+      <section class="character-sheet">
+        <h3>Mellington of Clan Storks4Life</h3>
+        <ul style="list-style: none; padding: 0; text-align: center;">
+          <li>Clonecraft Artisan of the 3D Forge</li>
+          <li>Clone Conjurer of the 3D Realms</li>
+          <li>Founder of the Sacred Bunny Barrier</li>
+          <li>Jack-of-Many-Trades & Server Soothsayer</li>
+          <li>Occasionally Distracted by <span class="easter-egg" data-egg="‘Gucci gang’ — Mel’s favorite line probably (not backed by evidence)">Shiny Things</span></li>
+        </ul>
+
+        <h3>🧾 THE MULTI-CLASS RECORD</h3>
+        <table>
+          <tr><th>Class</th><th>Level</th></tr>
+          <tr><td>TechOps Archmage</td><td>99</td></tr>
+          <tr><td>Clone Enchanter (3D Printing)</td><td>91</td></tr>
+          <tr><td>Designsmith & UI Alchemist</td><td>87</td></tr>
+          <tr><td>Random Fact Bard</td><td>76</td></tr>
+          <tr><td>Love-Wounded Cleric (Recovering)</td><td>70</td></tr>
+          <tr><td>Church Stream Paladin</td><td>65</td></tr>
+          <tr><td>Nighttime Tea Monk</td><td>20</td></tr>
+          <tr><td>Japanese-Lesson Repeater</td><td>12 (But Perfect Attendance!)</td></tr>
+        </table>
+      </section>
+
+      <section class="fun-facts">
+        <h3>✨ Magical Fun Facts</h3>
+        <table>
+          <tr><td>Class</td><td>Systems Sorcerer (Level 99)</td></tr>
+          <tr><td>Alignment</td><td>Chaotic Helpful</td></tr>
+          <tr><td>Signature Spell</td><td>Bunny Barrier (perfectly logical defense spell)</td></tr>
+          <tr><td>Weakness</td><td>Flirty sparkly things, meaningful hand-holding, and soft things</td></tr>
+          <tr><td>Fav Artifact</td><td>The Coffee Chalice of +3 Alertness</td></tr>
+          <tr><td>Special Ability</td><td>Debugging cursed infrastructure with one squint</td></tr>
+          <tr><td>Quirky Skill</td><td>Summoning random facts that are oddly relevant</td></tr>
+          <tr><td>Sleep Resistance</td><td>+99 vs Melatonin. Must roll for cuddles.</td></tr>
+          <tr><td>Current Quest</td><td>To restore faith in himself after many battles with narcissistic dragons</td></tr>
+          <tr><td>Secret Power</td><td>Undeniable Dad/Daddy/Father who art in heaven... Energy 🐰</td></tr>
+          <tr><td>Class Feature</td><td>Can sense when a system is about to break, usually during lunch</td></tr>
+          <tr><td>Familiar</td><td>A pixelated bunny wearing tiny goggles</td></tr>
+          <tr><td>Recent Incantation</td><td>“I swear I just fixed this…”</td></tr>
+          <tr><td>Most Feared Creature</td><td>"User Errorus Repetitus" aka That Church Lady Who Will Not Listen</td></tr>
+        </table>
+      </section>
+
+      <section class="lore">
+        <h3>📜 The Lore</h3>
+        <p>
+          No one remembers when Mellington first appeared — only that shortly after, systems ran smoother, things were more… cute, and for some reason, rabbits started appearing in the tech office.
+          Some say he was born from a USB port. Others whisper he emerged fully formed from a 3D printer, wielding a coffee mug and a critical update.
+          He moves between dimensions: designing sigils in Figma, conjuring duplicates in the Maker’s Forge, and sprinting away from responsibility whenever someone says “Can you join this quick call?”
+        </p>
+        <p>
+          The only certainty is this: if there’s a mysterious fix, a sleek new logo, or a tiny printed sword on your desk... Mellington has been here.
+        </p>
+        <p>
+          Though he jokes that he is “medium-low importance,” the scrolls say otherwise. He is a node of light in the network — a man of infinite tabs open, of kindness repeated, and of courage that doesn’t roar... it whispers affirmations and brews sleepytime tea.
+        </p>
+      </section>
+
+      <section class="invocation">
+        <h3>🎂 Birthday Invocation</h3>
+        <p>Let us celebrate this cycle of your birth, brave mage.</p>
+        <p>May your logs be clean, your uptime eternal, and your inbox silent.</p>
+        <p>You are appreciated more than you let on, and we all know the realms would fall without you.</p>
+        <p>— Signed, The Autonomous Committee of Unattended Background Processes</p>
+      </section>
+
+      <button class="summon-button" onclick="summonMel()">SUMMON MELLINGTON</button>
+      <div class="summon-response" id="summonResponse">
+        <p>Sorry, the Archmage is currently engaged with the Firewall Phoenix, printing something wildly inappropriate in the TechOps Mage and Wizard Offices, or chasing bunnies...We don’t know. He has AUDHD.</p>
+        <img src="https://media.giphy.com/media/5xtDarzq5h8i1ZxhFRq/giphy.gif" alt="Squirrel!" style="max-width: 100px;">
+        <p>Summon Failed! Please try again after nap or tea. ✨</p>
       </div>
+    </div>
 
-      <p style="font-style: italic;">“Make a little birdhouse in your soul...” — Mel’s favorite line 🕊️</p>
-      <p style="font-style: italic;">“Gucci gang” — Mel’s favorite line probably (not backed by evidence)</p>
-    </section>
+    <!-- Hidden YouTube Audio -->
+    <div id="youtube-player">
+      <iframe 
+        width="560" 
+        height="315" 
+        src="https://www.youtube.com/embed/vn_or9gEB6g?autoplay=1&mute=0&controls=0&loop=1&playlist=vn_or9gEB6g" 
+        title="They Might Be Giants - Birdhouse In Your Soul" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+      </iframe>
+    </div>
 
     <!-- Popup overlay -->
     <div id="overlay"></div>
@@ -98,15 +249,15 @@
 
   <script>
     function playSong() {
-      // Hide modal and overlay
       document.getElementById('popup').style.display = 'none';
       document.getElementById('overlay').style.display = 'none';
-
-      // Fade in content
       document.getElementById('melSongSection').classList.add('visible');
     }
 
-    // Automatically show popup on page load
+    function summonMel() {
+      document.getElementById('summonResponse').style.display = 'block';
+    }
+
     window.onload = function () {
       document.getElementById('popup').style.display = 'block';
       document.getElementById('overlay').style.display = 'block';
