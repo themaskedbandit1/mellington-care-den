@@ -11,7 +11,7 @@
       color: #333;
       padding: 2rem;
       line-height: 1.6;
-      background-image: url('https://github.com/themaskedbandit1/mellington-care-den/blob/56161920705077f8a5cf46539ec583a33b2739a1/pexels-photo-38136.jpeg');
+      background-image: url('https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/56161920705077f8a5cf46539ec583a33b2739a1/pexels-photo-38136.jpeg');
       background-size: cover;
       background-position: center;
       transition: background 0.5s ease;
@@ -19,7 +19,7 @@
 
     .night {
       background-color: #1f1f1f;
-      background-image: url('https://github.com/themaskedbandit1/mellington-care-den/blob/c368c89756b3d77222783b71d0b06005ea782a43/360_F_296214127_8uC9vS6ig4gbaaKSQ9vLi6dYL7l9pmSo.jpg');
+      background-image: url('https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/c368c89756b3d77222783b71d0b06005ea782a43/360_F_296214127_8uC9vS6ig4gbaaKSQ9vLi6dYL7l9pmSo.jpg');
       color: #e0e0e0;
     }
 
@@ -31,6 +31,8 @@
       margin: auto;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
       transition: background 0.5s ease;
+      position: relative;
+      z-index: 10;
     }
 
     .night .container {
@@ -133,22 +135,32 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1;
+      z-index: 5;
     }
 
     .leaf {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/4f/Orange_leaf_icon.png');
-      background-size: cover;
-      animation: fall 10s linear infinite;
-      opacity: 0.8;
+      width: 40px;
+      height: 40px;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Crystal_Clear_action_leaf.png/600px-Crystal_Clear_action_leaf.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: fall linear infinite;
+      opacity: 0.9;
     }
 
     @keyframes fall {
-      0% { transform: translateY(-10%) rotate(0deg); }
-      100% { transform: translateY(110vh) rotate(360deg); }
+      0% {
+        transform: translateY(-10%) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
@@ -157,7 +169,7 @@
 
   <div class="container">
     <h1>Welcome to the Forest🌸</h1>
-    <p>You have landed in a hidden nook of the internet, the den of none other than Melancholy Stork, himself. This is a place of quiet and magic... Melancholy Stork watches over this sacred space, lantern in hand, bunnies safe at his side.</p>
+    <p>You have landed in a hidden nook of the internet, the den of none other than Melancholy Stork, himself...</p>
     <p>Inside this grove, you’ll find a bedtime kit, affirmations, blessings, and pieces of love and care sprinkled about everywhere like glitter.</p>
     <img src="https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/e63b4efabfedf419a6c80fc687ba0faa55d12a3a/A_traditional_painting%2C_likely_created_with_oil_or.png.png" alt="Forest Grove Entry">
     <p>Scroll slowly. Breathe deeply. You are safe here.</p>
@@ -210,7 +222,7 @@
         const leaf = document.createElement('div');
         leaf.classList.add('leaf');
         leaf.style.left = Math.random() * 100 + 'vw';
-        leaf.style.animationDuration = (8 + Math.random() * 5) + 's';
+        leaf.style.animationDuration = (6 + Math.random() * 4) + 's';
         leaf.style.animationDelay = Math.random() * 5 + 's';
         container.appendChild(leaf);
       }
@@ -218,5 +230,3 @@
   </script>
 </body>
 </html>
-
-
