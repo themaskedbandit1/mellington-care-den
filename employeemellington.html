@@ -10,7 +10,20 @@
       margin-top: 1em;
     }
 
-    .mel-song button {
+    #popup {
+      display: block;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    #popup button {
       background-color: #444;
       color: white;
       border: none;
@@ -20,8 +33,18 @@
       font-size: 1em;
     }
 
-    .mel-song button:hover {
+    #popup button:hover {
       background-color: #666;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 999;
     }
   </style>
 </head>
@@ -37,8 +60,15 @@
     <section class="mel-song">
       <h2>Melancholy Stork’s Favorite Song 🎵</h2>
       <p>“Birdhouse in Your Soul” by They Might Be Giants</p>
-      <button onclick="revealSong()">Standard protocol: Begin with their theme song. Proceed only if you have a birdhouse in your soul.</button>
-      
+
+      <!-- The initial popup -->
+      <div id="overlay"></div>
+      <div id="popup">
+        <p>Standard protocol: Begin with their theme song. Proceed only if you have a birdhouse in your soul.</p>
+        <button onclick="playSong()">Yes, I'm ready to hear it!</button>
+      </div>
+
+      <!-- The Spotify embed that will show up after the prompt is clicked -->
       <div id="spotify-player">
         <iframe style="border-radius:12px" 
           src="https://open.spotify.com/embed/track/6pmuu4qSz2WrtGkBjUfyuz?utm_source=generator" 
@@ -46,7 +76,7 @@
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
           loading="lazy">
         </iframe>
-        <p style="font-style: italic;">“Make a little birdhouse in your soul...” — Mel’s favorite line 🕊️</p>
+        <p style="font-style: italic;">“Gucci gang” — Mel’s favorite line probably(not backed by evidence)</p>
       </div>
     </section>
 
@@ -57,9 +87,16 @@
   </main>
 
   <script>
-    function revealSong() {
+    // Show the Spotify player when the user clicks "Yes"
+    function playSong() {
+      // Hide the popup and overlay
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+      
+      // Show the Spotify player
       document.getElementById('spotify-player').style.display = 'block';
     }
   </script>
 </body>
 </html>
+
