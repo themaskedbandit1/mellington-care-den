@@ -12,24 +12,30 @@
   <title>Mellington Employee Profile</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      font-family: 'IM Fell English', serif;
-      background: url('https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/7dade5b3d5534c0ec536cc3393915bdd6116476f/d6b686d2-2c91-406b-95ed-bd24a02df8bc.png') center/cover no-repeat fixed;
-      color: #2c1e1e;
-      padding: 2em;
-      margin: 0;
-      min-height: 100vh;
-    }
+  body {
+    font-family: 'IM Fell English', serif;
+    background: 
+      /* Fallback color in case image fails to load */
+      #5a3e2b 
+      /* Your image with forced display */
+      url('https://raw.githubusercontent.com/themaskedbandit1/mellington-care-den/7dade5b3d5534c0ec536cc3393915bdd6116476f/d6b686d2-2c91-406b-95ed-bd24a02df8bc.png') 
+      center/cover no-repeat fixed !important;
+    color: #2c1e1e;
+    padding: 2em;
+    margin: 0;
+    min-height: 100vh;
+  }
 
-    .scroll {
-      background-color: rgba(255, 248, 220, 0.9);
-      border: 10px double #7c5e3b;
-      padding: 2em;
-      max-width: 900px;
-      margin: auto;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      border-radius: 20px;
-    }
+  .scroll {
+    background-color: rgba(255, 248, 220, 0.85); /* Slightly more opaque for better contrast */
+    border: 10px double #7c5e3b;
+    padding: 2em;
+    max-width: 900px;
+    margin: 2em auto; /* Added top/bottom margin */
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    border-radius: 20px;
+    position: relative; /* Ensures proper stacking */
+  }
 
     h1, h2, h3 {
       font-family: 'Cinzel Decorative', cursive;
