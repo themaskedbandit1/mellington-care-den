@@ -233,3 +233,4 @@ restartLevelBtn.addEventListener("click", () => {
 });
 
 initGame();
+
