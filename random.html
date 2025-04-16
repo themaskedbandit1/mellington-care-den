@@ -27,7 +27,8 @@
     <!-- ES Modules for Three.js -->
     <script type="module">
       import * as THREE from "https://cdn.skypack.dev/three@0.155.0/build/three.module.js";
-      import { PointerLockControls } from "https://cdn.skypack.dev/three@0.155.0/examples/js/controls/PointerLockControls.js";
+      // Use the updated PointerLockControls from GitHub
+      import { PointerLockControls } from "https://raw.githubusercontent.com/mrdoob/three.js/r155/examples/js/controls/PointerLockControls.js";
 
       let camera, scene, renderer, controls;
       let velocity = new THREE.Vector3();
