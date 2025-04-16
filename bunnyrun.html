@@ -8,11 +8,17 @@
 </head>
 <body>
   <div id="game-container">
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
     <div id="levelDisplay">Level: 1</div>
     <div id="scoreDisplay">Score: 0</div>
   </div>
 
+  <div id="levelScreen" style="display:none; text-align:center; margin-top: 20px;">
+    <div id="levelStats"></div>
+    <button id="nextLevelBtn">Next Level</button>
+    <button id="restartLevelBtn">Restart Level</button>
+  </div>
+  
   <script src="bunnyrun.js"></script>
 </body>
 </html>
