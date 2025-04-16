@@ -1,161 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>C’est La Vie: FPS Chaos</title>
-  <style>
-    body { margin: 0; overflow: hidden; background: #000; }
-    canvas { display: block; }
-    #instructions {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-family: sans-serif;
-      font-size: 1.5rem;
-      text-align: center;
-      z-index: 10;
-    }
-  </style>
-</head>
-<body>
-  <div id="instructions">Click to enter the chaos 🌈</div>
-  
-  <!-- Add Three.js via CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/controls/PointerLockControls.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>FPS Forest</title>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      canvas { display: block; }
+      #blocker {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="blocker">Click to enter the chaos</div>
 
-  <script>
-    let camera, scene, renderer, controls;
-    let objects = [];
-    let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
-    let velocity = new THREE.Vector3();
-    let direction = new THREE.Vector3();
-    
-    init();
-    animate();
+    <!-- Three.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/js/controls/PointerLockControls.js"></script>
 
-    function init() {
-      const blocker = document.getElementById('instructions');
+    <script>
+      const blocker = document.getElementById('blocker');
 
-      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x1a1a1a);
+      let camera, scene, renderer, controls;
+      let velocity = new THREE.Vector3();
+      let direction = new THREE.Vector3();
+      const keys = {};
 
-      const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-      light.position.set(0, 200, 0);
-      scene.add(light);
+      init();
+      animate();
 
-      const floorGeometry = new THREE.PlaneGeometry(200, 200, 10, 10);
-      const floorMaterial = new THREE.MeshBasicMaterial({ color: 0x202020, wireframe: true });
-      const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-      floor.rotation.x = -Math.PI / 2;
-      scene.add(floor);
+      function init() {
+        // Set up scene
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x77aaff);
 
-      // Floating cube object
-      const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-      const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
-      const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-      cube.position.set(0, 2.5, -20);
-      scene.add(cube);
-      objects.push(cube);
+        // Add light
+        const light = new THREE.HemisphereLight(0xffffff, 0x444444);
+        light.position.set(0, 200, 0);
+        scene.add(light);
 
-      controls = new THREE.PointerLockControls(camera, document.body);
+        // Floor
+        const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+        const floorMaterial = new THREE.MeshPhongMaterial({ color: 0x228833 });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        scene.add(floor);
 
-      blocker.addEventListener('click', function () {
-        controls.lock();
-      });
+        // Cube (target!)
+        const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+        const cubeMaterial = new THREE.MeshStandardMaterial({ color: 0xff4455 });
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.set(0, 2.5, -20);
+        scene.add(cube);
 
-      controls.addEventListener('lock', function () {
-        blocker.style.display = 'none';
-      });
-
-      controls.addEventListener('unlock', function () {
-        blocker.style.display = 'flex';
-      });
-
-      scene.add(controls.getObject());
-
-      const onKeyDown = function (event) {
-        switch (event.code) {
-          case 'ArrowUp':
-          case 'KeyW':
-            moveForward = true;
-            break;
-          case 'ArrowLeft':
-          case 'KeyA':
-            moveLeft = true;
-            break;
-          case 'ArrowDown':
-          case 'KeyS':
-            moveBackward = true;
-            break;
-          case 'ArrowRight':
-          case 'KeyD':
-            moveRight = true;
-            break;
-        }
-      };
-
-      const onKeyUp = function (event) {
-        switch (event.code) {
-          case 'ArrowUp':
-          case 'KeyW':
-            moveForward = false;
-            break;
-          case 'ArrowLeft':
-          case 'KeyA':
-            moveLeft = false;
-            break;
-          case 'ArrowDown':
-          case 'KeyS':
-            moveBackward = false;
-            break;
-          case 'ArrowRight':
-          case 'KeyD':
-            moveRight = false;
-            break;
-        }
-      };
-
-      document.addEventListener('keydown', onKeyDown);
-      document.addEventListener('keyup', onKeyUp);
-
-      renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
-
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+        // Renderer
+        renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-    }
+        document.body.appendChild(renderer.domElement);
 
-    function animate() {
-      requestAnimationFrame(animate);
+        // Controls
+        controls = new THREE.PointerLockControls(camera, document.body);
 
-      const delta = 0.1;
+        blocker.addEventListener('click', () => {
+          controls.lock();
+        });
 
-      velocity.x -= velocity.x * 10.0 * delta;
-      velocity.z -= velocity.z * 10.0 * delta;
+        controls.addEventListener('lock', () => blocker.style.display = 'none');
+        controls.addEventListener('unlock', () => blocker.style.display = 'flex');
 
-      direction.z = Number(moveForward) - Number(moveBackward);
-      direction.x = Number(moveRight) - Number(moveLeft);
-      direction.normalize();
+        scene.add(controls.getObject());
 
-      if (moveForward || moveBackward) velocity.z -= direction.z * 400.0 * delta;
-      if (moveLeft || moveRight) velocity.x -= direction.x * 400.0 * delta;
+        // Move with keys
+        document.addEventListener('keydown', (e) => keys[e.code] = true);
+        document.addEventListener('keyup', (e) => keys[e.code] = false);
 
-      controls.moveRight(-velocity.x * delta);
-      controls.moveForward(-velocity.z * delta);
+        // Resize
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
 
-      renderer.render(scene, camera);
-    }
-  </script>
-</body>
+      function animate() {
+        requestAnimationFrame(animate);
+
+        if (controls.isLocked) {
+          direction.z = Number(keys['KeyW']) - Number(keys['KeyS']);
+          direction.x = Number(keys['KeyD']) - Number(keys['KeyA']);
+          direction.normalize();
+
+          const speed = 0.1;
+          velocity.z = direction.z * speed;
+          velocity.x = direction.x * speed;
+
+          controls.moveRight(velocity.x);
+          controls.moveForward(velocity.z);
+        }
+
+        renderer.render(scene, camera);
+      }
+    </script>
+  </body>
 </html>
