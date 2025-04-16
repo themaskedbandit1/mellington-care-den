@@ -21,42 +21,64 @@ canvas {
   background-color: #b6f2c7;
 }
 
+/* UI: Score and Level */
 #levelDisplay, #scoreDisplay {
   position: absolute;
   top: 10px;
   font-size: 1.2rem;
   color: #333;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 6px 12px;
   border-radius: 8px;
   font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 2;
 }
 
-#levelScreen {
-  background-color: #fff5f8;
-  border: 2px solid #ff66cc;
-  padding: 20px;
-  width: 300px;
-  margin: 30px auto;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
-}
-
-#levelScreen button {
-  margin: 8px;
-  padding: 10px 15px;
-  background: #ff66cc;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Positioning for level and score display */
 #levelDisplay {
   left: 10px;
 }
 
 #scoreDisplay {
   right: 10px;
+}
+
+/* Level Complete Screen */
+#levelScreen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff5f8;
+  border: 3px solid #ff66cc;
+  padding: 24px;
+  width: 320px;
+  border-radius: 14px;
+  box-shadow: 0 0 18px rgba(0,0,0,0.2);
+  text-align: center;
+  display: none;
+  z-index: 5;
+}
+
+#levelScreen p {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+#levelScreen button {
+  margin: 10px;
+  padding: 10px 18px;
+  background: #ff66cc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.2s ease-in-out;
+}
+
+#levelScreen button:hover {
+  background: #e055b3;
 }
