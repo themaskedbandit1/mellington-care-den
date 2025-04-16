@@ -11,36 +11,31 @@
   <meta charset="UTF-8">
   <title>Mellington Employee Profile</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-  /* ===== BODY WITH BACKGROUND IMAGE ===== */
+  </style>
+  /* ===== BODY WITH BACKGROUND ===== */
   body {
     font-family: 'IM Fell English', serif;
-    margin: 0;
-    padding: 2em;
-    min-height: 100vh;
-    /* New background setup */
-    background: 
-      /* Fallback color */
-      #5a3e2b 
-      /* Your image */
-      url('https://i.imgur.com/r9uYEQd.png') 
-      center/cover no-repeat fixed;
-    /* Makes sure the background is visible */
-    background-attachment: fixed;
+    color: #2c1e1e;
+    padding: 2rem;
+    background-color: #f3efe5; /* Fallback color */
+    background-image: url('https://i.imgur.com/r9uYEQd.png'); /* Your new image */
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
   }
 
-  /* ===== SCROLL/PARCHMENT EFFECT ===== */
+  /* ===== SCROLL/PARCHMENT (replacing .container) ===== */
   .scroll {
-    background-color: rgba(255, 248, 220, 0.85); /* Slightly opaque */
-    border: 10px double #7c5e3b;
+    background: rgba(255, 248, 220, 0.85); /* Parchment color with transparency */
     padding: 2em;
     max-width: 900px;
-    margin: 2em auto;
+    margin: auto;
+    border: 10px double #7c5e3b;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
     border-radius: 20px;
-    /* Ensures transparency shows the background */
-    backdrop-filter: blur(1px); /* Optional subtle blur effect */
   }
     h1, h2, h3 {
       font-family: 'Cinzel Decorative', cursive;
