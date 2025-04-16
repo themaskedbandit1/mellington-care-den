@@ -24,12 +24,10 @@
   <body>
     <div id="blocker">Click to enter the chaos</div>
 
-    <!-- Three.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/js/controls/PointerLockControls.js"></script>
-
-    <script>
-      const blocker = document.getElementById('blocker');
+    <!-- ES Modules for Three.js -->
+    <script type="module">
+      import * as THREE from "https://cdn.skypack.dev/three@0.155.0/build/three.module.js";
+      import { PointerLockControls } from "https://cdn.skypack.dev/three@0.155.0/examples/js/controls/PointerLockControls.js";
 
       let camera, scene, renderer, controls;
       let velocity = new THREE.Vector3();
@@ -70,7 +68,7 @@
         document.body.appendChild(renderer.domElement);
 
         // Controls
-        controls = new THREE.PointerLockControls(camera, document.body);
+        controls = new PointerLockControls(camera, document.body);
 
         blocker.addEventListener('click', () => {
           controls.lock();
