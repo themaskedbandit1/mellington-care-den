@@ -32,6 +32,27 @@ canvas {
   font-weight: bold;
 }
 
+#levelScreen {
+  background-color: #fff5f8;
+  border: 2px solid #ff66cc;
+  padding: 20px;
+  width: 300px;
+  margin: 30px auto;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+#levelScreen button {
+  margin: 8px;
+  padding: 10px 15px;
+  background: #ff66cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Positioning for level and score display */
 #levelDisplay {
   left: 10px;
 }
@@ -39,4 +60,3 @@ canvas {
 #scoreDisplay {
   right: 10px;
 }
-
