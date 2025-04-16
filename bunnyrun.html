@@ -8,9 +8,17 @@
 </head>
 <body>
   <div id="game-container">
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
     <div id="levelDisplay">Level: 1</div>
     <div id="scoreDisplay">Score: 0</div>
+  </div>
+
+  <!-- Intro screen -->
+  <div id="introScreen">
+    <h1>Kidnap the Bunny!</h1>
+    <p>Use WASD to move. Jump over holes and duck under trees.</p>
+    <p>The stork is reading the newspaper, not paying attention...</p>
+    <button id="startBtn">START GAME</button>
   </div>
 
   <div id="levelScreen" style="display:none; text-align:center; margin-top: 20px;">
@@ -18,7 +26,7 @@
     <button id="nextLevelBtn">Next Level</button>
     <button id="restartLevelBtn">Restart Level</button>
   </div>
-  
+
   <script src="bunnyrun.js"></script>
 </body>
 </html>
