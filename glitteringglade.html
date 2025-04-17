@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Glittering Glade - A Birthday DND Game</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #fdf6f9;
+      color: #3e2d3b;
+      margin: 0;
+      padding: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      color: #c94fcf;
+      text-align: center;
+    }
+    .choice {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #fbeaff;
+      border: 2px dashed #d38ec9;
+      cursor: pointer;
+    }
+    .choice:hover {
+      background-color: #f4d9fc;
+    }
+    #story {
+      margin-top: 2rem;
+      white-space: pre-wrap;
+    }
+    #startBtn {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.75rem 1.5rem;
+      background-color: #c94fcf;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>The Glittering Glade</h1>
+  <p>A birthday mini-adventure for Mel Storkington ✨</p>
+  <button id="startBtn">Begin the Quest</button>
+  <div id="story"></div>
+
+  <script>
+    const storyEl = document.getElementById('story');
+    const startBtn = document.getElementById('startBtn');
+
+    let state = 0;
+
+    const choices = {
+      0: {
+        text: `You awaken in a mossy glade, sunlight trickling through glittery leaves. A soft snore rumbles from the mushroom ring beside you — it's the Sleepy Spirits! They won't awaken without help. You remember the Bunny Brigade said to use...`,
+        options: [
+          { text: 'Glitter Bombs!', next: 1 },
+          { text: 'A Lullaby?', next: 2 },
+        ],
+      },
+      1: {
+        text: `You toss a glitter bomb into the ring — *POOF!* 🌈 A burst of sparkles wakes the spirits with squeaky cheers. But wait! A shadow appears. It's Narci the Gold-Digger, dragging a contract that binds with feelings. "Sign, and you'll never feel alone again," she whispers.`,
+        options: [
+          { text: 'Reject the emotional trap!', next: 3 },
+          { text: 'Read the fine print.', next: 4 },
+        ],
+      },
+      2: {
+        text: `You hum a lullaby. The spirits sigh in their sleep — wrong spell! You try again with a glitter bomb. *POOF!* It works! But a new threat emerges: Narci the Gold-Digger! "Let me help," she says, holding out a sparkling contract...`,
+        options: [
+          { text: 'Throw it in a fire!', next: 3 },
+          { text: 'Ask the bunnies for advice.', next: 5 },
+        ],
+      },
+      3: {
+        text: `With a mighty toss, you shred the contract. Narci howls, her golden chains breaking. The glade sparkles brighter. The bunnies cheer: "Mel, you did it! The forest is free!" 🌸🐇`,
+        options: [],
+      },
+      4: {
+        text: `You squint. The fine print says: "All joy must be earned through guilt trips." Nope. You crumple the contract. Narci vanishes in a puff of ego. 🌬️`,
+        options: [
+          { text: 'Celebrate with the Bunny Brigade!', next: 3 },
+        ],
+      },
+      5: {
+        text: `The bunnies sniff the paper. "That’s emotional manipulation magic!" one says. You nod, tearing it up with glittery resolve. Narci shrieks and melts into a puddle of self-pity. 🌟`,
+        options: [
+          { text: 'Dance with the forest spirits.', next: 3 },
+        ],
+      },
+    };
+
+    function render(stateId) {
+      const current = choices[stateId];
+      let html = `<p>${current.text}</p>`;
+
+      current.options.forEach((option, index) => {
+        html += `<div class="choice" onclick="advance(${option.next})">${option.text}</div>`;
+      });
+
+      storyEl.innerHTML = html;
+    }
+
+    function advance(nextState) {
+      state = nextState;
+      render(state);
+    }
+
+    startBtn.addEventListener('click', () => {
+      startBtn.style.display = 'none';
+      render(state);
+    });
+  </script>
+</body>
+</html>
