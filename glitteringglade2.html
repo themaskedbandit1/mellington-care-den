@@ -127,13 +127,12 @@
           <div class="choice" onclick="ending('loversToEnemies')">Lovers to Enemies arc</div>
         `;
       } else if (scene === 'nothing') {
-        story.innerHTML = `
-          <h2>Nothing Happens</h2>
-          <p>Nothing. You do nothing. What did you expect?</p>
-          <div class="choice" onclick="ending('nothingEnd')">End the story</div>
-        `;
+  story.innerHTML = `
+    <h2>Nothing Happens</h2>
+    <p>Nothing. You do nothing. What did you expect?</p>
+    <div class="choice" onclick="ending('nothingEnd')">End the story</div>
+  `;
 }
-    }
 
 function ending(type) {
   let story = document.getElementById('story');
