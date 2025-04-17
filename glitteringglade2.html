@@ -122,6 +122,9 @@
           <div class="choice" onclick="ending('weirdSexy')">"weird.....smexy?( ͡° ͜ʖ ͡°)"</div>
           <div class="choice" onclick="ending('mostFriendships')">"That's how most of my friendships were initiated."</div>
           <div class="choice" onclick="ending('shortFriendship')">"But not too weird." </div>
+          <div class="choice" onclick="ending('longFriendship')">Nice</div>
+          <div class="choice" onclick="ending('enemyToLover')">Enemies to Lovers arc</div>
+          <div class="choice" onclick="ending('loversToEnemies')">Lovers to Enemies arc</div>
         `;
       } else if (scene === 'nothing') {
   story.innerHTML = `
@@ -176,11 +179,17 @@ function ending(type) {
         adoptGummy: "You adopt the gummy. He calls you Papa Mel. You cry a little.",
         nothingEnd: "You decide to end the story here. It’s a bit anticlimactic, but you’re at peace. Maybe next time you'll do something.",
   };
-let result = endings[type];
-if (type === 'mostFriendships') {
-    story.innerHTML = result + `<div class="choice" onclick="location.reload()">Play Again</div>`;
-} else {
-    story.innerHTML = `<p>${result}</p><div class="choice" onclick="location.reload()">Play Again</div>`;
+  if (type in endings) {
+    if (type === 'mostFriendships') {
+      story.innerHTML = endings[type] + `<div class="choice" onclick="location.reload()">Start Over</div>`;
+    } else {
+      story.innerHTML = `<p>${endings[type]}</p><div class="choice" onclick="location.reload()">Start Over</div>`;
+    }
+  } else {
+    story.innerHTML = `<p>Hmm... that ending hasn't been written yet. (Maybe the owls stole it?)</p>
+                      <div class="choice" onclick="location.reload()">Start Over</div>`;
+  }
+}
 }
 
 function loopReally() {
