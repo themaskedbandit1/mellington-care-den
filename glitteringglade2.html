@@ -127,11 +127,11 @@
           <div class="choice" onclick="ending('loversToEnemies')">Lovers to Enemies arc</div>
         `;
       } else if (scene === 'nothing') {
-  story.innerHTML = `
-    <h2>Nothing Happens</h2>
-    <p>Nothing. You do nothing. What did you expect?</p>
-    <div class="choice" onclick="ending('nothingEnd')">End the story</div>
-  `;
+        story.innerHTML = `
+          <h2>Nothing Happens</h2>
+          <p>Nothing. You do nothing. What did you expect?</p>
+          <div class="choice" onclick="ending('nothingEnd')">End the story</div>
+        `;
 }
     }
 
@@ -180,8 +180,15 @@ function ending(type) {
         nothingEnd: "You decide to end the story here. It’s a bit anticlimactic, but you’re at peace. Maybe next time you'll do something.",
   };
   if (type in endings) {
-    if (type === 'mostFriendships') {
-      story.innerHTML = endings[type] + `<div class="choice" onclick="location.reload()">Start Over</div>`;
+    if (type === "mostFriendships") {
+  story.innerHTML = `
+    <h2>Really though?</h2>
+    <p>Really though?</p>
+    <div class="choice" onclick="loopReally()">Yes, really.</div>
+    <div class="choice" onclick="ending('nope')">Nope.</div>
+  `;
+  return;
+}
     } else {
       story.innerHTML = `<p>${endings[type]}</p><div class="choice" onclick="location.reload()">Start Over</div>`;
     }
