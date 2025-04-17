@@ -131,14 +131,19 @@
       }
     }
 
-    function ending(type) {
-      let story = document.getElementById('story');
-      let endings = {
+function ending(type) {
+  let story = document.getElementById('story');
+  let endings = {
         correct: "Duo squawks approvingly. 'Acceptable. You may live.' He vanishes in a puff of glitter.",
         thinIce: "'You’re on thin ice, Storkington,' Duo growls. The floor literally turns to ice. You freeze as well, becoming a frozen Stork sculpture for eternity or until true love's kiss awakens you or something.",
         glitter: "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup. 'Care to join us?' she asks.",
         flirt: "Duo blushes. '...D-Don't tempt me, Daddy.' The screen fades to pink. (This is cursed. Shame on you, Mel.)",
         annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It’s weird now.",
+        bondBeers: "You and Duo have beers. It's weird. It's beautiful. You respect each other now.",
+        shortFriendship: "You remain acquaintances. The story ends not with a bang, but with a polite nod.",
+        longFriendship: "You become really close. Like trauma-bonded close.", 
+        enemyToLover: "You fall in love. You fight. You make up. It's complicated, but it's yours.",
+        loversToEnemies: "You fall out. Words are thrown. Silence is louder. The love fades, but the lessons remain.",
         debug: "You debug the printer. It purrs like a cat. Peace is restored.",
         befriend: "The constructs name you King Stork and gift you a glowing spanner of friendship.",
         panic: "You unplug the printer. It sulks for a week but forgives you. Eventually.",
@@ -158,15 +163,18 @@
         swap: "You swap the potion for Moonbrew. Everyone dozes. Perfect crime.",
         nap: "You nap. They nap. The heist naps itself. Perfect.",
         glitterBomb: "Sparkles explode. Security confused. You cartwheel out like a legend.",
-        adoptGummy: "You adopt the gummy. He calls you Papa Mel. You cry a little."
-        bondBeers: "You and Duo walk off into the sunset, swapping beers and bad jokes. He still needs to catch up on that lesson, though.",
         weirdSexy: "No. Just no.",
         mostFriendships: "<div class='choice' onclick=\"nextScene('reallyThough')\">Really though?</div>",
         nope: "That's fair. Not all friendships begin with eyebrow insults.",
         declareKing: "The bunnies cheer. You are now Bunny Royalty. Fluffy chaos ensues.",
-      };
-      story.innerHTML = `<h2>Ending Unlocked</h2><p>${endings[type]}</p>`;
-    }
+        adoptGummy: "You adopt the gummy. He calls you Papa Mel. You cry a little.",
+  };
+
+  let result = endings[type] || "Mysterious forces erase your fate... (missing ending)";
+  story.innerHTML = `<p>${result}</p>`;
+
+}
+
 function loopReally() {
   let story = document.getElementById('story');
   story.innerHTML = `
