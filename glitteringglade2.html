@@ -46,6 +46,7 @@
     <div class="choice" onclick="nextScene('bunnies')">Answer the Bunny Uprising's call</div>
     <div class="choice" onclick="nextScene('church')">Fix the Church of Eternal Buffering</div>
     <div class="choice" onclick="nextScene('sleep')">Heist the Last Drop of Sleep</div>
+    <div class="choice" onclick="nextScene('nothing')">Nothing</div>
   </div>
 
   <div id="easter-egg">...did you fall asleep too?</div>
@@ -83,7 +84,7 @@
       } else if (scene === 'bunnies') {
         story.innerHTML = `
           <h2>The Bunny Uprising</h2>
-          <p>The backyard bunnies, furious about the coyote problem, beg you to lead their revolution. You are Forest General Fluffwarden now.</p>
+          <p>The backyard bunnies, furious about the coyote infiltration, beg you to lead their revolution. You are Forest General Fluffwarden now.</p>
           <p>What’s your war strategy?</p>
           <div class="choice" onclick="ending('teaDiplomacy')">Invite the coyotes to a glittery tea party</div>
           <div class="choice" onclick="ending('war')">Lead a full-scale bunny assault</div>
@@ -113,22 +114,22 @@
           <div class="choice" onclick="ending('glitterBomb')">Distract guards with sparkles</div>
           <div class="choice" onclick="ending('adoptGummy')">Adopt the gummy as your son</div>
         `;
-      } else if (scene === 'duoBond') {
+      } else if (scene === 'annoy') {
         story.innerHTML = `
           <h2>Unlikely Bond</h2>
           <p>You mock Duo's eyebrows. He mocks your life choices. You bond. It’s weird now.</p>
           <div class="choice" onclick="ending('bondBeers')">"And that's the way I like it..."</div>
           <div class="choice" onclick="ending('weirdSexy')">"weird.....smexy?( ͡° ͜ʖ ͡°)"</div>
           <div class="choice" onclick="ending('mostFriendships')">"That's how most of my friendships were initiated."</div>
+          <div class="choice" onclick="ending('shortFriendship')">"But not too weird." </div>
         `;
-      } else if (scene === 'reallyThough') {
-        story.innerHTML = `
-          <h2>Really though?</h2>
-          <p>Really though?</p>
-          <div class="choice" onclick="loopReally()">Yes, really.</div>
-          <div class="choice" onclick="ending('nope')">Nope.</div>
-        `;
-      }
+      } else if (scene === 'nothing') {
+  story.innerHTML = `
+    <h2>Nothing Happens</h2>
+    <p>Nothing. You do nothing. What did you expect?</p>
+    <div class="choice" onclick="ending('nothingEnd')">End the story</div>
+  `;
+}
     }
 
 function ending(type) {
@@ -139,51 +140,58 @@ function ending(type) {
         glitter: "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup. 'Care to join us?' she asks.",
         flirt: "Duo blushes. '...D-Don't tempt me, Daddy.' The screen fades to pink. (This is cursed. Shame on you, Mel.)",
         annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It’s weird now.",
-        bondBeers: "You and Duo have beers. It's weird. It's beautiful. You respect each other now.",
+        bondBeers: "You and Duo share beers and walk off into the sunset. It's weird. It's beautiful. You still have to catch up on that lesson though.",
+        mostFriendships: `
+          <h2>Really though?</h2>
+          <p>Really though?</p>
+          <div class="choice" onclick="loopReally()">Yes, really.</div>
+          <div class="choice" onclick="ending('nope')">Nope.</div>
+        `,
         shortFriendship: "You remain acquaintances. The story ends not with a bang, but with a polite nod.",
         longFriendship: "You become really close. Like trauma-bonded close.", 
         enemyToLover: "You fall in love. You fight. You make up. It's complicated, but it's yours.",
         loversToEnemies: "You fall out. Words are thrown. Silence is louder. The love fades, but the lessons remain.",
         debug: "You debug the printer. It purrs like a cat. Peace is restored.",
-        befriend: "The constructs name you King Stork and gift you a glowing spanner of friendship.",
+        befriend: "The constructs name you King Stork and gift you a magical 3D printer.",
         panic: "You unplug the printer. It sulks for a week but forgives you. Eventually.",
-        melt: "You smelt the constructs into a crown. You’re now the King of Sad Tinkertown.",
+        melt: "You smelt the constructs into a crown. Why though?.",
         ride: "You ride a mushroom minion into the Core of Code. New realm unlocked.",
         teaDiplomacy: "The coyotes love your tea. War avoided. Bunny-coyote brunches begin.",
         war: "You lead bunny troops to victory. Tiny swords. Huge drama. Big naps after.",
         betray: "You join the coyotes. They nap well. You miss the bunnies, though.",
-        crown: "You give the bunnies a crown. They host a glittery coronation in your honor.",
+        crown: "You give the bunnies a crown. They host a glittery coronation in your honor. What about the coyote though?",
         mechanicalHeart: "You give the coyote a mechanical heart. It cries. Peace blossoms.",
         techFix: "You fix the livestream with divine buffering powers. The congregation applauds.",
         preach: "Your sermon converts code bugs into helpful spirits. Amen.",
         reboot: "You reboot reality. It’s fine. Mostly. Mel.exe runs smoother now.",
-        escape: "You hack the matrix. You find a tea shop inside. Dreamy.",
+        escape: "You hack the matrix. You find a tea shop inside. Dreamy. They have cakes too.",
         debugJesus: "Debugging Jesus appears. He blesses your cache. All is holy.",
-        debate: "You out-logic the Alchemist. He turns into chamomile. Sleep wins.",
-        swap: "You swap the potion for Moonbrew. Everyone dozes. Perfect crime.",
+        debate: "You out-logic the Alchemist. He runs to his research centre and cries. He was never the same after that.",
+        swap: "You swap the potion for Moonbrew. The earth now has two moons.",
         nap: "You nap. They nap. The heist naps itself. Perfect.",
         glitterBomb: "Sparkles explode. Security confused. You cartwheel out like a legend.",
         weirdSexy: "No. Just no.",
-        mostFriendships: "<div class='choice' onclick=\"nextScene('reallyThough')\">Really though?</div>",
         nope: "That's fair. Not all friendships begin with eyebrow insults.",
         declareKing: "The bunnies cheer. You are now Bunny Royalty. Fluffy chaos ensues.",
         adoptGummy: "You adopt the gummy. He calls you Papa Mel. You cry a little.",
+        nothingEnd: "You decide to end the story here. It’s a bit anticlimactic, but you’re at peace. Maybe next time you'll do something.",
   };
-
-  let result = endings[type] || "Mysterious forces erase your fate... (missing ending)";
-  story.innerHTML = `<p>${result}</p>`;
-
+let result = endings[type];
+if (type === 'mostFriendships') {
+    story.innerHTML = result + `<div class="choice" onclick="location.reload()">Play Again</div>`;
+} else {
+    story.innerHTML = `<p>${result}</p><div class="choice" onclick="location.reload()">Play Again</div>`;
 }
 
 function loopReally() {
-  let story = document.getElementById('story');
-  story.innerHTML = `
-    <h2>Really really?</h2>
-    <p>Really really?</p>
-    <div class="choice" onclick="loopReally()">Yes, really really.</div>
-    <div class="choice" onclick="ending('nope')">Okay, maybe not.</div>
+  document.getElementById('story').innerHTML = `
+    <h2>Still really?</h2>
+    <p>This could go on forever, you know.</p>
+    <div class="choice" onclick="loopReally()">Yes, still really.</div>
+    <div class="choice" onclick="ending('nope')">Okay, I'm done.</div>
   `;
 }
+
     
   </script>
   
