@@ -53,7 +53,7 @@
   <script>
     let timer = setTimeout(() => {
       document.getElementById('easter-egg').style.display = 'block';
-    }, 20000);
+    }, 900000);
 
     function nextScene(scene) {
       clearTimeout(timer);
@@ -113,6 +113,21 @@
           <div class="choice" onclick="ending('glitterBomb')">Distract guards with sparkles</div>
           <div class="choice" onclick="ending('adoptGummy')">Adopt the gummy as your son</div>
         `;
+      } else if (scene === 'duoBond') {
+        story.innerHTML = `
+          <h2>Unlikely Bond</h2>
+          <p>You mock Duo's eyebrows. He mocks your life choices. You bond. It’s weird now.</p>
+          <div class="choice" onclick="ending('bondBeers')">"And that's the way I like it..."</div>
+          <div class="choice" onclick="ending('weirdSexy')">"weird.....smexy?( ͡° ͜ʖ ͡°)"</div>
+          <div class="choice" onclick="ending('mostFriendships')">"That's how most of my friendships were initiated."</div>
+        `;
+      } else if (scene === 'reallyThough') {
+        story.innerHTML = `
+          <h2>Really though?</h2>
+          <p>Really though?</p>
+          <div class="choice" onclick="loopReally()">Yes, really.</div>
+          <div class="choice" onclick="ending('nope')">Nope.</div>
+        `;
       }
     }
 
@@ -121,7 +136,7 @@
       let endings = {
         correct: "Duo squawks approvingly. 'Acceptable. You may live.' He vanishes in a puff of glitter.",
         thinIce: "'You’re on thin ice, Storkington,' Duo growls. The floor literally turns to ice. You freeze as well, becoming a frozen Stork sculpture for eternity or until true love's kiss awakens you or something.",
-        glitter: "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup. "Care to join us?" she asks.",
+        glitter: "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup. 'Care to join us?' she asks.",
         flirt: "Duo blushes. '...D-Don't tempt me, Daddy.' The screen fades to pink. (This is cursed. Shame on you, Mel.)",
         annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It’s weird now.",
         debug: "You debug the printer. It purrs like a cat. Peace is restored.",
@@ -144,9 +159,34 @@
         nap: "You nap. They nap. The heist naps itself. Perfect.",
         glitterBomb: "Sparkles explode. Security confused. You cartwheel out like a legend.",
         adoptGummy: "You adopt the gummy. He calls you Papa Mel. You cry a little."
+        bondBeers: "You and Duo walk off into the sunset, swapping beers and bad jokes. He still needs to catch up on that lesson, though.",
+        weirdSexy: "No. Just no.",
+        mostFriendships: "<div class='choice' onclick=\"nextScene('reallyThough')\">Really though?</div>",
+        nope: "That's fair. Not all friendships begin with eyebrow insults.",
+        declareKing: "The bunnies cheer. You are now Bunny Royalty. Fluffy chaos ensues.",
       };
       story.innerHTML = `<h2>Ending Unlocked</h2><p>${endings[type]}</p>`;
     }
+function loopReally() {
+  let story = document.getElementById('story');
+  story.innerHTML = `
+    <h2>Really really?</h2>
+    <p>Really really?</p>
+    <div class="choice" onclick="loopReally()">Yes, really really.</div>
+    <div class="choice" onclick="ending('nope')">Okay, maybe not.</div>
+  `;
+}
+    
   </script>
+    let loopCount = 0;
+    function loopReally() {
+      loopCount++;
+      if (loopCount >= 6) {
+        document.getElementById('story').innerHTML = `<h2>Victory</h2><p>Okay, okay. I give up. You win.</p>`;
+      } else {
+        nextScene('reallyThough');
+      }
+    }
+  
 </body>
 </html>
