@@ -177,20 +177,31 @@
             `;
         }
 
+        function handleTeaParty() {
+            let story = document.getElementById('story');
+            
+            story.innerHTML = `
+                <h2>The Bunny Tea Party</h2>
+                <p>You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup.</p>
+                <p>"Care to join us?" she asks.</p>
+                <div class="choice" onclick="ending('joinTeaParty')">Accept the invitation</div>
+                <div class="choice" onclick="ending('refuseTeaParty')">Politely decline</div>
+                <div class="choice" onclick="ending('suggestGames')">Suggest playing party games instead</div>
+            `;
+        }
+
         function ending(type) {
             const endings = {
                 correct: "Duo squawks approvingly. 'Acceptable. You may live.' He vanishes in a puff of glitter.",
                 thinIce: "'You're on thin ice, Storkington,' Duo growls. The floor literally turns to ice. You freeze as well, becoming a frozen Stork sculpture for eternity or until true love's kiss awakens you or something.",
                 glitter: "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup. 'Care to join us?' she asks.",
                 flirt: "Duo blushes. '...D-Don't tempt me, Daddy.' The screen fades to pink. (This is cursed. Shame on you, Mel.)",
+                joinTeaParty: "You join the tea party and have a delightful time. The bunnies tell you stories about their adventures in the glade. You feel strangely at home.",
+                refuseTeaParty: "You politely decline. The bunny looks disappointed but nods understandingly. As you turn to leave, you catch a glimpse of what looks like a tiny knife hidden in her fur. Perhaps it was for the best.",
+                suggestGames: "You suggest playing party games instead. The bunnies are thrilled! You spend the next hour playing Carrot Charades and Pin the Tail on the Human. It's... strangely enjoyable.",
                 annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.",
                 bondBeers: "You and Duo share beers and walk off into the sunset. It's weird. It's beautiful. You still have to catch up on that lesson though.",
                 weirdSexy: "No. Just no.",
-                nope: "That's fair. Not all friendships begin with eyebrow insults.",
-                shortFriendship: "You remain acquaintances. The story ends not with a bang, but with a polite nod.",
-                longFriendship: "You become really close. Like trauma-bonded close.",
-                enemyToLover: "You fall in love. You fight. You make up. It's complicated, but it's yours.",
-                loversToEnemies: "You fall out. Words are thrown. Silence is louder. The love fades, but the lessons remain.",
                 debug: "You debug the printer. It purrs like a cat. Peace is restored.",
                 befriend: "The constructs name you King Stork and gift you a magical 3D printer.",
                 panic: "You unplug the printer. It sulks for a week but forgives you. Eventually.",
