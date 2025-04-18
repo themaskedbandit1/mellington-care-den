@@ -129,8 +129,10 @@
             }
         }
 
+        // New function to handle the mock eyebrows path
         function handleMockEyebrows() {
             let story = document.getElementById('story');
+            
             story.innerHTML = `
                 <h2>The Eyebrow Incident</h2>
                 <p>You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.</p>
@@ -138,38 +140,41 @@
                 <div class="choice" onclick="ending('bondBeers')">"And that's the way I like it..."</div>
                 <div class="choice" onclick="ending('weirdSexy')">"weird.....smexy?( ͡° ͜ʖ ͡°)"</div>
                 <div class="choice" onclick="mostFriendships()">"That's how most of my friendships were initiated."</div>
-                `;
+            `;
         }
-        
+
+        // Function for the "most friendships" path
         function mostFriendships() {
             let story = document.getElementById('story');
+            
             story.innerHTML = `
                 <h2>Really though?</h2>
                 <p>Really though?</p>
                 <div class="choice" onclick="loopReally()">Yes, really.</div>
                 <div class="choice" onclick="ending('nope')">Nope.</div>
-                `;
+            `;
         }
+
         let reallyCount = 0;
         function loopReally() {
             reallyCount++;
             let story = document.getElementById('story');
-    
+            
             if (reallyCount >= 6) {
                 story.innerHTML = `
                     <h2>Okay, okay. I give up. You win.</h2>
                     <div class="choice" onclick="location.reload()">Start Over</div>
-                    `;
-                    reallyCount = 0;
-                    return;
+                `;
+                reallyCount = 0;
+                return;
             }
-            
+
             story.innerHTML = `
                 <h2>Still really?</h2>
                 <p>This could go on forever, you know.</p>
                 <div class="choice" onclick="loopReally()">Yes, still really.</div>
                 <div class="choice" onclick="ending('nope')">Okay, I'm done.</div>
-                `;
+            `;
         }
 
         function ending(type) {
@@ -181,12 +186,7 @@
                 annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.",
                 bondBeers: "You and Duo share beers and walk off into the sunset. It's weird. It's beautiful. You still have to catch up on that lesson though.",
                 weirdSexy: "No. Just no.",
-                mostFriendships: `
-                    <h2>Really though?</h2>
-                    <p>Really though?</p>
-                    <div class="choice" onclick="loopReally()">Yes, really.</div>
-                    <div class="choice" onclick="ending('nope')">Nope.</div>
-                `,
+                nope: "That's fair. Not all friendships begin with eyebrow insults.",
                 shortFriendship: "You remain acquaintances. The story ends not with a bang, but with a polite nod.",
                 longFriendship: "You become really close. Like trauma-bonded close.",
                 enemyToLover: "You fall in love. You fight. You make up. It's complicated, but it's yours.",
@@ -210,43 +210,17 @@
                 swap: "You swap the potion for Moonbrew. The earth now has two moons.",
                 nap: "You nap. They nap. The heist naps itself. Perfect.",
                 glitterBomb: "Sparkles explode. Security confused. You cartwheel out like a legend.",
-                nope: "That's fair. Not all friendships begin with eyebrow insults.",
+                adoptGummy: "You adopt the gummy as your son. He grows up to be a respectable sleep aid.",
                 nothingEnd: "You decide to end the story here. It's a bit anticlimactic, but you're at peace. Maybe next time you'll do something."
             };
 
             let story = document.getElementById('story');
-            if (type === "mostFriendships") {
-                story.innerHTML = endings[type];
-                return;
-            }
-
+            
             if (endings[type]) {
                 story.innerHTML = `<p>${endings[type]}</p><div class="choice" onclick="location.reload()">Start Over</div>`;
             } else {
                 story.innerHTML = `<p>Hmm... that ending hasn't been written yet. (Maybe the owls stole it?)</p><div class="choice" onclick="location.reload()">Start Over</div>`;
             }
-        }
-
-        let reallyCount = 0;
-        function loopReally() {
-            reallyCount++;
-            let story = document.getElementById('story');
-            
-            if (reallyCount >= 6) {
-                story.innerHTML = `
-                    <h2>Okay, okay. I give up. You win.</h2>
-                    <div class="choice" onclick="location.reload()">Start Over</div>
-                `;
-                reallyCount = 0;
-                return;
-            }
-
-            story.innerHTML = `
-                <h2>Still really?</h2>
-                <p>This could go on forever, you know.</p>
-                <div class="choice" onclick="loopReally()">Yes, still really.</div>
-                <div class="choice" onclick="ending('nope')">Okay, I'm done.</div>
-            `;
         }
     </script>
 </body>
