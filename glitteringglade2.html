@@ -137,6 +137,7 @@
                 flirt: "Duo blushes. '...D-Don't tempt me, Daddy.' The screen fades to pink. (This is cursed. Shame on you, Mel.)",
                 annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.",
                 bondBeers: "You and Duo share beers and walk off into the sunset. It's weird. It's beautiful. You still have to catch up on that lesson though.",
+                weirdSexy: "No. Just no.",
                 mostFriendships: `
                     <h2>Really though?</h2>
                     <p>Really though?</p>
@@ -166,7 +167,6 @@
                 swap: "You swap the potion for Moonbrew. The earth now has two moons.",
                 nap: "You nap. They nap. The heist naps itself. Perfect.",
                 glitterBomb: "Sparkles explode. Security confused. You cartwheel out like a legend.",
-                weirdSexy: "No. Just no.",
                 nope: "That's fair. Not all friendships begin with eyebrow insults.",
                 nothingEnd: "You decide to end the story here. It's a bit anticlimactic, but you're at peace. Maybe next time you'll do something."
             };
@@ -184,8 +184,21 @@
             }
         }
 
+        let reallyCount = 0;
         function loopReally() {
-            document.getElementById('story').innerHTML = `
+            reallyCount++;
+            let story = document.getElementById('story');
+            
+            if (reallyCount >= 6) {
+                story.innerHTML = `
+                    <h2>Okay, okay. I give up. You win.</h2>
+                    <div class="choice" onclick="location.reload()">Start Over</div>
+                `;
+                reallyCount = 0;
+                return;
+            }
+
+            story.innerHTML = `
                 <h2>Still really?</h2>
                 <p>This could go on forever, you know.</p>
                 <div class="choice" onclick="loopReally()">Yes, still really.</div>
