@@ -1,209 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glittering Glade II: The Dreaming Deep</title>
-  <style>
-    body {
-      background: #0d1b2a;
-      color: #fefae0;
-      font-family: "Georgia", serif;
-      padding: 2em;
-      line-height: 1.6;
-    }
-    .choice {
-      background: #3a506b;
-      padding: 1em;
-      margin: 1em 0;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-      text-align: center;
-    }
-    .choice:hover {
-      background: #5bc0be;
-    }
-    button.choice {
-      border: none;
-      color: inherit;
-      font: inherit;
-      background: none;
-    }
-    #story {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    #easter-egg {
-      display: none;
-      color: #ffdd57;
-      margin-top: 1em;
-      font-style: italic;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glittering Glade II: The Dreaming Deep</title>
+    <style>
+        body {
+            background: #0d1b2a;
+            color: #fefae0;
+            font-family: "Georgia", serif;
+            padding: 2em;
+            line-height: 1.6;
+        }
+        .choice {
+            background: #3a506b;
+            padding: 1em;
+            margin: 1em 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .choice:hover {
+            background: #5bc0be;
+        }
+        #story {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        #easter-egg {
+            display: none;
+            color: #ffdd57;
+            margin-top: 1em;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
-  <div id="story">
-    <h1>Glittering Glade II: The Dreaming Deep</h1>
-    <p>You are Melancholy Stork, a modern-day tech wizard, 3D-printer warlock, and sleepy forest guardian. One peaceful evening, after ignoring a Duolingo notification, you were suddenly snatched by a fiery owl talon and dropped into a glimmering, but dangerous dungeon made entirely out of blaring runes and tea stains.</p>
-    <p>Welcome back to the Glade.</p>
-    <p>What do you decide to do?</p>
-    <button class="choice" onclick="nextScene('duo')">Face the vengeful owl god (dammit), Duo</button>
-    <button class="choice" onclick="nextScene('printer')">Tend to your now-sentient 3D printer</button>
-    <button class="choice" onclick="nextScene('bunnies')">Answer the Bunny Uprising's call</button>
-    <button class="choice" onclick="nextScene('church')">Fix the Church of Eternal Buffering</button>
-    <button class="choice" onclick="nextScene('sleep')">Heist the Last Drop of Sleep</button>
-    <button class="choice" onclick="nextScene('nothing')">Nothing</button>
-  </div>
+    <div id="story">
+        <h1>Glittering Glade II: The Dreaming Deep</h1>
+        <p>You are Melancholy Stork, a modern-day tech wizard, 3D-printer warlock, and sleepy forest guardian. One peaceful evening, after ignoring a Duolingo notification, you were suddenly snatched by a fiery owl talon and dropped into a glimmering, but dangerous dungeon made entirely out of blaring runes and tea stains.</p>
+        <p>Welcome back to the Glade.</p>
+        <p>What do you decide to do?</p>
+        <div class="choice" onclick="nextScene('duo')">Face the vengeful owl god (dammit), Duo</div>
+        <div class="choice" onclick="nextScene('printer')">Tend to your now-sentient 3D printer</div>
+        <div class="choice" onclick="nextScene('bunnies')">Answer the Bunny Uprising's call</div>
+        <div class="choice" onclick="nextScene('church')">Fix the Church of Eternal Buffering</div>
+        <div class="choice" onclick="nextScene('sleep')">Heist the Last Drop of Sleep</div>
+        <div class="choice" onclick="nextScene('nothing')">Nothing</div>
+    </div>
+    <div id="easter-egg">...did you fall asleep too?</div>
 
-  <div id="easter-egg" aria-live="polite">...did you fall asleep too?</div>
+    <script>
+        let timer = setTimeout(() => {
+            document.getElementById('easter-egg').style.display = 'block';
+        }, 900000);
 
-  <script>
-    const scenes = {
-      duo: {
-        title: "The Owl God's Challenge",
-        content: "Duo, the angry Duolingo owl, flaps his glowing wings. \"STORKINGTON. Your Japanese lessons are lacking.\"",
-        choices: [
-          { text: "Say: ねこは可愛いです！ (Cats are cute!)", ending: "correct" },
-          { text: "Say: Uh... sugoi?", ending: "thinIce" },
-          { text: "Throw a glitter bomb and run", ending: "glitter" },
-          { text: "Flirt shamelessly: \"Call me Daddy.\"", ending: "flirt" },
-          { text: "Mock Duo's eyebrows", ending: "annoy" }
-        ]
-      },
-      printer: {
-        title: "The Tinkerer's Revolt",
-        content: "Your 3D printer has gained sentience and is now producing tiny AI mushroom minions that call you Daddy and demand upgrades.",
-        choices: [
-          { text: "Debug the printer (solve tech puzzles)", ending: "debug" },
-          { text: "Befriend the constructs (join their tea party)", ending: "befriend" },
-          { text: "Scream and unplug it", ending: "panic" },
-          { text: "Smelt them into a glitter crown", ending: "melt" },
-          { text: "Ride one into the Core of Code", ending: "ride" }
-        ]
-      },
-      bunnies: {
-        title: "The Bunny Uprising",
-        content: "The backyard bunnies, furious about the coyote infiltration, beg you to lead their revolution. You are Forest General Fluffwarden now.",
-        choices: [
-          { text: "Invite the coyotes to a glittery tea party", ending: "teaDiplomacy" },
-          { text: "Lead a full-scale bunny assault", ending: "war" },
-          { text: "Join the coyotes (they have naps)", ending: "betray" },
-          { text: "Give the bunnies a 3D-printed crown", ending: "crown" },
-          { text: "Craft a mechanical heart for the coyote", ending: "mechanicalHeart" }
-        ]
-      },
-      church: {
-        title: "The Church of Eternal Buffering",
-        content: "You're stuck in a digital purgatory. The only way out is by fixing the holy livestream.",
-        choices: [
-          { text: "Tech support the bugs", ending: "techFix" },
-          { text: "Preach to the code gremlins", ending: "preach" },
-          { text: "Reboot the glade’s core", ending: "reboot" },
-          { text: "Hack the matrix", ending: "escape" },
-          { text: "Summon Debugging Jesus", ending: "debugJesus" }
-        ]
-      },
-      sleep: {
-        title: "The Sleep Supplement Heist",
-        content: "A rogue melatonin gummy begs you to steal back the Last Drop of Sleep from the Sleepless Alchemist.",
-        choices: [
-          { text: "Debate the alchemist using science", ending: "debate" },
-          { text: "Replace the potion with Moonbrew", ending: "swap" },
-          { text: "Take a nap mid-heist", ending: "nap" },
-          { text: "Distract guards with sparkles", ending: "glitterBomb" },
-          { text: "Adopt the gummy as your son", ending: "adoptGummy" }
-        ]
-      },
-      nothing: {
-        title: "Nothing Happens",
-        content: "Nothing. You do nothing. What did you expect?",
-        choices: [
-          { text: "End the story", ending: "nothingEnd" }
-        ]
-      }
-    };
+        function nextScene(scene) {
+            clearTimeout(timer);
+            let story = document.getElementById('story');
+            
+            const scenes = {
+                duo: `
+                    <h2>The Owl God's Challenge</h2>
+                    <p>Duo, the angry Duolingo owl, flaps his glowing wings. "STORKINGTON. Your Japanese lessons are lacking."</p>
+                    <p>How do you respond?</p>
+                    <div class="choice" onclick="ending('correct')">Say: ねこは可愛いです！ (Cats are cute!)</div>
+                    <div class="choice" onclick="ending('thinIce')">Say: Uh... sugoi?</div>
+                    <div class="choice" onclick="ending('glitter')">Throw a glitter bomb and run</div>
+                    <div class="choice" onclick="ending('flirt')">Flirt shamelessly: "Call me Daddy."</div>
+                    <div class="choice" onclick="ending('annoy')">Mock Duo's eyebrows</div>
+                `,
+                
+                printer: `
+                    <h2>The Tinkerer's Revolt</h2>
+                    <p>Your 3D printer has gained sentience and is now producing tiny AI mushroom minions that call you Daddy and demand upgrades.</p>
+                    <p>What do you do?</p>
+                    <div class="choice" onclick="ending('debug')">Debug the printer (solve tech puzzles)</div>
+                    <div class="choice" onclick="ending('befriend')">Befriend the constructs (join their tea party)</div>
+                    <div class="choice" onclick="ending('panic')">Scream and unplug it</div>
+                    <div class="choice" onclick="ending('melt')">Smelt them into a glitter crown</div>
+                    <div class="choice" onclick="ending('ride')">Ride one into the Core of Code</div>
+                `,
+                
+                bunnies: `
+                    <h2>The Bunny Uprising</h2>
+                    <p>The backyard bunnies, furious about the coyote infiltration, beg you to lead their revolution. You are Forest General Fluffwarden now.</p>
+                    <p>What's your war strategy?</p>
+                    <div class="choice" onclick="ending('teaDiplomacy')">Invite the coyotes to a glittery tea party</div>
+                    <div class="choice" onclick="ending('war')">Lead a full-scale bunny assault</div>
+                    <div class="choice" onclick="ending('betray')">Join the coyotes (they have naps)</div>
+                    <div class="choice" onclick="ending('crown')">Give the bunnies a 3D-printed crown</div>
+                    <div class="choice" onclick="ending('mechanicalHeart')">Craft a mechanical heart for the coyote</div>
+                `,
+                
+                church: `
+                    <h2>The Church of Eternal Buffering</h2>
+                    <p>You're stuck in a digital purgatory. The only way out is by fixing the holy livestream.</p>
+                    <p>How do you proceed?</p>
+                    <div class="choice" onclick="ending('techFix')">Tech support the bugs</div>
+                    <div class="choice" onclick="ending('preach')">Preach to the code gremlins</div>
+                    <div class="choice" onclick="ending('reboot')">Reboot the glade's core</div>
+                    <div class="choice" onclick="ending('escape')">Hack the matrix</div>
+                    <div class="choice" onclick="ending('debugJesus')">Summon Debugging Jesus</div>
+                `,
+                
+                sleep: `
+                    <h2>The Sleep Supplement Heist</h2>
+                    <p>A rogue melatonin gummy begs you to steal back the Last Drop of Sleep from the Sleepless Alchemist.</p>
+                    <p>Your plan?</p>
+                    <div class="choice" onclick="ending('debate')">Debate the alchemist using science</div>
+                    <div class="choice" onclick="ending('swap')">Replace the potion with Moonbrew</div>
+                    <div class="choice" onclick="ending('nap')">Take a nap mid-heist</div>
+                    <div class="choice" onclick="ending('glitterBomb')">Distract guards with sparkles</div>
+                    <div class="choice" onclick="ending('adoptGummy')">Adopt the gummy as your son</div>
+                `,
+                
+                nothing: `
+                    <h2>Nothing Happens</h2>
+                    <p>Nothing. You do nothing. What did you expect?</p>
+                    <div class="choice" onclick="ending('nothingEnd')">End the story</div>
+                `
+            };
 
-    const endings = {
-      correct: "Duo squawks approvingly. \"Acceptable. You may live.\" He vanishes in a puff of glitter.",
-      thinIce: "\"You’re on thin ice, Storkington,\" Duo growls. The floor literally turns to ice. You freeze as well, becoming a frozen Stork sculpture for eternity.",
-      glitter: "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup. \"Care to join us?\" she asks.",
-      flirt: "Duo blushes. \"...D-Don't tempt me, Daddy.\" The screen fades to pink. (This is cursed. Shame on you, Mel.)",
-      annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It’s weird now.",
-      bondBeers: "You and Duo share beers and walk off into the sunset. It's weird. It's beautiful. You still have to catch up on that lesson though.",
-      weirdSexy: "No. Just no.",
-      mostFriendships: `
-        <h2>Really though?</h2>
-        <p>Really though?</p>
-        <div class="choice" onclick="loopReally()">Yes, really.</div>
-        <div class="choice" onclick="ending('nope')">Nope.</div>
-      `,
-      shortFriendship: "You remain acquaintances. The story ends not with a bang, but with a polite nod.",
-      longFriendship: "You become really close. Like trauma-bonded close.",
-      enemyToLover: "You fall in love. You fight. You make up. It's complicated, but it's yours.",
-      loversToEnemies: "You fall out. Words are thrown. Silence is louder. The love fades, but the lessons remain.",
-      debug: "You debug the printer. It purrs like a cat. Peace is restored.",
-      befriend: "The constructs name you King Stork and gift you a magical 3D printer.",
-      panic: "You unplug the printer. It sulks for a week but forgives you. Eventually.",
-      melt: "You smelt the constructs into a crown. Why though?.",
-      ride: "You ride a mushroom minion into the Core of Code. New realm unlocked.",
-      teaDiplomacy: "The coyotes love your tea. War avoided. Bunny-coyote brunches begin.",
-      war: "You lead bunny troops to victory. Tiny swords. Huge drama. Big naps after.",
-      betray: "You join the coyotes. They nap well. You miss the bunnies, though.",
-      crown: "You give the bunnies a crown. They host a glittery coronation in your honor.",
-      mechanicalHeart: "You give the coyote a mechanical heart. It cries. Peace blossoms.",
-      techFix: "You fix the livestream with divine buffering powers. The congregation applauds.",
-      preach: "Your sermon converts code bugs into helpful spirits. Amen.",
-      reboot: "You reboot reality. It’s fine. Mostly. Mel.exe runs smoother now.",
-      escape: "You hack the matrix. You find a tea shop inside. Dreamy. They have cakes too.",
-      debugJesus: "Debugging Jesus appears. He blesses your cache. All is holy.",
-      debate: "You out-logic the Alchemist. He runs to his research centre and cries. He was never the same after that.",
-      swap: "You swap the potion for Moonbrew. The earth now has two moons.",
-      nap: "You nap. They nap. The heist naps itself. Perfect.",
-      glitterBomb: "Sparkles explode. Security confused. You cartwheel out like a legend.",
-      adoptGummy: "You adopt the gummy. He calls you Papa Mel. You cry a little.",
-      nothingEnd: "You decide to end the story here. It’s a bit anticlimactic, but you’re at peace. Maybe next time you'll do something.",
-      nope: "That's fair. Not all friendships begin with eyebrow insults."
-    };
+            if (scenes[scene]) {
+                story.innerHTML = scenes[scene];
+            } else {
+                story.innerHTML = `<p>Hmm... that scene hasn't been written yet. (Maybe the owls stole it?)</p><div class="choice" onclick="location.reload()">Start Over</div>`;
+            }
+        }
 
-    let timer = setTimeout(() => {
-      document.getElementById('easter-egg').style.display = 'block';
-    }, 900000); // 15 minutes
+        function ending(type) {
+            const endings = {
+                correct: "Duo squawks approvingly. 'Acceptable. You may live.' He vanishes in a puff of glitter.",
+                thinIce: "'You're on thin ice, Storkington,' Duo growls. The floor literally turns to ice. You freeze as well, becoming a frozen Stork sculpture for eternity or until true love's kiss awakens you or something.",
+                glitter: "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup. 'Care to join us?' she asks.",
+                flirt: "Duo blushes. '...D-Don't tempt me, Daddy.' The screen fades to pink. (This is cursed. Shame on you, Mel.)",
+                annoy: "You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.",
+                bondBeers: "You and Duo share beers and walk off into the sunset. It's weird. It's beautiful. You still have to catch up on that lesson though.",
+                mostFriendships: `
+                    <h2>Really though?</h2>
+                    <p>Really though?</p>
+                    <div class="choice" onclick="loopReally()">Yes, really.</div>
+                    <div class="choice" onclick="ending('nope')">Nope.</div>
+                `,
+                shortFriendship: "You remain acquaintances. The story ends not with a bang, but with a polite nod.",
+                longFriendship: "You become really close. Like trauma-bonded close.",
+                enemyToLover: "You fall in love. You fight. You make up. It's complicated, but it's yours.",
+                loversToEnemies: "You fall out. Words are thrown. Silence is louder. The love fades, but the lessons remain.",
+                debug: "You debug the printer. It purrs like a cat. Peace is restored.",
+                befriend: "The constructs name you King Stork and gift you a magical 3D printer.",
+                panic: "You unplug the printer. It sulks for a week but forgives you. Eventually.",
+                melt: "You smelt the constructs into a crown. Why though?",
+                ride: "You ride a mushroom minion into the Core of Code. New realm unlocked.",
+                teaDiplomacy: "The coyotes love your tea. War avoided. Bunny-coyote brunches begin.",
+                war: "You lead bunny troops to victory. Tiny swords. Huge drama. Big naps after.",
+                betray: "You join the coyotes. They nap well. You miss the bunnies, though.",
+                crown: "You give the bunnies a crown. They host a glittery coronation in your honor. What about the coyote though?",
+                mechanicalHeart: "You give the coyote a mechanical heart. It cries. Peace blossoms.",
+                techFix: "You fix the livestream with divine buffering powers. The congregation applauds.",
+                preach: "Your sermon converts code bugs into helpful spirits. Amen.",
+                reboot: "You reboot reality. It's fine. Mostly. Mel.exe runs smoother now.",
+                escape: "You hack the matrix. You find a tea shop inside. Dreamy. They have cakes too.",
+                debugJesus: "Debugging Jesus appears. He blesses your cache. All is holy.",
+                debate: "You out-logic the Alchemist. He runs to his research centre and cries. He was never the same after that.",
+                swap: "You swap the potion for Moonbrew. The earth now has two moons.",
+                nap: "You nap. They nap. The heist naps itself. Perfect.",
+                glitterBomb: "Sparkles explode. Security confused. You cartwheel out like a legend.",
+                weirdSexy: "No. Just no.",
+                nope: "That's fair. Not all friendships begin with eyebrow insults.",
+                nothingEnd: "You decide to end the story here. It's a bit anticlimactic, but you're at peace. Maybe next time you'll do something."
+            };
 
-    function nextScene(scene) {
-      clearTimeout(timer); // Reset Easter Egg Timer
-      const story = document.getElementById('story');
-      if (scenes[scene]) {
-        const { title, content, choices } = scenes[scene];
-        let storyHTML = `<h2>${title}</h2><p>${content}</p>`;
-        choices.forEach(choice => {
-          storyHTML += `<button class="choice" onclick="ending('${choice.ending}')">${choice.text}</button>`;
-        });
-        story.innerHTML = storyHTML;
-      } else {
-        story.innerHTML = `<p>Hmm... that scene hasn't been written yet. (Maybe the owls stole it?)</p>
-          <button class="choice" onclick="location.reload()">Start Over</button>`;
-      }
-    }
+            let story = document.getElementById('story');
+            if (type === "mostFriendships") {
+                story.innerHTML = endings[type];
+                return;
+            }
 
-    function ending(type) {
-      const story = document.getElementById('story');
-      if (endings[type]) {
-        story.innerHTML = `<p>${endings[type]}</p><button class="choice" onclick="location.reload()">Start Over</button>`;
-      } else {
-        story.innerHTML = `<p>Hmm... that ending hasn't been written yet. (Maybe the owls stole it?)</p>
-          <button class="choice" onclick="location.reload()">Start Over</button>`;
-      }
-    }
+            if (endings[type]) {
+                story.innerHTML = `<p>${endings[type]}</p><div class="choice" onclick="location.reload()">Start Over</div>`;
+            } else {
+                story.innerHTML = `<p>Hmm... that ending hasn't been written yet. (Maybe the owls stole it?)</p><div class="choice" onclick="location.reload()">Start Over</div>`;
+            }
+        }
 
-    function loopReally() {
-      document.getElementById('story').innerHTML = `
-        <h2>Still really?</h2>
-        <p>This could go on forever, you know.</p>
-        <div class="choice" onclick="loopReally()">Yes, still really.</div>
-        <div class="choice" onclick="ending('nope')">Okay, I'm done.</div>
-      `;
-    }
-  </script>
+        function loopReally() {
+            document.getElementById('story').innerHTML = `
+                <h2>Still really?</h2>
+                <p>This could go on forever, you know.</p>
+                <div class="choice" onclick="loopReally()">Yes, still really.</div>
+                <div class="choice" onclick="ending('nope')">Okay, I'm done.</div>
+            `;
+        }
+    </script>
 </body>
 </html>
