@@ -68,7 +68,7 @@
                     <div class="choice" onclick="ending('thinIce')">Say: Uh... sugoi?</div>
                     <div class="choice" onclick="ending('glitter')">Throw a glitter bomb and run</div>
                     <div class="choice" onclick="ending('flirt')">Flirt shamelessly: "Call me Daddy."</div>
-                    <div class="choice" onclick="ending('annoy')">Mock Duo's eyebrows</div>
+                    <div class="choice" onclick="handleMockEyebrows()">Mock Duo's eyebrows</div>
                 `,
                 
                 printer: `
@@ -127,6 +127,49 @@
             } else {
                 story.innerHTML = `<p>Hmm... that scene hasn't been written yet. (Maybe the owls stole it?)</p><div class="choice" onclick="location.reload()">Start Over</div>`;
             }
+        }
+
+        function handleMockEyebrows() {
+            let story = document.getElementById('story');
+            story.innerHTML = `
+                <h2>The Eyebrow Incident</h2>
+                <p>You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.</p>
+                <p>What do you say next?</p>
+                <div class="choice" onclick="ending('bondBeers')">"And that's the way I like it..."</div>
+                <div class="choice" onclick="ending('weirdSexy')">"weird.....smexy?( ͡° ͜ʖ ͡°)"</div>
+                <div class="choice" onclick="mostFriendships()">"That's how most of my friendships were initiated."</div>
+                `;
+        }
+        
+        function mostFriendships() {
+            let story = document.getElementById('story');
+            story.innerHTML = `
+                <h2>Really though?</h2>
+                <p>Really though?</p>
+                <div class="choice" onclick="loopReally()">Yes, really.</div>
+                <div class="choice" onclick="ending('nope')">Nope.</div>
+                `;
+        }
+        let reallyCount = 0;
+        function loopReally() {
+            reallyCount++;
+            let story = document.getElementById('story');
+    
+            if (reallyCount >= 6) {
+                story.innerHTML = `
+                    <h2>Okay, okay. I give up. You win.</h2>
+                    <div class="choice" onclick="location.reload()">Start Over</div>
+                    `;
+                    reallyCount = 0;
+                    return;
+            }
+            
+            story.innerHTML = `
+                <h2>Still really?</h2>
+                <p>This could go on forever, you know.</p>
+                <div class="choice" onclick="loopReally()">Yes, still really.</div>
+                <div class="choice" onclick="ending('nope')">Okay, I'm done.</div>
+                `;
         }
 
         function ending(type) {
