@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian Tales - Forest Guardian Birthday Package</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Forest Guardian Package Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
+
+        :root {
+            --forest-green: #2c5e4c;
+            --forest-brown: #6b4423;
+            --forest-gold: #e0c068;
+            --forest-light: #d8e8d5;
+            --forest-dark: #1a2e24;
+            --forest-purple: #9370db;
+            --forest-purple-light: #b19cd9;
+            
+            --bg-color: var(--forest-light);
+            --text-color: var(--forest-dark);
+            --card-bg: white;
+            --header-bg: rgba(44, 94, 76, 0.2);
+            --pattern-color: rgba(44, 94, 76, 0.3);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2a2a2a;
+            --header-bg: rgba(44, 94, 76, 0.4);
+            --pattern-color: rgba(44, 94, 76, 0.15);
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Noto Serif', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            position: relative;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,10 L10,30 M70,10 L90,30 M30,90 L10,70 M70,90 L90,70" stroke="%232c5e4c" stroke-width="0.5" fill="none" stroke-opacity="0.3"/></svg>'),
+                         linear-gradient(to bottom, var(--bg-color), var(--bg-color));
+            background-attachment: fixed;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+            color: var(--forest-green);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: var(--forest-green);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header Styles */
+        .site-header {
+            padding: 80px 0 40px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(var(--header-bg), rgba(44, 94, 76, 0.1));
+        }
+
+        .site-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: var(--forest-green);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--forest-purple);
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--forest-dark);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin-bottom: 10px;
+        }
+        
+        /* Additional styles specific to the tales page */
+        .tales-container {
+            padding: 40px 0;
+        }
+        
+        .tale-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .tale-card:before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid rgba(107, 68, 35, 0.1);
+            border-radius: 5px;
+            pointer-events: none;
+        }
+        
+        .tale-header {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .tale-header:before {
+            content: '✧';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 2rem;
+            color: var(--forest-purple);
+        }
+        
+        .tale-title {
+            font-size: 1.8rem;
+            color: var(--forest-green);
+            margin-bottom: 5px;
+        }
+        
+        .tale-subtitle {
+            font-style: italic;
+            color: var(--forest-brown);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .tale-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .tale-content p {
+            margin-bottom: 15px;
+        }
+        
+        .tale-image {
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tale-footer {
+            margin-top: 20px;
+            font-style: italic;
+            text-align: right;
+            color: var(--forest-brown);
+        }
+        
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+        
+        .page-nav a {
+            padding: 10px 20px;
+            background-color: var(--forest-green);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .page-nav a:hover {
+            background-color: var(--forest-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 991px) {
+            .site-header h1 {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .site-header {
+                padding: 60px 0 30px;
+            }
+            
+            .site-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .tale-card {
+                padding: 20px;
+            }
+            
+            .tale-header {
+                padding-left: 30px;
+            }
+            
+            .tale-title {
+                font-size: 1.5rem;
+            }
+            
+            .tale-content {
+                font-size: 1rem;
+            }
+            
+            .page-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" aria-label="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <header class="site-header">
+        <div class="container">
+            <h1 class="animate__animated animate__fadeIn">Guardian Tales</h1>
+            <h2 class="subtitle animate__animated animate__fadeIn animate__delay-1s">Stories of the Forest Guardian</h2>
+        </div>
+    </header>
+
+    <main class="container tales-container">
+        <div class="tale-card">
+            <div class="tale-header">
+                <h3 class="tale-title">The First Morning Watch</h3>
+                <div class="tale-subtitle">How the Guardian Found His Calling</div>
+            </div>
+            <div class="tale-content">
+                <p>The first morning that Mellington took his place at the edge of the forest, the world was washed in silver dew. He had chosen his spot with care – a small bench beneath an old oak tree with a view of both the garden's edge and the wild tangle beyond. In his backpack: a thermos of hot chocolate, a notebook bound in green leather, and a heart full of hopeful anticipation.</p>
+                
+                <p>He wasn't sure what drew him there so early, before the sun had fully risen, but something in his dreams had whispered that this was where he needed to be. The mist hung low over the grass, transforming the ordinary suburban yard into something magical and otherworldly.</p>
+                
+                <div class="text-center">
+                    <img src="images/WhatsApp Image 2025-04-10 at 18.25.49(2).jpeg" alt="Forest Guardian" class="tale-image img-fluid">
+                </div>
+                
+                <p>The first hour passed in silent meditation. Mellington sipped his chocolate, watching the light change from pearl to gold as the sun climbed higher. He had almost convinced himself that his vigil was foolish when the first movement caught his eye – a small nose twitching at the edge of the brambles.</p>
+                
+                <p>A bunny, no larger than a loaf of bread, with fur the color of cinnamon toast, hopped tentatively from the shelter of the undergrowth. It paused, alert to any threat, dark eyes gleaming with intelligence. Mellington held his breath, afraid the slightest movement would send the creature back into hiding.</p>
+                
+                <p>Instead, after a moment's consideration, the bunny continued its cautious journey into the open. It was joined, moments later, by a second bunny – smaller, with a fluff of white on its chest like a cotton ball.</p>
+                
+                <p>Mellington's heart swelled as he watched the pair nibble on clover, occasionally pausing to clean their ears or thump a back foot against the earth. There was something so innocent, so worthy of protection in their small forms and gentle movements.</p>
+                
+                <p>Without conscious thought, Mellington found himself opening his notebook. At the top of the page, in careful letters, he wrote: "First Bunny Sighting – Dawn Patrol."</p>
+                
+                <p>As the sun climbed higher and the bunnies eventually returned to their hidden homes in the brush, Mellington made a silent promise. This patch of earth, this small wilderness between human domain and true forest, would have a guardian. The small creatures who called it home would have a protector, a chronicler, a friend.</p>
+                
+                <p>And so it began – The Forest Guardian's watch, with a pair of bunnies and a heart full of wonder.</p>
+            </div>
+            <div class="tale-footer">
+                <p>From the Chronicles of Forest Guardian Mellington, First Year of the Watch</p>
+            </div>
+        </div>
+        
+        <div class="tale-card">
+            <div class="tale-header">
+                <h3 class="tale-title">The Purple Glitter Incident</h3>
+                <div class="tale-subtitle">How the Guardian Earned His Title</div>
+            </div>
+            <div class="tale-content">
+                <p>Few know the true origin of the title "Bearer of Purple Glitter." It was not, as some have suggested, chosen by Mellington himself. Rather, it was bestowed upon him following an incident in the early days of his guardianship that has since become legend among the woodland creatures.</p>
+                
+                <p>It was a crisp autumn afternoon when Mellington arrived at his post carrying a curious package. Inside was a gift from his niece – a homemade "Forest Guardian Kit" containing, among other things, a small bottle of purple glitter that was meant to "mark special magic spots in the forest."</p>
+                
+                <div class="text-center">
+                    <img src="images/WhatsApp Image 2025-04-10 at 18.25.48.jpeg" alt="Forest Guardian with Glitter" class="tale-image img-fluid">
+                </div>
+                
+                <p>The Guardian had smiled at the child's imagination, tucking the bottle into his pocket without much thought. His primary purpose that day was to check on Thistle, a particularly shy bunny who had appeared to have a slight limp the previous morning.</p>
+                
+                <p>As he settled in his usual spot, notebook in hand, the forest was unusually still. No bunnies appeared at the usual gathering spots, and even the birds seemed oddly silent. Concerned, Mellington ventured deeper into the brush than he normally would, following a narrow rabbit trail that wound between thornbushes and fallen logs.</p>
+                
+                <p>He found them in a small clearing – not just Thistle, but five bunnies huddled together, ears alert and bodies tense. Before them stood a neighborhood cat, its tail swishing slowly as it prepared to pounce.</p>
+                
+                <p>Without thinking, Mellington reached into his pocket for anything that might help. His fingers closed around the bottle of purple glitter. In one desperate move, he uncapped the bottle and threw its contents into the air between the predator and its intended prey.</p>
+                
+                <p>The effect was immediate and astonishing. A cloud of sparkling purple engulfed the clearing, catching the sunlight and transforming the space into a swirling galaxy of twinkling stars. The cat, startled by the sudden explosion of shimmering dust, yowled and retreated, shaking its head in confusion.</p>
+                
+                <p>When the glitter settled, Mellington found himself coated from head to toe in purple sparkles, and surrounded by cautiously curious bunnies. Thistle approached him first, twitching her nose at his glittering boots, then actually hopped onto his shoe in a display of trust that brought tears to the Guardian's eyes.</p>
+                
+                <p>From that day forward, Mellington was known among the forest creatures as "The Bearer of Purple Glitter" – a title of honor reflecting his willingness to look a bit foolish in the service of those under his protection.</p>
+                
+                <p>To this day, he keeps a small vial of purple glitter in his pocket. Just in case.</p>
+            </div>
+            <div class="tale-footer">
+                <p>As told by the Elderberry Bush, who saw the whole thing</p>
+            </div>
+        </div>
+        
+        <div class="tale-card">
+            <div class="tale-header">
+                <h3 class="tale-title">The Midnight Council</h3>
+                <div class="tale-subtitle">When the Guardian Received the Forest's Blessing</div>
+            </div>
+            <div class="tale-content">
+                <p>There are some things that Forest Guardian Mellington has never shared with another human soul. The events of the summer solstice night, three years into his guardianship, are chief among these sacred secrets.</p>
+                
+                <p>It had been an unusual day from the start. The bunnies had been particularly active, appearing in unprecedented numbers and watching Mellington with an intensity that felt significant. As twilight descended, rather than returning to their burrows, they had gathered in a loose circle at the edge of the garden, seemingly waiting.</p>
+                
+                <div class="text-center">
+                    <img src="images/WhatsApp Image 2025-04-10 at 17.29.22(1).jpeg" alt="Forest Guardian at Night" class="tale-image img-fluid">
+                </div>
+                
+                <p>Mellington, sensing something important was unfolding, remained at his post long past his usual departure time. As the first stars appeared in the darkening sky, a rustling in the underbrush announced new arrivals – a pair of foxes, moving with uncharacteristic gentleness, took positions at the edge of the gathering.</p>
+                
+                <p>More surprising still was the great horned owl that descended silently from an ancient maple tree, perching on a low branch without causing the usual alarm among the smaller creatures. One by one, representatives of the forest's inhabitants arrived – a family of deer stepping delicately through the trees, a raccoon family watching with curious eyes, even a shy hedgehog waddling importantly to the gathering.</p>
+                
+                <p>When the moon rose full and bright over the assembly, Thistle – now the eldest and most respected of the garden bunnies – hopped forward. In her mouth she carried something that glinted silver in the moonlight. Approaching Mellington without fear, she placed at his feet a small, perfect acorn cap, filled with what appeared to be dewdrops but which sparkled with an inner light no ordinary water could possess.</p>
+                
+                <p>Understanding without words that he was to pick up this offering, Mellington knelt and carefully lifted the tiny vessel. The assembled creatures watched in solemn silence as, following an instinct he couldn't explain, he used one finger to trace a symbol on his forehead with the luminescent liquid.</p>
+                
+                <p>The moment the last drop touched his skin, the world around him shifted. For a brief, breathtaking moment, Mellington could understand the language of the gathered beings – not as words, but as feelings, intentions, and ancient wisdom passing directly into his consciousness.</p>
+                
+                <p>They were thanking him. They were blessing him. They were formally recognizing what he had known in his heart since that first morning – that he was the Guardian of this place, this magical intersection of human world and wild realm.</p>
+                
+                <p>When the vision faded, the animals dispersed as quietly as they had arrived, returning to their homes in the darkness. Only Thistle remained, sitting on her haunches before him, her eyes reflecting the moonlight.</p>
+                
+                <p>"I understand now," Mellington whispered, his voice thick with emotion. "I will not fail you."</p>
+                
+                <p>The bunny twitched her nose once, then twice – a solemn acknowledgment – before turning and hopping away into the night.</p>
+            </div>
+            <div class="tale-footer">
+                <p>Recorded only in the Guardian's heart and in the memory of the Forest</p>
+            </div>
+        </div>
+        
+        <div class="page-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Back to Home</a>
+            <a href="oaths.html">Next: Oaths & Blessings <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>Created with love for the Guardian of Bunnies and Bearer of Purple Glitter</p>
+                <p><small>May your bunny spotting be plentiful and your glitter never fade</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle Functionality
+            const themeToggle = document.querySelector('.theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const html = document.documentElement;
+            
+            // Check if there's a saved theme preference
+            const savedTheme = localStorage.getItem('forestGuardianTheme');
+            if (savedTheme) {
+                html.setAttribute('data-theme', savedTheme);
+                if (savedTheme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                }
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                if (html.getAttribute('data-theme') === 'dark') {
+                    html.setAttribute('data-theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('forestGuardianTheme', 'light');
+                } else {
+                    html.setAttribute('data-theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('forestGuardianTheme', 'dark');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
