@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunny Watch Log - Forest Guardian Birthday Package</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Forest Guardian Package Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
+
+        :root {
+            --forest-green: #2c5e4c;
+            --forest-brown: #6b4423;
+            --forest-gold: #e0c068;
+            --forest-light: #d8e8d5;
+            --forest-dark: #1a2e24;
+            --forest-purple: #9370db;
+            --forest-purple-light: #b19cd9;
+            
+            --bg-color: var(--forest-light);
+            --text-color: var(--forest-dark);
+            --card-bg: white;
+            --header-bg: rgba(44, 94, 76, 0.2);
+            --pattern-color: rgba(44, 94, 76, 0.3);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2a2a2a;
+            --header-bg: rgba(44, 94, 76, 0.4);
+            --pattern-color: rgba(44, 94, 76, 0.15);
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Noto Serif', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            position: relative;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,10 L10,30 M70,10 L90,30 M30,90 L10,70 M70,90 L90,70" stroke="%232c5e4c" stroke-width="0.5" fill="none" stroke-opacity="0.3"/></svg>'),
+                         linear-gradient(to bottom, var(--bg-color), var(--bg-color));
+            background-attachment: fixed;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+            color: var(--forest-green);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: var(--forest-green);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header Styles */
+        .site-header {
+            padding: 80px 0 40px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(var(--header-bg), rgba(44, 94, 76, 0.1));
+        }
+
+        .site-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: var(--forest-green);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--forest-purple);
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--forest-dark);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin-bottom: 10px;
+        }
+        
+        /* Additional styles specific to the watchlog page */
+        .watchlog-container {
+            padding: 40px 0;
+        }
+        
+        .watchlog-intro {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+        }
+        
+        .watchlog-book {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            position: relative;
+        }
+        
+        .watchlog-book:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 30px;
+            background-color: var(--forest-green);
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .watchlog-page {
+            padding: 40px 40px 40px 60px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--forest-green);
+            padding-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            color: var(--forest-green);
+            margin-bottom: 5px;
+        }
+        
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--forest-brown);
+            font-style: italic;
+        }
+        
+        .guardian-info {
+            margin-bottom: 30px;
+        }
+        
+        .guardian-info label {
+            font-weight: bold;
+            color: var(--forest-green);
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .guardian-info .info-line {
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+            height: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .log-entry {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .log-entry h4 {
+            font-size: 1.3rem;
+            color: var(--forest-green);
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--forest-green);
+            padding-bottom: 10px;
+        }
+        
+        .log-field {
+            margin-bottom: 15px;
+        }
+        
+        .log-field label {
+            font-weight: bold;
+            color: var(--forest-brown);
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .log-field .field-line {
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+            height: 30px;
+        }
+        
+        .log-field .field-area {
+            display: block;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: 80px;
+            margin-top: 5px;
+        }
+        
+        .bunny-profile {
+            background-color: #f0f7f0;
+            border: 1px solid #d8e8d5;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .bunny-profile:before {
+            content: "✧";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--forest-purple);
+            font-size: 1.5rem;
+        }
+        
+        .bunny-profile h4 {
+            font-size: 1.3rem;
+            color: var(--forest-green);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .facts-section {
+            background-color: #f9f2e2;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .facts-section h4 {
+            font-size: 1.3rem;
+            color: var(--forest-brown);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .facts-content {
+            font-style: italic;
+            line-height: 1.6;
+        }
+        
+        .facts-lines {
+            width: 100%;
+            height: 200px;
+            background-image: linear-gradient(#ddd 1px, transparent 1px);
+            background-size: 100% 30px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .watchlog-cover {
+            text-align: center;
+            padding: 50px 30px;
+            background-color: var(--forest-light);
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .cover-title {
+            font-size: 2.5rem;
+            color: var(--forest-green);
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cover-subtitle {
+            font-size: 1.3rem;
+            color: var(--forest-brown);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .cover-image {
+            max-width: 200px;
+            margin: 20px auto;
+            border-radius: 10px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cover-info {
+            margin-top: 40px;
+            text-align: left;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .cover-info label {
+            font-weight: bold;
+            color: var(--forest-green);
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .cover-info .info-line {
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid var(--forest-brown);
+            height: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .watchlog-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .watchlog-btn {
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .watchlog-btn.print-btn {
+            background-color: var(--forest-green);
+            color: white;
+            border: none;
+        }
+        
+        .watchlog-btn.print-btn:hover {
+            background-color: var(--forest-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .watchlog-btn.download-btn {
+            background-color: var(--forest-brown);
+            color: white;
+            border: none;
+        }
+        
+        .watchlog-btn.download-btn:hover {
+            background-color: #7d5434;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+        
+        .page-nav a {
+            padding: 10px 20px;
+            background-color: var(--forest-green);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .page-nav a:hover {
+            background-color: var(--forest-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media print {
+            .theme-toggle, .site-header, .page-nav, .site-footer, .watchlog-buttons, .watchlog-intro {
+                display: none;
+            }
+            
+            .watchlog-book {
+                box-shadow: none;
+                margin: 0;
+                page-break-inside: avoid;
+            }
+            
+            .page-break {
+                page-break-before: always;
+            }
+            
+            body {
+                background: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .watchlog-page {
+                padding: 30px 20px 30px 50px;
+            }
+            
+            .cover-title {
+                font-size: 2rem;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .watchlog-book:before {
+                width: 20px;
+            }
+            
+            .watchlog-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .site-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" aria-label="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <header class="site-header">
+        <div class="container">
+            <h1 class="animate__animated animate__fadeIn">Bunny Watch Log</h1>
+            <h2 class="subtitle animate__animated animate__fadeIn animate__delay-1s">Official Guardian Field Journal</h2>
+        </div>
+    </header>
+
+    <main class="container watchlog-container">
+        <div class="watchlog-intro">
+            <p>This official Guardian's Watch Log is provided to record your bunny observations, track recurring visitors, and document the magical moments of your guardianship. Print this log for field use or enjoy it digitally.</p>
+            
+            <div class="watchlog-buttons">
+                <button class="watchlog-btn print-btn"><i class="fas fa-print"></i> Print Watch Log</button>
+                <button class="watchlog-btn download-btn"><i class="fas fa-download"></i> Download PDF</button>
+            </div>
+        </div>
+        
+        <div class="watchlog-book">
+            <!-- Cover Page -->
+            <div class="watchlog-page">
+                <div class="watchlog-cover">
+                    <h2 class="cover-title">The Official Bunny Watch Log</h2>
+                    <h3 class="cover-subtitle">of Forest Guardian Mellington</h3>
+                    
+                    <img src="images/WhatsApp Image 2025-04-10 at 17.29.22.jpeg" alt="Forest Guardian" class="cover-image">
+                    
+                    <div class="cover-info">
+                        <label>Date Started:</label>
+                        <div class="info-line"></div>
+                        
+                        <label>Guardian Signature:</label>
+                        <div class="info-line"></div>
+                        
+                        <label>Guardian Seal:</label>
+                        <div style="width: 100px; height: 100px; border: 1px dashed var(--forest-brown); border-radius: 50%; margin: 10px auto; display: flex; align-items: center; justify-content: center;">
+                            <span style="color: var(--forest-brown); font-style: italic; font-size: 0.8rem;">Place seal here</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instructions Page -->
+            <div class="watchlog-page page-break">
+                <div class="page-header">
+                    <h3 class="page-title">Guardian's Instructions</h3>
+                    <div class="page-subtitle">The Sacred Art of Bunny Observation</div>
+                </div>
+                
+                <div style="line-height: 1.7;">
+                    <p><strong>Dear Guardian,</strong></p>
+                    
+                    <p>This Watch Log is more than a mere journal—it is a chronicle of the magical relationship between observer and observed, guardian and guarded. Within these pages, you will document not just what you see, but the beginning of a deeper understanding between yourself and the forest realm.</p>
+                    
+                    <p><strong>How to Use Your Watch Log:</strong></p>
+                    
+                    <ol>
+                        <li><strong>Be Patient:</strong> The best observations come to those who wait. Find a comfortable spot, settle in, and allow the forest to forget you are there.</li>
+                        <li><strong>Record Promptly:</strong> When a bunny graces you with its presence, note the details as soon as you can without disturbing the moment.</li>
+                        <li><strong>Trust Your Instincts:</strong> If you sense a bunny has a name or personality, you are probably right. Guardians develop special insights.</li>
+                        <li><strong>Look for Patterns:</strong> Recurring visitors often have routines. Note the time of day, weather conditions, and behaviors to understand these patterns.</li>
+                        <li><strong>Respect Privacy:</strong> Observe from a distance that feels respectful. Never chase or disturb a bunny for a better view.</li>
+                    </ol>
+                    
+                    <p><strong>The Forest Guardian's Code of Ethics:</strong></p>
+                    
+                    <ul>
+                        <li>We do not chase. We only observe.</li>
+                        <li>We always honor the bunny's choice to approach or retreat.</li>
+                        <li>We protect the forest habitat with vigilance and care.</li>
+                        <li>We share our knowledge only with those who will respect it.</li>
+                        <li>We recognize that even in watching, we become part of the forest's story.</li>
+                    </ul>
+                    
+                    <p>May your watch be peaceful and your observations plentiful.</p>
+                    
+                    <p style="text-align: right; font-style: italic; margin-top: 20px;">— The Elder Guardians Council</p>
+                </div>
+            </div>
+            
+            <!-- Bunny Spotting Entry Pages -->
+            <div class="watchlog-page page-break">
+                <div class="page-header">
+                    <h3 class="page-title">Bunny Spotting Log</h3>
+                    <div class="page-subtitle">Record of Sacred Encounters</div>
+                </div>
+                
+                <div class="log-entry">
+                    <h4>Bunny Sighting #1</h4>
+                    
+                    <div class="log-field">
+                        <label>Date & Time:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Number of Bunnies Seen:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Location in Yard:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Bunny Behavior:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Weather Conditions:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Mood or Thoughts:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Special Notes:</label>
+                        <div class="field-area"></div>
+                    </div>
+                </div>
+                
+                <div class="log-entry">
+                    <h4>Bunny Sighting #2</h4>
+                    
+                    <div class="log-field">
+                        <label>Date & Time:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Number of Bunnies Seen:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Location in Yard:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Bunny Behavior:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Weather Conditions:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Mood or Thoughts:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Special Notes:</label>
+                        <div class="field-area"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bunny Profile Page -->
+            <div class="watchlog-page page-break">
+                <div class="page-header">
+                    <h3 class="page-title">Bunny Profiles</h3>
+                    <div class="page-subtitle">Recurring Characters in Your Guardian Story</div>
+                </div>
+                
+                <div class="bunny-profile">
+                    <h4>Bunny Profile #1</h4>
+                    
+                    <div class="log-field">
+                        <label>Name:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Fur Color / Markings:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Nickname:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Suspected Role:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>First Seen On:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Distinguishing Behaviors:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Notes:</label>
+                        <div class="field-area"></div>
+                    </div>
+                </div>
+                
+                <div class="bunny-profile">
+                    <h4>Bunny Profile #2</h4>
+                    
+                    <div class="log-field">
+                        <label>Name:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Fur Color / Markings:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Nickname:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Suspected Role:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>First Seen On:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Distinguishing Behaviors:</label>
+                        <div class="field-line"></div>
+                    </div>
+                    
+                    <div class="log-field">
+                        <label>Notes:</label>
+                        <div class="field-area"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bunny Facts and Lore Page -->
+            <div class="watchlog-page page-break">
+                <div class="page-header">
+                    <h3 class="page-title">Bunny Wisdom & Lore</h3>
+                    <div class="page-subtitle">Guardian's Observations and Insights</div>
+                </div>
+                
+                <div class="facts-section">
+                    <h4>Questions to Ponder</h4>
+                    
+                    <div class="facts-content">
+                        <p>Use this space to record your deepest wonderings about your bunny friends and the guardian's role in their world. Some questions to start your reflection:</p>
+                        
+                        <ul>
+                            <li>Do bunnies dream? If so, what fills their slumbering thoughts?</li>
+                            <li>What signs indicate a bunny has come to trust you?</li>
+                            <li>How do the seasons change bunny behavior in your garden?</li>
+                            <li>What secret communications might happen between different forest creatures?</li>
+                            <li>How can you distinguish between different bunny personalities?</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="facts-section mt-4">
+                    <h4>Guardian's Notes & Observations</h4>
+                    
+                    <div class="facts-lines"></div>
+                </div>
+                
+                <div class="facts-section mt-4">
+                    <h4>Tips from the Guardian</h4>
+                    
+                    <div class="facts-content">
+                        <p>How to Win Over a Bunny's Trust:</p>
+                        <ol>
+                            <li>Move slowly and predictably</li>
+                            <li>Speak in soft, gentle tones</li>
+                            <li>Visit regularly at the same times</li>
+                            <li>Respect their space</li>
+                            <li>Patience above all else</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-nav">
+            <a href="oaths.html"><i class="fas fa-arrow-left"></i> Previous: Oaths & Blessings</a>
+            <a href="index.html">Return to Home <i class="fas fa-home"></i></a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>Created with love for the Guardian of Bunnies and Bearer of Purple Glitter</p>
+                <p><small>May your bunny spotting be plentiful and your glitter never fade</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle Functionality
+            const themeToggle = document.querySelector('.theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const html = document.documentElement;
+            
+            // Check if there's a saved theme preference
+            const savedTheme = localStorage.getItem('forestGuardianTheme');
+            if (savedTheme) {
+                html.setAttribute('data-theme', savedTheme);
+                if (savedTheme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                }
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                if (html.getAttribute('data-theme') === 'dark') {
+                    html.setAttribute('data-theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('forestGuardianTheme', 'light');
+                } else {
+                    html.setAttribute('data-theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('forestGuardianTheme', 'dark');
+                }
+            });
+            
+            // Print and Download functionality
+            document.querySelector('.print-btn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            document.querySelector('.download-btn').addEventListener('click', function() {
+                // This would typically generate a PDF, but for GitHub hosting we'll show an alert
+                alert('For GitHub-hosted pages: Right-click and select "Print", then choose "Save as PDF" in your browser print dialog to save this Watch Log as a PDF file.');
+            });
+        });
+    </script>
+</body>
+</html>
