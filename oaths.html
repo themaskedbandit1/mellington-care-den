@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oaths & Blessings - Forest Guardian Birthday Package</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Forest Guardian Package Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
+
+        :root {
+            --forest-green: #2c5e4c;
+            --forest-brown: #6b4423;
+            --forest-gold: #e0c068;
+            --forest-light: #d8e8d5;
+            --forest-dark: #1a2e24;
+            --forest-purple: #9370db;
+            --forest-purple-light: #b19cd9;
+            
+            --bg-color: var(--forest-light);
+            --text-color: var(--forest-dark);
+            --card-bg: white;
+            --header-bg: rgba(44, 94, 76, 0.2);
+            --pattern-color: rgba(44, 94, 76, 0.3);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2a2a2a;
+            --header-bg: rgba(44, 94, 76, 0.4);
+            --pattern-color: rgba(44, 94, 76, 0.15);
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Noto Serif', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            position: relative;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M30,10 L10,30 M70,10 L90,30 M30,90 L10,70 M70,90 L90,70" stroke="%232c5e4c" stroke-width="0.5" fill="none" stroke-opacity="0.3"/></svg>'),
+                         linear-gradient(to bottom, var(--bg-color), var(--bg-color));
+            background-attachment: fixed;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+            color: var(--forest-green);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: var(--forest-green);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header Styles */
+        .site-header {
+            padding: 80px 0 40px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(var(--header-bg), rgba(44, 94, 76, 0.1));
+        }
+
+        .site-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: var(--forest-green);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--forest-purple);
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        /* Footer */
+        .site-footer {
+            background-color: var(--forest-dark);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin-bottom: 10px;
+        }
+        
+        /* Additional styles specific to the oaths page */
+        .oaths-container {
+            padding: 40px 0;
+        }
+        
+        .scroll-container {
+            background-color: #f9f2e2;
+            border-radius: 10px;
+            padding: 40px 30px;
+            margin-bottom: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .scroll-container:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 20px;
+            right: 20px;
+            height: 20px;
+            background-color: var(--forest-brown);
+            border-radius: 0 0 50% 50%;
+            opacity: 0.2;
+        }
+        
+        .scroll-container:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 20px;
+            background-color: var(--forest-brown);
+            border-radius: 50% 50% 0 0;
+            opacity: 0.2;
+        }
+        
+        .scroll-title {
+            text-align: center;
+            font-family: 'Tangerine', cursive;
+            font-size: 3rem;
+            color: var(--forest-brown);
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scroll-content {
+            font-family: 'Lora', serif;
+            color: var(--forest-dark);
+            line-height: 1.8;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .scroll-content p {
+            margin-bottom: 15px;
+        }
+        
+        .scroll-content .signature-line {
+            display: block;
+            width: 200px;
+            height: 1px;
+            background-color: var(--forest-brown);
+            margin: 30px auto 10px;
+        }
+        
+        .scroll-content .signature {
+            font-family: 'Tangerine', cursive;
+            font-size: 2rem;
+            text-align: center;
+            color: var(--forest-brown);
+        }
+        
+        .scroll-content .date-line {
+            margin-top: 20px;
+            text-align: right;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        
+        .license-container {
+            background-color: var(--card-bg);
+            border: 10px solid var(--forest-green);
+            border-radius: 10px;
+            padding: 40px 30px;
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .license-container:before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--forest-gold);
+            pointer-events: none;
+            border-radius: 5px;
+        }
+        
+        .license-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--forest-green);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .license-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--forest-brown);
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .license-content {
+            font-family: 'Lora', serif;
+            line-height: 1.6;
+        }
+        
+        .license-seal {
+            width: 120px;
+            height: 120px;
+            background-color: var(--forest-gold);
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .license-seal:before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--forest-dark);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+        
+        .license-seal-inner {
+            font-family: 'Tangerine', cursive;
+            font-size: 2rem;
+            color: var(--forest-dark);
+            transform: rotate(-10deg);
+        }
+        
+        .print-button {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 25px;
+            background-color: var(--forest-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .print-button:hover {
+            background-color: var(--forest-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+        
+        .page-nav a {
+            padding: 10px 20px;
+            background-color: var(--forest-green);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .page-nav a:hover {
+            background-color: var(--forest-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        @media print {
+            .theme-toggle, .site-header, .page-nav, .site-footer, .print-button {
+                display: none;
+            }
+            
+            .scroll-container, .license-container {
+                box-shadow: none;
+                margin: 0;
+                page-break-inside: avoid;
+            }
+            
+            body {
+                background: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .scroll-title, .license-title {
+                font-size: 2rem;
+            }
+            
+            .scroll-content, .license-content {
+                font-size: 1rem;
+            }
+            
+            .scroll-container, .license-container {
+                padding: 30px 20px;
+            }
+            
+            .site-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" aria-label="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <header class="site-header">
+        <div class="container">
+            <h1 class="animate__animated animate__fadeIn">Oaths & Blessings</h1>
+            <h2 class="subtitle animate__animated animate__fadeIn animate__delay-1s">Sacred Texts of the Forest Guardian</h2>
+        </div>
+    </header>
+
+    <main class="container oaths-container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <p>These scrolls and documents contain the sacred words that guide and empower the Forest Guardian. They may be printed and displayed as reminders of your noble duty.</p>
+                <button class="print-button"><i class="fas fa-print"></i> Print All Documents</button>
+            </div>
+        </div>
+        
+        <div class="scroll-container">
+            <h3 class="scroll-title">The Forest Guardian's Oath</h3>
+            <div class="scroll-content">
+                <p>I, Guardian of this sacred space between wild and tame, do solemnly swear:</p>
+                
+                <p>To watch with gentle eyes and listen with patient ears,</p>
+                <p>To move with care upon the earth that holds all life,</p>
+                <p>To protect those smaller and more vulnerable than myself,</p>
+                <p>To honor the wisdom of nature in all its forms.</p>
+                
+                <p>I promise to remember:</p>
+                <p>That each creature has a purpose and a place,</p>
+                <p>That patience reveals what haste conceals,</p>
+                <p>That the smallest beings often carry the greatest magic.</p>
+                
+                <p>I pledge:</p>
+                <p>To learn the language of rustling leaves and twitching whiskers,</p>
+                <p>To record what I observe with honesty and wonder,</p>
+                <p>To share the beauty I witness without disturbing its delicate balance.</p>
+                
+                <p>As Guardian, I understand:</p>
+                <p>I am not master but caretaker,</p>
+                <p>Not conqueror but companion,</p>
+                <p>Not owner but humble observer of miracles unfolding.</p>
+                
+                <p>This oath I take freely and with full heart,</p>
+                <p>In service to the bunnies and all forest beings,</p>
+                <p>From this day forward.</p>
+                
+                <div class="signature-line"></div>
+                <div class="signature">Forest Guardian Mellington</div>
+                <div class="date-line">Under the witness of moon and stars</div>
+            </div>
+        </div>
+        
+        <div class="scroll-container">
+            <h3 class="scroll-title">The Guardian's Blessing</h3>
+            <div class="scroll-content">
+                <p>May the forest paths welcome your footsteps,</p>
+                <p>May the wild things recognize your gentle heart,</p>
+                <p>May your eyes be keen to beauty often overlooked,</p>
+                <p>And your ears attuned to the whispers of green growing things.</p>
+                
+                <p>When morning dew gathers on spider silk,</p>
+                <p>May you witness this small miracle.</p>
+                <p>When twilight brings the day's last birdsong,</p>
+                <p>May you be present to receive this gift.</p>
+                
+                <p>Let your hands touch the earth with reverence,</p>
+                <p>Let your voice be soft among the trees,</p>
+                <p>Let your heart beat in rhythm with the seasons' dance,</p>
+                <p>Let your spirit find home in the in-between places.</p>
+                
+                <p>Blessed be the Guardian who stands watch,</p>
+                <p>Who protects without possessing,</p>
+                <p>Who observes without interfering,</p>
+                <p>Who loves without limiting.</p>
+                
+                <p>May your purple glitter shine in moments of need,</p>
+                <p>May your bunny friends multiply and thrive,</p>
+                <p>May your guardian heart find joy in each season,</p>
+                <p>And peace in the knowledge that you belong to this place,</p>
+                <p>As surely as it belongs to you.</p>
+                
+                <div class="signature-line"></div>
+                <div class="signature">The Forest Spirits</div>
+                <div class="date-line">Whispered on a midsummer breeze</div>
+            </div>
+        </div>
+        
+        <div class="license-container">
+            <h3 class="license-title">Forest Guardian License</h3>
+            <h4 class="license-subtitle">Official Certificate of Guardianship</h4>
+            
+            <div class="license-content">
+                <p class="text-center">This certifies that</p>
+                <p class="text-center"><strong>MELLINGTON</strong></p>
+                <p class="text-center">has been officially recognized and appointed as</p>
+                <p class="text-center"><strong>GUARDIAN OF BUNNIES AND BEARER OF PURPLE GLITTER</strong></p>
+                <p class="text-center">with all rights, responsibilities, and privileges thereof.</p>
+                
+                <p>The bearer of this license is authorized to:</p>
+                <ul>
+                    <li>Observe and document bunny activities within the designated forest area</li>
+                    <li>Maintain and protect natural habitats conducive to bunny welfare</li>
+                    <li>Deploy purple glitter in emergency situations (use sparingly)</li>
+                    <li>Interpret bunny communications for the uninitiated</li>
+                    <li>Bestow honorary bunny names upon worthy forest visitors</li>
+                    <li>Access the secret Bunny Archives (location disclosed at midnight ceremonies only)</li>
+                </ul>
+                
+                <p>This license is granted in recognition of demonstrated patience, compassion, observational skills, and a proven ability to remain perfectly still while bunnies are present.</p>
+                
+                <div class="license-seal">
+                    <div class="license-seal-inner">Approved</div>
+                </div>
+                
+                <p class="text-center">License remains valid as long as the Guardian's heart stays true to the forest's needs.</p>
+                <p class="text-center"><small>This license cannot be transferred, duplicated, or used to avoid paying taxes.</small></p>
+            </div>
+        </div>
+        
+        <div class="text-center mb-5">
+            <img src="images/WhatsApp Image 2025-04-10 at 17.24.59(3).jpeg" alt="Forest Guardian License" class="img-fluid rounded" style="max-width: 400px;">
+        </div>
+        
+        <div class="page-nav">
+            <a href="tales.html"><i class="fas fa-arrow-left"></i> Previous: Guardian Tales</a>
+            <a href="watchlog.html">Next: Bunny Watch Log <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>Created with love for the Guardian of Bunnies and Bearer of Purple Glitter</p>
+                <p><small>May your bunny spotting be plentiful and your glitter never fade</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme Toggle Functionality
+            const themeToggle = document.querySelector('.theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            const html = document.documentElement;
+            
+            // Check if there's a saved theme preference
+            const savedTheme = localStorage.getItem('forestGuardianTheme');
+            if (savedTheme) {
+                html.setAttribute('data-theme', savedTheme);
+                if (savedTheme === 'dark') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                }
+            }
+            
+            themeToggle.addEventListener('click', function() {
+                if (html.getAttribute('data-theme') === 'dark') {
+                    html.setAttribute('data-theme', 'light');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                    localStorage.setItem('forestGuardianTheme', 'light');
+                } else {
+                    html.setAttribute('data-theme', 'dark');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                    localStorage.setItem('forestGuardianTheme', 'dark');
+                }
+            });
+            
+            // Print button functionality
+            document.querySelector('.print-button').addEventListener('click', function() {
+                window.print();
+            });
+        });
+    </script>
+</body>
+</html>
