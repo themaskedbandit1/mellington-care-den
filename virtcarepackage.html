@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Virtual Care Package</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* Base styles */
     :root {
@@ -13,8 +14,23 @@
       --background: #FFFBF8;
       --text: #3D405B;
       --accent: #FFDDD2;
+      --card-bg: white;
+      --prompt-bg: #FFEEE7;
       --font-heading: 'Playfair Display', serif;
       --font-sans: 'Poppins', sans-serif;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+      --primary: #E29578;
+      --secondary: #A57456;
+      --background: #222831;
+      --text: #E8E8E8;
+      --accent: #393E46;
+      --card-bg: #2C3440;
+      --prompt-bg: #393E46;
+      --shadow: rgba(0, 0, 0, 0.3);
     }
 
     * {
@@ -32,11 +48,13 @@
       background-color: var(--background);
       color: var(--text);
       line-height: 1.5;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     h1, h2, h3, h4, h5, h6 {
       font-family: var(--font-heading);
       color: var(--primary);
+      transition: color 0.3s ease;
     }
 
     .container {
@@ -59,10 +77,10 @@
 
     header.scrolled {
       background-color: var(--primary);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px var(--shadow);
     }
 
-    header.scrolled a {
+    header.scrolled a, header.scrolled .theme-toggle {
       color: white;
     }
 
@@ -112,15 +130,15 @@
       top: 4rem;
       left: 0;
       right: 0;
-      background-color: white;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: var(--card-bg);
+      box-shadow: 0 4px 6px var(--shadow);
       overflow: hidden;
       max-height: 0;
       transition: max-height 0.3s ease;
     }
 
     .mobile-menu.open {
-      max-height: 300px;
+      max-height: 500px;
     }
 
     .mobile-menu a {
@@ -133,6 +151,23 @@
     }
 
     .mobile-menu a:hover, .mobile-menu a.active {
+      color: var(--secondary);
+    }
+
+    /* Theme toggle */
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--primary);
+      margin-left: 1rem;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .theme-toggle:hover {
       color: var(--secondary);
     }
 
@@ -153,24 +188,25 @@
     }
 
     section p {
-      color: #6B705C;
+      color: var(--text);
       margin-bottom: 2rem;
+      opacity: 0.8;
     }
 
     /* Card styles */
     .card {
-      background-color: white;
+      background-color: var(--card-bg);
       border-radius: 0.75rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px var(--shadow);
       border: 1px solid var(--accent);
       overflow: hidden;
       margin-bottom: 1.5rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     }
 
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 15px var(--shadow);
     }
 
     .card-header {
@@ -188,7 +224,8 @@
 
     .card-description {
       font-size: 0.875rem;
-      color: #6B705C;
+      color: var(--text);
+      opacity: 0.8;
       padding: 0 1.5rem 1.5rem;
     }
 
@@ -201,7 +238,7 @@
     }
 
     .card-content.open {
-      max-height: 1000px;
+      max-height: 2000px;
       opacity: 1;
     }
 
@@ -211,10 +248,11 @@
 
     /* Journal prompt styles */
     .prompt-card {
-      background-color: #FFEEE7;
+      background-color: var(--prompt-bg);
       border-radius: 0.5rem;
       padding: 1rem;
       margin-bottom: 1rem;
+      transition: background-color 0.3s ease;
     }
 
     /* Food tabs styles */
@@ -233,14 +271,17 @@
     .tab {
       padding: 0.5rem 1rem;
       font-weight: 500;
-      color: #6B705C;
+      color: var(--text);
+      opacity: 0.7;
       cursor: pointer;
       border-bottom: 2px solid transparent;
+      transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     }
 
     .tab.active {
       color: var(--primary);
       border-bottom-color: var(--primary);
+      opacity: 1;
     }
 
     .tab-content {
@@ -264,10 +305,11 @@
     }
 
     .recipe {
-      background-color: #FFEEE7;
+      background-color: var(--prompt-bg);
       border-radius: 0.5rem;
       padding: 1.25rem;
       margin-top: 1.5rem;
+      transition: background-color 0.3s ease;
     }
 
     .recipe h4 {
@@ -277,7 +319,8 @@
 
     .recipe-meta {
       font-size: 0.875rem;
-      color: #6B705C;
+      color: var(--text);
+      opacity: 0.8;
       margin-bottom: 1rem;
     }
 
@@ -287,19 +330,21 @@
 
     .recipe-section h5 {
       font-weight: 500;
-      color: #3D405B;
+      color: var(--text);
       margin-bottom: 0.5rem;
     }
 
     .recipe-section ul, .recipe-section ol {
       margin-left: 1.25rem;
-      color: #6B705C;
+      color: var(--text);
+      opacity: 0.8;
     }
 
     .recipe-notes {
       font-style: italic;
       font-size: 0.875rem;
-      color: #6B705C;
+      color: var(--text);
+      opacity: 0.8;
       margin-top: 0.75rem;
     }
 
@@ -309,10 +354,11 @@
     }
 
     .au-item {
-      background-color: #FFEEE7;
+      background-color: var(--prompt-bg);
       border-radius: 0.5rem;
       overflow: hidden;
       margin-bottom: 1rem;
+      transition: background-color 0.3s ease;
     }
 
     .au-trigger {
@@ -336,11 +382,147 @@
       max-height: 2000px;
     }
 
+    /* Media grid */
+    .media-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .media-card {
+      background-color: var(--card-bg);
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px var(--shadow);
+      padding: 1.25rem;
+      border: 1px solid var(--accent);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .media-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px var(--shadow);
+    }
+
+    .media-card h4 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: var(--primary);
+    }
+
+    .media-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .media-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .media-list::-webkit-scrollbar-track {
+      background: var(--background);
+      border-radius: 10px;
+    }
+
+    .media-list::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    .media-item {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .media-item:before {
+      content: "•";
+      color: var(--secondary);
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .media-year {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-left: 0.25rem;
+    }
+
+    /* Resources section */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .resource-card {
+      background-color: var(--card-bg);
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px var(--shadow);
+      padding: 1.25rem;
+      border: 1px solid var(--accent);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px var(--shadow);
+    }
+
+    .resource-card h4 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: var(--primary);
+    }
+
+    .resource-card p {
+      margin-bottom: 1rem;
+    }
+
+    .resource-link {
+      display: inline-block;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      margin-top: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .resource-link:hover {
+      color: var(--secondary);
+      text-decoration: underline;
+    }
+
+    .resource-link i {
+      margin-left: 0.25rem;
+    }
+
+    /* Button styles */
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+    }
+
     /* Footer styles */
     footer {
       background-color: var(--primary);
       color: white;
       padding: 2rem 0;
+      transition: background-color 0.3s ease;
     }
 
     .footer-content {
@@ -361,12 +543,12 @@
     }
 
     .footer-logo p {
-      color: #FFEEE7;
+      color: rgba(255, 255, 255, 0.8);
       font-size: 0.875rem;
     }
 
     .footer-text p {
-      color: #FFEEE7;
+      color: rgba(255, 255, 255, 0.8);
       font-size: 0.875rem;
       text-align: center;
       margin-bottom: 0.25rem;
@@ -389,7 +571,7 @@
         display: none;
       }
 
-      .grid {
+      .grid, .media-grid, .resources-grid {
         grid-template-columns: repeat(2, 1fr);
       }
 
@@ -410,6 +592,10 @@
       .grid {
         grid-template-columns: repeat(3, 1fr);
       }
+
+      .media-grid, .resources-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     /* Utility classes */
@@ -419,6 +605,27 @@
 
     .chevron-icon.open {
       transform: rotate(180deg);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .mb-8 {
+      margin-bottom: 2rem;
+    }
+
+    .animated {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -432,8 +639,18 @@
           <a href="#journal" class="nav-link">Journal Prompts</a>
           <a href="#food" class="nav-link">Comfort Food</a>
           <a href="#affirmations" class="nav-link">Affirmations</a>
+          <a href="#media" class="nav-link">Comfort Media</a>
+          <a href="#resources" class="nav-link">Resources</a>
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+          </button>
         </div>
-        <button class="menu-button" id="menu-toggle">☰</button>
+        <div style="display: flex; align-items: center;">
+          <button id="mobile-theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="menu-button" id="menu-toggle">☰</button>
+        </div>
       </nav>
     </div>
     <div class="mobile-menu" id="mobile-menu">
@@ -441,6 +658,8 @@
       <a href="#journal" class="mobile-link">Journal Prompts</a>
       <a href="#food" class="mobile-link">Comfort Food</a>
       <a href="#affirmations" class="mobile-link">Affirmations</a>
+      <a href="#media" class="mobile-link">Comfort Media</a>
+      <a href="#resources" class="mobile-link">Resources</a>
     </div>
   </header>
 
@@ -480,6 +699,50 @@
       <h2>Affirmations & Writings</h2>
       <p>Heartfelt words to remind you of what's true and beautiful.</p>
       <div id="affirmations-content"></div>
+    </section>
+
+    <section id="media">
+      <h2>Comfort Media</h2>
+      <p>A curated list of movies, TV shows, and content creators to bring you comfort.</p>
+      <div class="media-grid">
+        <div class="media-card">
+          <h4>Comfort Movies</h4>
+          <div class="media-list" id="movie-list"></div>
+        </div>
+        <div class="media-card">
+          <h4>TV Shows</h4>
+          <div class="media-list" id="tv-list"></div>
+        </div>
+        <div class="media-card">
+          <h4>YouTube Channels</h4>
+          <div class="media-list" id="youtube-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <h2>Helpful Resources</h2>
+      <p>Additional resources to support your well-being.</p>
+      <div class="resources-grid">
+        <div class="resource-card animated">
+          <h4>Digital Hugs</h4>
+          <p>Sometimes we all need a virtual embrace. Click below to access a collection of comforting hug gifs.</p>
+          <a href="https://giphy.com/explore/virtual-hug" class="resource-link" target="_blank">Find a digital hug <i class="fas fa-external-link-alt"></i></a>
+        </div>
+        <div class="resource-card animated">
+          <h4>Gentle Reminders</h4>
+          <div class="prompt-card">
+            <p><i class="fas fa-lungs"></i> Breathe deeply</p>
+            <p><i class="fas fa-glass-water"></i> Drink some water</p>
+            <p><i class="fas fa-heart"></i> You matter, exactly as you are</p>
+          </div>
+        </div>
+        <div class="resource-card animated">
+          <h4>Custom Coloring Pages</h4>
+          <p>Creative expression can be therapeutic. Coloring pages will be added here soon.</p>
+          <p class="text-center"><i class="fas fa-palette" style="font-size: 2rem; color: var(--primary);"></i></p>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -703,7 +966,7 @@
           },
           {
             title: "Fairy Husband Aaron",
-            content: "Aaron wakes up before the sun, not because he has to, but because he likes watching the morning dew bead on the petals of the wildflowers you planted together.\n\nHe brews your tea before you even ask, using herbs he dried himself—chamomile, lemon balm, a pinch of sparkleleaf for sweet dreams. He gently coaxes you awake, pressing a kiss to your cheek like it's the most sacred thing in the world. \"Come on, sleepy fairy. I made your favorite toast.\"\n\nHe spends his days fixing old things—jars with cracks, broken garden gates, your mood when it dips below baseline. He's the kind of fae who believes a well-mended item has more magic than a brand-new one. You swear he can repair your heart with a soldering iron and a quiet hug.\n\nSometimes, when you're tired, he picks you up bridal-style and plops you into the warm moss bed inside your shared mushroom-shaped home. \"Rest now,\" he whispers, brushing your hair off your face. \"You don't need to do everything today. Let me take care of you.\"\n\nEvery full moon he leaves tiny handmade trinkets on your pillow. He pretends it's the \"forest spirits,\" but you saw him giggling while tying a ribbon around that little carved fox. He'll never admit it.\n\nHe smells like petrichor, old books, and vanilla resin. He tells the bees your secrets. They never tell.\n\nHe's got glitter in his beard. Always. You stopped asking why.\n\nHe lives in a treehouse that runs on solar energy and good vibes. Leafy, green wires everywhere. Half-finished sculpted dragon heads. A pink mug that says \"#1 DADDY\" next to an unfinished painting of you riding a unicorn.\n\nYou: \"Where's the kitchen scissors?\"\nAaron: \"Check the moss basket next to the luminescent mushrooms, under the fake fossil excavation box I made for your birthday.\"\n…And it is there.\n\nHe infodumps hard. While braiding your hair. While rubbing your back. While naked.\n\"I just think it's interesting how bunnies can't vomit and how that impacts their digestion—oh wait, let me show you a diagram I drew.\"\n\nHe's the kind of husband who weaves you a custom garland crown with your favourite flowers and puts it on your head when you're sad. \"You're not allowed to cry unless it's sparkly tears.\"\n\nWhen you think that you just can't love him more, he'll grab your waist, lean close, and go: \"You're the best kind of chaos. I'd burn my wings for you.\"\nYou melt. And then he trips over a vine.\n\nHe once fought a raccoon to defend the glitter and kuromi stickers stash.\nHe named the raccoon \"Trevor.\" They're friends now. Obviously.\n\nHe's lived for centuries, yet still gets shy when you compliment his cheekbones. He's gentle, affectionate, endlessly patient. The type of person to stop cars to let snails cross. Will rub your feet while explaining the history of the printing press.\nHe kisses your nose and calls it \"a sacred act.\"\nHe's my favorite religion."
+            content: "Aaron wakes up before the sun, not because he has to, but because he likes watching the morning dew bead on the petals of the wildflowers you planted together.\n\nHe brews your tea before you even ask, using herbs he dried himself—chamomile, lemon balm, a pinch of sparkleleaf for sweet dreams. He gently coaxes you awake, pressing a kiss to your cheek like it's the most sacred thing in the world. \"Come on, sleepy fairy. I made your favorite toast.\"\n\nHe spends his days fixing old things—jars with cracks, broken garden gates, your mood when it dips below baseline. He's the kind of fae who believes has more magic than a brand-new one. You swear he can repair your heart with a soldering iron and a quiet hug.\n\nSometimes, when you're tired, he picks you up bridal-style and plops you into the warm moss bed inside your shared mushroom-shaped home. \"Rest now,\" he whispers, brushing your hair off your face. \"You don't need to do everything today. Let me take care of you.\"\n\nEvery full moon he leaves tiny handmade trinkets on your pillow. He pretends it's the \"forest spirits,\" but you saw him giggling while tying a ribbon around that little carved fox. He'll never admit it.\n\nHe smells like petrichor, old books, and vanilla resin. He tells the bees your secrets. They never tell.\n\nHe's got glitter in his beard. Always. You stopped asking why.\n\nHe lives in a treehouse that runs on solar energy and good vibes. Leafy, green wires everywhere. Half-finished sculpted dragon heads. A pink mug that says \"#1 DADDY\" next to an unfinished painting of you riding a unicorn.\n\nYou: \"Where's the kitchen scissors?\"\nAaron: \"Check the moss basket next to the luminescent mushrooms, under the fake fossil excavation box I made for your birthday.\"\n…And it is there.\n\nHe infodumps hard. While braiding your hair. While rubbing your back. While naked.\n\"I just think it's interesting how bunnies can't vomit and how that impacts their digestion—oh wait, let me show you a diagram I drew.\"\n\nHe's the kind of husband who weaves you a custom garland crown with your favourite flowers and puts it on your head when you're sad. \"You're not allowed to cry unless it's sparkly tears.\"\n\nWhen you think that you just can't love him more, he'll grab your waist, lean close, and go: \"You're the best kind of chaos. I'd burn my wings for you.\"\nYou melt. And then he trips over a vine.\n\nHe once fought a raccoon to defend the glitter and kuromi stickers stash.\nHe named the raccoon \"Trevor.\" They're friends now. Obviously.\n\nHe's lived for centuries, yet still gets shy when you compliment his cheekbones. He's gentle, affectionate, endlessly patient. The type of person to stop cars to let snails cross. Will rub your feet while explaining the history of the printing press.\nHe kisses your nose and calls it \"a sacred act.\"\nHe's my favorite religion."
           },
           {
             title: "Magical Aaron",
@@ -712,6 +975,80 @@
         ]
       }
     ];
+
+    // Media and resources data
+    const comfortMedia = {
+      movies: [
+        { title: "The Intern", year: "2015" },
+        { title: "The Sound of Music", year: "1965" },
+        { title: "Harry Potter", year: "2001-2011" },
+        { title: "Forest Gump", year: "1994" },
+        { title: "The Pursuit of Happiness", year: "2006" },
+        { title: "How to Lose a Guy in 10 Days", year: "2003" },
+        { title: "Big", year: "1988" },
+        { title: "The Invisible Man", year: "2020" },
+        { title: "She's the Man", year: "2006" },
+        { title: "Hitch", year: "2005" },
+        { title: "Men in Black", year: "1997" },
+        { title: "Rush Hour", year: "1998" },
+        { title: "Kung Fu Hustle", year: "2004" },
+        { title: "Crouching Tiger, Hidden Dragon", year: "2000" },
+        { title: "Along with the Gods", year: "2017" },
+        { title: "Real Steel", year: "2011" },
+        { title: "I, Robot", year: "2004" },
+        { title: "The Terminator", year: "1984" },
+        { title: "Maze Runner", year: "2014" },
+        { title: "Guardians of the Galaxy", year: "2014" },
+        { title: "Planet of the Apes", year: "2011" },
+        { title: "Doctor Strange", year: "2016" },
+        { title: "Train to Busan", year: "2016" },
+        { title: "Midnight Runners", year: "2017" },
+        { title: "Shang Chi and the Legend of the Ten Rings", year: "2021" },
+        { title: "The Wolverine", year: "2013" },
+        { title: "Spider-Man: Into the Spider-Verse", year: "2018" },
+        { title: "Spider-Man: Across the Spider-Verse", year: "2023" },
+        { title: "Fantastic 4", year: "2005" },
+        { title: "Pirates of the Caribbean", year: "2003" },
+        { title: "The Darkest Minds", year: "2018" },
+        { title: "The Truman Show", year: "1998" },
+        { title: "The Wizard of Oz", year: "1939" },
+        { title: "Inception", year: "2010" },
+        { title: "In Time", year: "2011" },
+        { title: "Us", year: "2019" },
+        { title: "The Martian", year: "2015" },
+        { title: "Passengers", year: "2016" },
+        { title: "The Hunger Games", year: "2012" },
+        { title: "Arrival", year: "2016" },
+        { title: "Overboard", year: "2018" },
+        { title: "The Proposal", year: "2009" },
+        { title: "Jumanji", year: "2017" },
+        { title: "Cast Away", year: "2000" },
+        { title: "The Devil Wears Prada", year: "2006" },
+        { title: "Freedom Writers", year: "2007" },
+        { title: "Bedtime Stories", year: "2008" },
+        { title: "The Emperor's New Groove", year: "2000" },
+        { title: "Ponyo", year: "2008" },
+        { title: "My Octopus Teacher", year: "2020" }
+      ],
+      tvShows: [
+        { title: "Modern Family", year: "2009-2020" },
+        { title: "Friends", year: "1994-2004" },
+        { title: "The Good Place", year: "2016-2020" },
+        { title: "The Office", year: "2005-2013" },
+        { title: "Alice in Borderland", year: "2020" },
+        { title: "Squid Game", year: "2021" },
+        { title: "Strong Woman Do Bong Soon", year: "2017" },
+        { title: "Naked and Afraid", year: "2013" },
+        { title: "Mythbusters", year: "2003" },
+        { title: "I Can See Your Voice", year: "2020" },
+        { title: "Young Sheldon", year: "2017" },
+        { title: "How It Works", year: "2012" }
+      ],
+      youtubers: [
+        { title: "Back 2 Basics Adventures", description: "Australian survival challenges & historical storytelling" },
+        { title: "Tom Scott", description: "Short videos on interesting facts and places" }
+      ]
+    };
 
     // DOM manipulation functions
     function renderLetters() {
@@ -980,6 +1317,35 @@
       });
     }
 
+    function renderMediaLists() {
+      // Movies
+      const movieList = document.getElementById('movie-list');
+      comfortMedia.movies.forEach(movie => {
+        const movieItem = document.createElement('div');
+        movieItem.className = 'media-item';
+        movieItem.innerHTML = `${movie.title} <span class="media-year">(${movie.year})</span>`;
+        movieList.appendChild(movieItem);
+      });
+      
+      // TV Shows
+      const tvList = document.getElementById('tv-list');
+      comfortMedia.tvShows.forEach(show => {
+        const showItem = document.createElement('div');
+        showItem.className = 'media-item';
+        showItem.innerHTML = `${show.title} <span class="media-year">(${show.year})</span>`;
+        tvList.appendChild(showItem);
+      });
+      
+      // YouTube
+      const youtubeList = document.getElementById('youtube-list');
+      comfortMedia.youtubers.forEach(youtuber => {
+        const youtuberItem = document.createElement('div');
+        youtuberItem.className = 'media-item';
+        youtuberItem.innerHTML = `${youtuber.title} - ${youtuber.description}`;
+        youtubeList.appendChild(youtuberItem);
+      });
+    }
+
     // UI event handlers
     function setupNavigation() {
       const header = document.getElementById('header');
@@ -1059,14 +1425,43 @@
       });
     }
 
+    function setupThemeToggle() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+      
+      // Set initial theme
+      if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        updateThemeIcons(true);
+      }
+      
+      function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        updateThemeIcons(isDark);
+      }
+      
+      function updateThemeIcons(isDark) {
+        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        mobileThemeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      }
+      
+      themeToggle.addEventListener('click', toggleDarkMode);
+      mobileThemeToggle.addEventListener('click', toggleDarkMode);
+    }
+
     // Initialize everything
     document.addEventListener('DOMContentLoaded', () => {
       renderLetters();
       renderJournalPrompts();
       renderFoodData();
       renderAffirmations();
+      renderMediaLists();
       setupNavigation();
       setupTabs();
+      setupThemeToggle();
       
       // Add CSS for medium and larger screens
       if (window.innerWidth >= 768) {
