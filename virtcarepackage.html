@@ -196,7 +196,7 @@
     /* Music section */
     .music-section {
       background-color: var(--prompt-bg);
-      padding: 1.5rem;
+      padding: 2rem 1.5rem; /* Increased top/bottom padding from 1.5rem */
       border-radius: 0.75rem;
       margin-bottom: 2rem;
       margin-top: 1rem;
@@ -205,8 +205,11 @@
 
     .music-heading {
       font-size: 1.25rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem; /* Increased from 1rem */
       text-align: center;
+      padding: 0 1rem; /* Added padding */
+      word-wrap: break-word; /* Ensures text wraps properly */
+      line-height: 1.4; /* Improved line height for readability */
     }
 
     .music-buttons {
@@ -516,7 +519,7 @@
     .resources-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 2rem; /* Increased from 1rem to create more space between cards */
     }
 
     .resource-card {
@@ -539,10 +542,10 @@
       color: var(--primary);
     }
 
-    .resource-card p {
-      margin-bottom: 1rem;
+    .resource-card {
+      margin-bottom: 1rem; /* Added margin between cards */
+      overflow: hidden; /* Contain all content */
     }
-
     .resource-link {
       display: inline-block;
       color: var(--primary);
@@ -568,8 +571,10 @@
       height: 0;
       overflow: hidden;
       border-radius: 0.75rem;
-      margin-top: 1rem;
+      margin-top: 1.5rem; /* Increased from 1rem */
+      margin-bottom: 1rem; /* Added bottom margin */
       box-shadow: 0 4px 10px var(--shadow);
+      clear: both; /* Ensures it clears any floating elements */
     }
 
     .video-container iframe {
@@ -586,7 +591,8 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
-      margin-top: 1.5rem;
+      margin-top: 2rem; /* Increased from 1.5rem */
+      clear: both; /* Ensures it starts on a new line */
     }
 
     .coloring-item {
@@ -903,6 +909,7 @@
             <p><i class="fas fa-heart"></i> You matter, exactly as you are</p>
           </div>
         </div>
+        
         <div class="resource-card animated">
           <h4>Blessed tiktok</h4>
           <div class="video-container">
@@ -911,45 +918,46 @@
         type="video/mp4">
             </video>
           </div>
+        </div>
         
         <div class="resource-card animated">
-          <h4>Custom Coloring Pages</h4>
-          <p>Creative expression can be therapeutic. Download these custom coloring pages.</p>
-          <div class="coloring-grid">
-            <div class="coloring-item">
-              <img src="/mellington-care-den/images/turningbadladyintofrog.png" alt="Wizard with a frog" class="coloring-image">
-              <div class="coloring-caption">
-                Turning Bad Lady into a Frog
-                <br>
-                <a href="/mellington-care-den/images/turningbadladyintofrog.png" class="download-btn" download="wizard_frog.png"><i class="fas fa-download"></i> Download</a>
-              </div>
-            </div>
-          <div class="coloring-item">
-            <img src="/mellington-care-den/images/forestvibe.png" alt="Forest with animals" class="coloring-image">
-            <div class="coloring-caption">
-              Forest Vibes
-              <br>
-              <a href="/mellington-care-den/images/forestvibe.png" class="download-btn" download="forest_vibes.png"><i class="fas fa-download"></i> Download</a>
-            </div>
-          </div>
-        <div class="coloring-item">
-          <img src="/mellington-care-den/images/Melreadingwithtea.png" alt="Reading with tea" class="coloring-image">
-          <div class="coloring-caption">
-            Mel Reading with Tea
-            <br>
-            <a href="/mellington-care-den/images/Melreadingwithtea.png" class="download-btn" download="mel_reading.png"><i class="fas fa-download"></i> Download</a>
-          </div>
-        </div>
-      <div class="coloring-item">
-        <img src="/mellington-care-den/images/sleepndbunny.png" alt="Sleeping with bunny" class="coloring-image">
-        <div class="coloring-caption">
-          Sleep and Bunny
-          <br>
-          <a href="/mellington-care-den/images/sleepndbunny.png" class="download-btn" download="sleep_bunny.png"><i class="fas fa-download"></i> Download</a>
-        </div>
+  <h4>Custom Coloring Pages</h4>
+  <p>Creative expression can be therapeutic. Download these custom coloring pages.</p>
+  <div class="coloring-grid">
+    <div class="coloring-item">
+      <img src="/mellington-care-den/images/turningbadladyintofrog.png" alt="Wizard with a frog" class="coloring-image">
+      <div class="coloring-caption">
+        Turning Bad Lady into a Frog
+        <br>
+        <a href="/mellington-care-den/images/turningbadladyintofrog.png" class="download-btn" download="wizard_frog.png"><i class="fas fa-download"></i> Download</a>
       </div>
-          </div>
-        </div>
+    </div>
+    <div class="coloring-item">
+      <img src="/mellington-care-den/images/forestvibe.png" alt="Forest with animals" class="coloring-image">
+      <div class="coloring-caption">
+        Forest Vibes
+        <br>
+        <a href="/mellington-care-den/images/forestvibe.png" class="download-btn" download="forest_vibes.png"><i class="fas fa-download"></i> Download</a>
+      </div>
+    </div>
+    <div class="coloring-item">
+      <img src="/mellington-care-den/images/Melreadingwithtea.png" alt="Reading with tea" class="coloring-image">
+      <div class="coloring-caption">
+        Mel Reading with Tea
+        <br>
+        <a href="/mellington-care-den/images/Melreadingwithtea.png" class="download-btn" download="mel_reading.png"><i class="fas fa-download"></i> Download</a>
+      </div>
+    </div>
+    <div class="coloring-item">
+      <img src="/mellington-care-den/images/sleepndbunny.png" alt="Sleeping with bunny" class="coloring-image">
+      <div class="coloring-caption">
+        Sleep and Bunny
+        <br>
+        <a href="/mellington-care-den/images/sleepndbunny.png" class="download-btn" download="sleep_bunny.png"><i class="fas fa-download"></i> Download</a>
+      </div>
+    </div>
+  </div>
+</div>
       </div>
     </section>
   </main>
