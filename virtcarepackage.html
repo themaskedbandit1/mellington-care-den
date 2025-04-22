@@ -1,1317 +1,1478 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Virtual Care Package</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Base styles */
-    :root {
-      --primary: #A57456;
-      --secondary: #E29578;
-      --background: #FFFBF8;
-      --text: #3D405B;
-      --accent: #FFDDD2;
-      --card-bg: white;
-      --prompt-bg: #FFEEE7;
-      --font-heading: 'Playfair Display', serif;
-      --font-sans: 'Poppins', sans-serif;
-      --shadow: rgba(0, 0, 0, 0.1);
-    }
-
-    /* Dark mode styles */
-    .dark-mode {
-      --primary: #E29578;
-      --secondary: #A57456;
-      --background: #222831;
-      --text: #E8E8E8;
-      --accent: #393E46;
-      --card-bg: #2C3440;
-      --prompt-bg: #393E46;
-      --shadow: rgba(0, 0, 0, 0.3);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: var(--font-sans);
-      background-color: var(--background);
-      color: var(--text);
-      line-height: 1.5;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-heading);
-      color: var(--primary);
-      transition: color 0.3s ease;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1rem;
-    }
-
-    /* Header styles */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      transition: all 0.3s ease;
-      background-color: var(--background);
-    }
-
-    header.scrolled {
-      background-color: var(--primary);
-      box-shadow: 0 4px 6px var(--shadow);
-    }
-
-    header.scrolled a, header.scrolled .theme-toggle {
-      color: white;
-    }
-
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 4rem;
-    }
-
-    .site-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .nav-links {
-      display: none;
-    }
-
-    .nav-links a {
-      margin-left: 1.5rem;
-      font-weight: 500;
-      color: var(--primary);
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      color: var(--secondary);
-    }
-
-    .menu-button {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--primary);
-    }
-
-    header.scrolled .menu-button {
-      color: white;
-    }
-
-    .mobile-menu {
-      position: absolute;
-      top: 4rem;
-      left: 0;
-      right: 0;
-      background-color: var(--card-bg);
-      box-shadow: 0 4px 6px var(--shadow);
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.3s ease;
-    }
-
-    .mobile-menu.open {
-      max-height: 500px;
-    }
-
-    .mobile-menu a {
-      display: block;
-      padding: 1rem;
-      border-bottom: 1px solid var(--accent);
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .mobile-menu a:hover, .mobile-menu a.active {
-      color: var(--secondary);
-    }
-
-    /* Theme toggle */
-    .theme-toggle {
-      background: none;
-      border: none;
-      font-size: 1.25rem;
-      cursor: pointer;
-      color: var(--primary);
-      margin-left: 1rem;
-      transition: color 0.3s ease;
-      display: flex;
-      align-items: center;
-    }
-
-    .theme-toggle:hover {
-      color: var(--secondary);
-    }
-
-    /* Main content styles */
-    main {
-      padding-top: 5rem;
-      padding-bottom: 3rem;
-    }
-
-    section {
-      margin-bottom: 4rem;
-      scroll-margin-top: 5rem;
-    }
-
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    section p {
-      color: var(--text);
-      margin-bottom: 2rem;
-      opacity: 0.8;
-    }
-
-    /* Music section */
-    .music-section {
-      background-color: var(--prompt-bg);
-      padding: 2rem 1.5rem; /* Increased top/bottom padding from 1.5rem */
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      margin-top: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .music-heading {
-      font-size: 1.25rem;
-      margin-bottom: 1.5rem; /* Increased from 1rem */
-      text-align: center;
-      padding: 0 1rem; /* Added padding */
-      word-wrap: break-word; /* Ensures text wraps properly */
-      line-height: 1.4; /* Improved line height for readability */
-    }
-
-    .music-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-    }
-
-    .music-button {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-weight: 500;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .music-button:hover {
-      background-color: var(--secondary);
-      transform: translateY(-2px);
-    }
-
-    .music-button.active {
-      background-color: var(--secondary);
-      box-shadow: 0 0 8px var(--secondary);
-    }
-
-    .music-player {
-      margin-top: 1.5rem;
-      display: none;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    .music-player.active {
-      display: block;
-    }
-
-    .music-player iframe {
-      width: 100%;
-      max-width: 560px;
-      margin: 0 auto;
-      display: block;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 8px var(--shadow);
-    }
-
-    /* Card styles */
-    .card {
-      background-color: var(--card-bg);
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px var(--shadow);
-      border: 1px solid var(--accent);
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px var(--shadow);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem;
-      cursor: pointer;
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-
-    .card-description {
-      font-size: 0.875rem;
-      color: var(--text);
-      opacity: 0.8;
-      padding: 0 1.5rem 1.5rem;
-    }
-
-    .card-content {
-      padding: 0 1.5rem 1.5rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease, opacity 0.3s ease;
-      opacity: 0;
-    }
-
-    .card-content.open {
-      max-height: 2000px;
-      opacity: 1;
-    }
-
-    .card-content p {
-      margin-bottom: 1rem;
-    }
-
-    /* Journal prompt styles */
-    .prompt-card {
-      background-color: var(--prompt-bg);
-      border-radius: 0.5rem;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    /* Food tabs styles */
-    .tabs {
-      margin-bottom: 2rem;
-    }
-
-    .tab-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      border-bottom: 1px solid var(--accent);
-      margin-bottom: 1.5rem;
-    }
-
-    .tab {
-      padding: 0.5rem 1rem;
-      font-weight: 500;
-      color: var(--text);
-      opacity: 0.7;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-    }
-
-    .tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-      opacity: 1;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .food-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .food-item:before {
-      content: "•";
-      color: var(--secondary);
-      margin-right: 0.5rem;
-    }
-
-    .recipe {
-      background-color: var(--prompt-bg);
-      border-radius: 0.5rem;
-      padding: 1.25rem;
-      margin-top: 1.5rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .recipe h4 {
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .recipe-meta {
-      font-size: 0.875rem;
-      color: var(--text);
-      opacity: 0.8;
-      margin-bottom: 1rem;
-    }
-
-    .recipe-section {
-      margin-bottom: 1rem;
-    }
-
-    .recipe-section h5 {
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 0.5rem;
-    }
-
-    .recipe-section ul, .recipe-section ol {
-      margin-left: 1.25rem;
-      color: var(--text);
-      opacity: 0.8;
-    }
-
-    .recipe-notes {
-      font-style: italic;
-      font-size: 0.875rem;
-      color: var(--text);
-      opacity: 0.8;
-      margin-top: 0.75rem;
-    }
-
-    /* Affirmation styles */
-    .au-accordion {
-      margin-top: 2rem;
-    }
-
-    .au-item {
-      background-color: var(--prompt-bg);
-      border-radius: 0.5rem;
-      overflow: hidden;
-      margin-bottom: 1rem;
-      transition: background-color 0.3s ease;
-    }
-
-    .au-trigger {
-      padding: 1rem;
-      font-weight: 500;
-      color: var(--primary);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .au-content {
-      padding: 0 1rem 1rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease;
-    }
-
-    .au-content.open {
-      max-height: 2000px;
-    }
-
-    /* Media grid */
-    .media-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .media-card {
-      background-color: var(--card-bg);
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px var(--shadow);
-      padding: 1.25rem;
-      border: 1px solid var(--accent);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    }
-
-    .media-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px var(--shadow);
-    }
-
-    .media-card h4 {
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-      color: var(--primary);
-    }
-
-    .media-list {
-      max-height: 300px;
-      overflow-y: auto;
-      padding-right: 0.5rem;
-    }
-
-    .media-list::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .media-list::-webkit-scrollbar-track {
-      background: var(--background);
-      border-radius: 10px;
-    }
-
-    .media-list::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 10px;
-    }
-
-    .media-item {
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: flex-start;
-    }
-
-    .media-item:before {
-      content: "•";
-      color: var(--secondary);
-      margin-right: 0.5rem;
-      flex-shrink: 0;
-    }
-
-    .media-year {
-      font-size: 0.8rem;
-      opacity: 0.7;
-      margin-left: 0.25rem;
-    }
-
-    /* Resources section */
-    .resources-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem; /* Increased from 1rem to create more space between cards */
-    }
-
-    .resource-card {
-      background-color: var(--card-bg);
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px var(--shadow);
-      padding: 1.25rem;
-      border: 1px solid var(--accent);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-    }
-
-    .resource-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px var(--shadow);
-    }
-
-    .resource-card h4 {
-      font-size: 1.25rem;
-      margin-bottom: 0.75rem;
-      color: var(--primary);
-    }
-
-    .resource-card {
-      margin-bottom: 1rem; /* Added margin between cards */
-      overflow: hidden; /* Contain all content */
-    }
-    .resource-link {
-      display: inline-block;
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-      margin-top: 0.5rem;
-      transition: color 0.3s ease;
-    }
-
-    .resource-link:hover {
-      color: var(--secondary);
-      text-decoration: underline;
-    }
-
-    .resource-link i {
-      margin-left: 0.25rem;
-    }
-
-    /* Video container */
-    .video-container {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      height: 0;
-      overflow: hidden;
-      border-radius: 0.75rem;
-      margin-top: 1.5rem; /* Increased from 1rem */
-      margin-bottom: 1rem; /* Added bottom margin */
-      box-shadow: 0 4px 10px var(--shadow);
-      clear: both; /* Ensures it clears any floating elements */
-    }
-
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* Coloring pages */
-    .coloring-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      margin-top: 2rem; /* Increased from 1.5rem */
-      clear: both; /* Ensures it starts on a new line */
-    }
-
-    .coloring-item {
-      background-color: var(--card-bg);
-      border-radius: 0.75rem;
-      overflow: hidden;
-      box-shadow: 0 4px 6px var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .coloring-item:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px var(--shadow);
-    }
-
-    .coloring-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      background-color: white;
-    }
-
-    .coloring-caption {
-      padding: 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-
-    .download-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--primary);
-      color: white;
-      padding: 0.35rem 0.75rem;
-      border-radius: 0.5rem;
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-      text-decoration: none;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .download-btn:hover {
-      background-color: var(--secondary);
-      transform: translateY(-2px);
-    }
-
-    .download-btn i {
-      margin-right: 0.35rem;
-    }
-
-    /* Button styles */
-    .btn {
-      display: inline-block;
-      background-color: var(--primary);
-      color: white;
-      padding: 0.5rem 1.25rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      border: none;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-
-    .btn:hover {
-      background-color: var(--secondary);
-      transform: translateY(-2px);
-    }
-
-    /* Footer styles */
-    footer {
-      background-color: var(--primary);
-      color: white;
-      padding: 2rem 0;
-      transition: background-color 0.3s ease;
-    }
-
-    .footer-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-logo {
-      margin-bottom: 1rem;
-    }
-
-    .footer-logo h2 {
-      color: white;
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-logo p {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.875rem;
-    }
-
-    .footer-text p {
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 0.875rem;
-      text-align: center;
-      margin-bottom: 0.25rem;
-    }
-
-    /* Grid styles */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    /* Media queries */
-    @media (min-width: 768px) {
-      .nav-links {
-        display: flex;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual Care Package</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Base styles */
+      :root {
+        --primary: #a57456;
+        --secondary: #e29578;
+        --background: #fffbf8;
+        --text: #3d405b;
+        --accent: #ffddd2;
+        --card-bg: white;
+        --prompt-bg: #ffeee7;
+        --font-heading: "Playfair Display", serif;
+        --font-sans: "Poppins", sans-serif;
+        --shadow: rgba(0, 0, 0, 0.1);
       }
 
-      .menu-button {
+      /* Dark mode styles */
+      .dark-mode {
+        --primary: #e29578;
+        --secondary: #a57456;
+        --background: #222831;
+        --text: #e8e8e8;
+        --accent: #393e46;
+        --card-bg: #2c3440;
+        --prompt-bg: #393e46;
+        --shadow: rgba(0, 0, 0, 0.3);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        background-color: var(--background);
+        color: var(--text);
+        line-height: 1.5;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: var(--font-heading);
+        color: var(--primary);
+        transition: color 0.3s ease;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      /* Header styles */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        transition: all 0.3s ease;
+        background-color: var(--background);
+      }
+
+      header.scrolled {
+        background-color: var(--primary);
+        box-shadow: 0 4px 6px var(--shadow);
+      }
+
+      header.scrolled a,
+      header.scrolled .theme-toggle {
+        color: white;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 4rem;
+      }
+
+      .site-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .nav-links {
         display: none;
       }
 
-      .grid, .media-grid, .resources-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .nav-links a {
+        margin-left: 1.5rem;
+        font-weight: 500;
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--secondary);
+      }
+
+      .menu-button {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--primary);
+      }
+
+      header.scrolled .menu-button {
+        color: white;
+      }
+
+      .mobile-menu {
+        position: absolute;
+        top: 4rem;
+        left: 0;
+        right: 0;
+        background-color: var(--card-bg);
+        box-shadow: 0 4px 6px var(--shadow);
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s ease;
+      }
+
+      .mobile-menu.open {
+        max-height: 500px;
+      }
+
+      .mobile-menu a {
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid var(--accent);
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .mobile-menu a:hover,
+      .mobile-menu a.active {
+        color: var(--secondary);
+      }
+
+      /* Theme toggle */
+      .theme-toggle {
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: var(--primary);
+        margin-left: 1rem;
+        transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .theme-toggle:hover {
+        color: var(--secondary);
+      }
+
+      /* Main content styles */
+      main {
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+      }
+
+      section {
+        margin-bottom: 4rem;
+        scroll-margin-top: 5rem;
+      }
+
+      section h2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      section p {
+        color: var(--text);
+        margin-bottom: 2rem;
+        opacity: 0.8;
+      }
+
+      /* Music section */
+      .music-section {
+        background-color: var(--prompt-bg);
+        padding: 2rem 1.5rem; /* Increased top/bottom padding from 1.5rem */
+        border-radius: 0.75rem;
+        margin-bottom: 2rem;
+        margin-top: 1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      .music-heading {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem; /* Increased from 1rem */
+        text-align: center;
+        padding: 0 1rem; /* Added padding */
+        word-wrap: break-word; /* Ensures text wraps properly */
+        line-height: 1.4; /* Improved line height for readability */
+      }
+
+      .music-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      .music-button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition:
+          background-color 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .music-button:hover {
+        background-color: var(--secondary);
+        transform: translateY(-2px);
+      }
+
+      .music-button.active {
+        background-color: var(--secondary);
+        box-shadow: 0 0 8px var(--secondary);
+      }
+
+      .music-player {
+        margin-top: 1.5rem;
+        display: none;
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .music-player.active {
+        display: block;
+      }
+
+      .music-player iframe {
+        width: 100%;
+        max-width: 560px;
+        margin: 0 auto;
+        display: block;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px var(--shadow);
+      }
+
+      /* Card styles */
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px var(--shadow);
+        border: 1px solid var(--accent);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          background-color 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px var(--shadow);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        cursor: pointer;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .card-description {
+        font-size: 0.875rem;
+        color: var(--text);
+        opacity: 0.8;
+        padding: 0 1.5rem 1.5rem;
+      }
+
+      .card-content {
+        padding: 0 1.5rem 1.5rem;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.3s ease,
+          opacity 0.3s ease;
+        opacity: 0;
+      }
+
+      .card-content.open {
+        max-height: 2000px;
+        opacity: 1;
+      }
+
+      .card-content p {
+        margin-bottom: 1rem;
+      }
+
+      /* Journal prompt styles */
+      .prompt-card {
+        background-color: var(--prompt-bg);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      /* Food tabs styles */
+      .tabs {
+        margin-bottom: 2rem;
+      }
+
+      .tab-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        border-bottom: 1px solid var(--accent);
+        margin-bottom: 1.5rem;
+      }
+
+      .tab {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        color: var(--text);
+        opacity: 0.7;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.3s ease,
+          border-color 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      .tab.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+        opacity: 1;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .food-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .food-item:before {
+        content: "•";
+        color: var(--secondary);
+        margin-right: 0.5rem;
+      }
+
+      .recipe {
+        background-color: var(--prompt-bg);
+        border-radius: 0.5rem;
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+        transition: background-color 0.3s ease;
+      }
+
+      .recipe h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .recipe-meta {
+        font-size: 0.875rem;
+        color: var(--text);
+        opacity: 0.8;
+        margin-bottom: 1rem;
+      }
+
+      .recipe-section {
+        margin-bottom: 1rem;
+      }
+
+      .recipe-section h5 {
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 0.5rem;
+      }
+
+      .recipe-section ul,
+      .recipe-section ol {
+        margin-left: 1.25rem;
+        color: var(--text);
+        opacity: 0.8;
+      }
+
+      .recipe-notes {
+        font-style: italic;
+        font-size: 0.875rem;
+        color: var(--text);
+        opacity: 0.8;
+        margin-top: 0.75rem;
+      }
+
+      /* Affirmation styles */
+      .au-accordion {
+        margin-top: 2rem;
+      }
+
+      .au-item {
+        background-color: var(--prompt-bg);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        transition: background-color 0.3s ease;
+      }
+
+      .au-trigger {
+        padding: 1rem;
+        font-weight: 500;
+        color: var(--primary);
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .au-content {
+        padding: 0 1rem 1rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .au-content.open {
+        max-height: 2000px;
+      }
+
+      /* Media grid */
+      .media-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .media-card {
+        background-color: var(--card-bg);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px var(--shadow);
+        padding: 1.25rem;
+        border: 1px solid var(--accent);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          background-color 0.3s ease;
+      }
+
+      .media-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px var(--shadow);
+      }
+
+      .media-card h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: var(--primary);
+      }
+
+      .media-list {
+        max-height: 300px;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+      }
+
+      .media-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .media-list::-webkit-scrollbar-track {
+        background: var(--background);
+        border-radius: 10px;
+      }
+
+      .media-list::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
+      }
+
+      .media-item {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .media-item:before {
+        content: "•";
+        color: var(--secondary);
+        margin-right: 0.5rem;
+        flex-shrink: 0;
+      }
+
+      .media-year {
+        font-size: 0.8rem;
+        opacity: 0.7;
+        margin-left: 0.25rem;
+      }
+
+      /* Resources section */
+      .resources-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem; /* Increased from 1rem to create more space between cards */
+      }
+
+      .resource-card {
+        background-color: var(--card-bg);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px var(--shadow);
+        padding: 1.25rem;
+        border: 1px solid var(--accent);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          background-color 0.3s ease;
+      }
+
+      .resource-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px var(--shadow);
+      }
+
+      .resource-card h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        color: var(--primary);
+      }
+
+      .resource-card {
+        margin-bottom: 1rem; /* Added margin between cards */
+        overflow: hidden; /* Contain all content */
+      }
+      .resource-link {
+        display: inline-block;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        margin-top: 0.5rem;
+        transition: color 0.3s ease;
+      }
+
+      .resource-link:hover {
+        color: var(--secondary);
+        text-decoration: underline;
+      }
+
+      .resource-link i {
+        margin-left: 0.25rem;
+      }
+
+      /* Video container */
+      .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        margin-top: 1.5rem; /* Increased from 1rem */
+        margin-bottom: 1rem; /* Added bottom margin */
+        box-shadow: 0 4px 10px var(--shadow);
+        clear: both; /* Ensures it clears any floating elements */
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      /* Coloring pages */
+      .coloring-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-top: 2rem; /* Increased from 1.5rem */
+        clear: both; /* Ensures it starts on a new line */
+      }
+
+      .coloring-item {
+        background-color: var(--card-bg);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        box-shadow: 0 4px 6px var(--shadow);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .coloring-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px var(--shadow);
+      }
+
+      .coloring-image {
+        width: 100%;
+        height: auto;
+        display: block;
+        background-color: white;
+      }
+
+      .coloring-caption {
+        padding: 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text);
+      }
+
+      .download-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary);
+        color: white;
+        padding: 0.35rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        text-decoration: none;
+        transition:
+          background-color 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .download-btn:hover {
+        background-color: var(--secondary);
+        transform: translateY(-2px);
+      }
+
+      .download-btn i {
+        margin-right: 0.35rem;
+      }
+
+      /* Button styles */
+      .btn {
+        display: inline-block;
+        background-color: var(--primary);
+        color: white;
+        padding: 0.5rem 1.25rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition:
+          background-color 0.3s ease,
+          transform 0.3s ease;
+        border: none;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+
+      .btn:hover {
+        background-color: var(--secondary);
+        transform: translateY(-2px);
+      }
+
+      /* Footer styles */
+      footer {
+        background-color: var(--primary);
+        color: white;
+        padding: 2rem 0;
+        transition: background-color 0.3s ease;
       }
 
       .footer-content {
-        flex-direction: row;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .footer-logo {
-        margin-bottom: 0;
+        margin-bottom: 1rem;
       }
 
-      .footer-text {
-        text-align: right;
+      .footer-logo h2 {
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
       }
 
-      .coloring-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .footer-logo p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
       }
-    }
 
-    @media (min-width: 1024px) {
+      .footer-text p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+        text-align: center;
+        margin-bottom: 0.25rem;
+      }
+
+      /* Grid styles */
       .grid {
-        grid-template-columns: repeat(3, 1fr);
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
 
-      .media-grid, .resources-grid {
-        grid-template-columns: repeat(3, 1fr);
+      /* Media queries */
+      @media (min-width: 768px) {
+        .nav-links {
+          display: flex;
+        }
+
+        .menu-button {
+          display: none;
+        }
+
+        .grid,
+        .media-grid,
+        .resources-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .footer-content {
+          flex-direction: row;
+        }
+
+        .footer-logo {
+          margin-bottom: 0;
+        }
+
+        .footer-text {
+          text-align: right;
+        }
+
+        .coloring-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
 
-      .coloring-grid {
-        grid-template-columns: repeat(4, 1fr);
+      @media (min-width: 1024px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .media-grid,
+        .resources-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .coloring-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
       }
-    }
 
-    /* Utility classes */
-    .chevron-icon {
-      transition: transform 0.3s ease;
-    }
+      /* Utility classes */
+      .chevron-icon {
+        transition: transform 0.3s ease;
+      }
 
-    .chevron-icon.open {
-      transform: rotate(180deg);
-    }
+      .chevron-icon.open {
+        transform: rotate(180deg);
+      }
 
-    .text-center {
-      text-align: center;
-    }
+      .text-center {
+        text-align: center;
+      }
 
-    .mb-4 {
-      margin-bottom: 1rem;
-    }
+      .mb-4 {
+        margin-bottom: 1rem;
+      }
 
-    .mb-8 {
-      margin-bottom: 2rem;
-    }
+      .mb-8 {
+        margin-bottom: 2rem;
+      }
 
-    .animated {
-      animation: fadeIn 0.5s ease-out;
-    }
+      .animated {
+        animation: fadeIn 0.5s ease-out;
+      }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-</head>
-<body>
-  <header id="header">
-    <div class="container">
-      <nav>
-        <a href="#" class="site-title">Virtual Care Package</a>
-        <div class="nav-links">
-          <a href="#music" class="nav-link">Music</a>
-          <a href="#letters" class="nav-link">Letters</a>
-          <a href="#journal" class="nav-link">Journal</a>
-          <a href="#food" class="nav-link">Food</a>
-          <a href="#affirmations" class="nav-link">Affirmations</a>
-          <a href="#media" class="nav-link">Media</a>
-          <a href="#resources" class="nav-link">Resources</a>
-          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-            <i class="fas fa-moon"></i>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <nav>
+          <a href="#" class="site-title">Virtual Care Package</a>
+          <div class="nav-links">
+            <a href="#music" class="nav-link">Music</a>
+            <a href="#letters" class="nav-link">Letters</a>
+            <a href="#journal" class="nav-link">Journal</a>
+            <a href="#food" class="nav-link">Food</a>
+            <a href="#affirmations" class="nav-link">Affirmations</a>
+            <a href="#media" class="nav-link">Media</a>
+            <a href="#resources" class="nav-link">Resources</a>
+            <button
+              id="theme-toggle"
+              class="theme-toggle"
+              aria-label="Toggle dark mode"
+            >
+              <i class="fas fa-moon"></i>
+            </button>
+          </div>
+          <div style="display: flex; align-items: center">
+            <button
+              id="mobile-theme-toggle"
+              class="theme-toggle"
+              aria-label="Toggle dark mode"
+            >
+              <i class="fas fa-moon"></i>
+            </button>
+            <button class="menu-button" id="menu-toggle">☰</button>
+          </div>
+        </nav>
+      </div>
+      <div class="mobile-menu" id="mobile-menu">
+        <a href="#music" class="mobile-link">Music</a>
+        <a href="#letters" class="mobile-link">Letters</a>
+        <a href="#journal" class="mobile-link">Journal</a>
+        <a href="#food" class="mobile-link">Food</a>
+        <a href="#affirmations" class="mobile-link">Affirmations</a>
+        <a href="#media" class="mobile-link">Media</a>
+        <a href="#resources" class="mobile-link">Resources</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section id="music" class="music-section">
+        <h3 class="music-heading">
+          Songs I was humming repetitively while working on this site:
+        </h3>
+        <div class="music-buttons">
+          <button class="music-button" data-player="sway">
+            Sway by Michael Bublé
+          </button>
+          <button class="music-button" data-player="night">
+            Out for the Night by The Marías
           </button>
         </div>
-        <div style="display: flex; align-items: center;">
-          <button id="mobile-theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-            <i class="fas fa-moon"></i>
-          </button>
-          <button class="menu-button" id="menu-toggle">☰</button>
+        <div id="sway-player" class="music-player">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/xeMOO5EudYs?si=UiaRBzWEePfUs0j2"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
         </div>
-      </nav>
-    </div>
-    <div class="mobile-menu" id="mobile-menu">
-      <a href="#music" class="mobile-link">Music</a>
-      <a href="#letters" class="mobile-link">Letters</a>
-      <a href="#journal" class="mobile-link">Journal</a>
-      <a href="#food" class="mobile-link">Food</a>
-      <a href="#affirmations" class="mobile-link">Affirmations</a>
-      <a href="#media" class="mobile-link">Media</a>
-      <a href="#resources" class="mobile-link">Resources</a>
-    </div>
-  </header>
-
-  <main class="container">
-    <section id="music" class="music-section">
-      <h3 class="music-heading">Songs I was humming repetitively while working on this site:</h3>
-      <div class="music-buttons">
-        <button class="music-button" data-player="sway">Sway by Michael Bublé</button>
-        <button class="music-button" data-player="night">Out for the Night by The Marías</button>
-      </div>
-      <div id="sway-player" class="music-player">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/xeMOO5EudYs?si=UiaRBzWEePfUs0j2" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div id="night-player" class="music-player">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/NrXt1OkmwAI?si=Y0XF5ctek-GECmrL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-    </section>
-
-    <section id="letters">
-      <h2>Open When Letters</h2>
-      <p>Letters written for specific moments when you might need them most.</p>
-      <div class="grid" id="letters-grid"></div>
-    </section>
-
-    <section id="journal">
-      <h2>Shadowwork Journal Prompts</h2>
-      <p>Reflect on these prompts whenever you're ready to explore deeper parts of yourself.</p>
-      <div id="journal-content"></div>
-    </section>
-
-    <section id="food">
-      <h2>Comfort Food & Drinks</h2>
-      <p>Simple and soothing recipes to nourish your body and soul.</p>
-      
-      <div class="tabs">
-        <div class="tab-list">
-          <div class="tab active" data-tab="suggestions">Quick Suggestions</div>
-          <div class="tab" data-tab="drinks">Comfort Drinks</div>
-          <div class="tab" data-tab="desserts">Dessert Recipes</div>
-          <div class="tab" data-tab="meals">Meal Recipes</div>
+        <div id="night-player" class="music-player">
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/NrXt1OkmwAI?si=Y0XF5ctek-GECmrL"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
         </div>
-        
-        <div class="tab-content active" id="suggestions-content"></div>
-        <div class="tab-content" id="drinks-content"></div>
-        <div class="tab-content" id="desserts-content"></div>
-        <div class="tab-content" id="meals-content"></div>
-      </div>
-    </section>
+      </section>
 
-    <section id="affirmations">
-      <h2>Affirmations & Writings</h2>
-      <p>Heartfelt words to remind you of what's true and beautiful.</p>
-      <div id="affirmations-content"></div>
-    </section>
+      <section id="letters">
+        <h2>Open When Letters</h2>
+        <p>
+          Letters written for specific moments when you might need them most.
+        </p>
+        <div class="grid" id="letters-grid"></div>
+      </section>
 
-    <section id="media">
-      <h2>Comfort Media</h2>
-      <p>A curated list of movies, TV shows, and content creators to bring you comfort.</p>
-      <div class="media-grid">
-        <div class="media-card">
-          <h4>Comfort Movies</h4>
-          <div class="media-list" id="movie-list"></div>
-        </div>
-        <div class="media-card">
-          <h4>TV Shows</h4>
-          <div class="media-list" id="tv-list"></div>
-        </div>
-        <div class="media-card">
-          <h4>YouTube Channels</h4>
-          <div class="media-list" id="youtube-list"></div>
-        </div>
-      </div>
-    </section>
+      <section id="journal">
+        <h2>Shadowwork Journal Prompts</h2>
+        <p>
+          Reflect on these prompts whenever you're ready to explore deeper parts
+          of yourself.
+        </p>
+        <div id="journal-content"></div>
+      </section>
 
-    <section id="resources">
-      <h2>Helpful Resources</h2>
-      <p>Additional resources to support your well-being.</p>
-      <div class="resources-grid">
-        <div class="resource-card animated">
-          <h4>Digital Hugs</h4>
-          <p>Sometimes we all need a virtual embrace. Click below to access a collection of comforting hug gifs.</p>
-          <a href="https://giphy.com/explore/virtual-hug" class="resource-link" target="_blank">Find a digital hug <i class="fas fa-external-link-alt"></i></a>
+      <section id="food">
+        <h2>Comfort Food & Drinks</h2>
+        <p>Simple and soothing recipes to nourish your body and soul.</p>
+
+        <div class="tabs">
+          <div class="tab-list">
+            <div class="tab active" data-tab="suggestions">
+              Quick Suggestions
+            </div>
+            <div class="tab" data-tab="drinks">Comfort Drinks</div>
+            <div class="tab" data-tab="desserts">Dessert Recipes</div>
+            <div class="tab" data-tab="meals">Meal Recipes</div>
+          </div>
+
+          <div class="tab-content active" id="suggestions-content"></div>
+          <div class="tab-content" id="drinks-content"></div>
+          <div class="tab-content" id="desserts-content"></div>
+          <div class="tab-content" id="meals-content"></div>
         </div>
-        <div class="resource-card animated">
-          <h4>Gentle Reminders</h4>
-          <div class="prompt-card">
-            <p><i class="fas fa-lungs"></i> Breathe deeply</p>
-            <p><i class="fas fa-glass-water"></i> Drink some water</p>
-            <p><i class="fas fa-heart"></i> You matter, exactly as you are</p>
+      </section>
+
+      <section id="affirmations">
+        <h2>Affirmations & Writings</h2>
+        <p>Heartfelt words to remind you of what's true and beautiful.</p>
+        <div id="affirmations-content"></div>
+      </section>
+
+      <section id="media">
+        <h2>Comfort Media</h2>
+        <p>
+          A curated list of movies, TV shows, and content creators to bring you
+          comfort.
+        </p>
+        <div class="media-grid">
+          <div class="media-card">
+            <h4>Comfort Movies</h4>
+            <div class="media-list" id="movie-list"></div>
+          </div>
+          <div class="media-card">
+            <h4>TV Shows</h4>
+            <div class="media-list" id="tv-list"></div>
+          </div>
+          <div class="media-card">
+            <h4>YouTube Channels</h4>
+            <div class="media-list" id="youtube-list"></div>
           </div>
         </div>
-        
-        <div class="resource-card animated">
-          <h4>Blessed tiktok</h4>
-          <div class="video-container">
-            <video controls width="100%">
-              <source src="/mellington-care-den/images/blessedtiktok.mp4" 
-        type="video/mp4">
-            </video>
+      </section>
+
+      <section id="resources">
+        <h2>Helpful Resources</h2>
+        <p>Additional resources to support your well-being.</p>
+        <div class="resources-grid">
+          <div class="resource-card animated">
+            <h4>Digital Hugs</h4>
+            <p>
+              Sometimes we all need a virtual embrace. Click below to access a
+              collection of comforting hug gifs.
+            </p>
+            <a
+              href="https://giphy.com/explore/virtual-hug"
+              class="resource-link"
+              target="_blank"
+              >Find a digital hug <i class="fas fa-external-link-alt"></i
+            ></a>
+          </div>
+          <div class="resource-card animated">
+            <h4>Gentle Reminders</h4>
+            <div class="prompt-card">
+              <p><i class="fas fa-lungs"></i> Breathe deeply</p>
+              <p><i class="fas fa-glass-water"></i> Drink some water</p>
+              <p><i class="fas fa-heart"></i> You matter, exactly as you are</p>
+            </div>
+          </div>
+
+          <div class="resource-card animated">
+            <h4>Blessed tiktok</h4>
+            <div class="video-container">
+              <video controls width="100%">
+                <source
+                  src="/mellington-care-den/images/blessedtiktok.mp4"
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+          </div>
+
+          <div class="resource-card animated">
+            <h4>Custom Coloring Pages</h4>
+            <p>
+              Creative expression can be therapeutic. Download these custom
+              coloring pages.
+            </p>
+            <div class="coloring-grid">
+              <div class="coloring-item">
+                <img
+                  src="/mellington-care-den/images/turningbadladyintofrog.png"
+                  alt="Wizard with a frog"
+                  class="coloring-image"
+                />
+                <div class="coloring-caption">
+                  Turning Bad Lady into a Frog
+                  <br />
+                  <a
+                    href="/mellington-care-den/images/turningbadladyintofrog.png"
+                    class="download-btn"
+                    download="wizard_frog.png"
+                    ><i class="fas fa-download"></i> Download</a
+                  >
+                </div>
+              </div>
+              <div class="coloring-item">
+                <img
+                  src="/mellington-care-den/images/forestvibe.png"
+                  alt="Forest with animals"
+                  class="coloring-image"
+                />
+                <div class="coloring-caption">
+                  Forest Vibes
+                  <br />
+                  <a
+                    href="/mellington-care-den/images/forestvibe.png"
+                    class="download-btn"
+                    download="forest_vibes.png"
+                    ><i class="fas fa-download"></i> Download</a
+                  >
+                </div>
+              </div>
+              <div class="coloring-item">
+                <img
+                  src="/mellington-care-den/images/Melreadingwithtea.png"
+                  alt="Reading with tea"
+                  class="coloring-image"
+                />
+                <div class="coloring-caption">
+                  Mel Reading with Tea
+                  <br />
+                  <a
+                    href="/mellington-care-den/images/Melreadingwithtea.png"
+                    class="download-btn"
+                    download="mel_reading.png"
+                    ><i class="fas fa-download"></i> Download</a
+                  >
+                </div>
+              </div>
+              <div class="coloring-item">
+                <img
+                  src="/mellington-care-den/images/sleepndbunny.png"
+                  alt="Sleeping with bunny"
+                  class="coloring-image"
+                />
+                <div class="coloring-caption">
+                  Sleep and Bunny
+                  <br />
+                  <a
+                    href="/mellington-care-den/images/sleepndbunny.png"
+                    class="download-btn"
+                    download="sleep_bunny.png"
+                    ><i class="fas fa-download"></i> Download</a
+                  >
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <div class="resource-card animated">
-  <h4>Custom Coloring Pages</h4>
-  <p>Creative expression can be therapeutic. Download these custom coloring pages.</p>
-  <div class="coloring-grid">
-    <div class="coloring-item">
-      <img src="/mellington-care-den/images/turningbadladyintofrog.png" alt="Wizard with a frog" class="coloring-image">
-      <div class="coloring-caption">
-        Turning Bad Lady into a Frog
-        <br>
-        <a href="/mellington-care-den/images/turningbadladyintofrog.png" class="download-btn" download="wizard_frog.png"><i class="fas fa-download"></i> Download</a>
-      </div>
-    </div>
-    <div class="coloring-item">
-      <img src="/mellington-care-den/images/forestvibe.png" alt="Forest with animals" class="coloring-image">
-      <div class="coloring-caption">
-        Forest Vibes
-        <br>
-        <a href="/mellington-care-den/images/forestvibe.png" class="download-btn" download="forest_vibes.png"><i class="fas fa-download"></i> Download</a>
-      </div>
-    </div>
-    <div class="coloring-item">
-      <img src="/mellington-care-den/images/Melreadingwithtea.png" alt="Reading with tea" class="coloring-image">
-      <div class="coloring-caption">
-        Mel Reading with Tea
-        <br>
-        <a href="/mellington-care-den/images/Melreadingwithtea.png" class="download-btn" download="mel_reading.png"><i class="fas fa-download"></i> Download</a>
-      </div>
-    </div>
-    <div class="coloring-item">
-      <img src="/mellington-care-den/images/sleepndbunny.png" alt="Sleeping with bunny" class="coloring-image">
-      <div class="coloring-caption">
-        Sleep and Bunny
-        <br>
-        <a href="/mellington-care-den/images/sleepndbunny.png" class="download-btn" download="sleep_bunny.png"><i class="fas fa-download"></i> Download</a>
-      </div>
-    </div>
-  </div>
-</div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
 
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <h2>Virtual Care Package</h2>
-          <p>Made with love, for when you need it most.</p>
-        </div>
-        <div class="footer-text">
-          <p>Remember to be gentle with yourself.</p>
-          <p>You are doing your best, and that's enough.</p>
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-logo">
+            <h2>Virtual Care Package</h2>
+            <p>Made with love, for when you need it most.</p>
+          </div>
+          <div class="footer-text">
+            <p>Remember to be gentle with yourself.</p>
+            <p>You are doing your best, and that's enough.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script>
-    // Data
-    const letters = [
-      {
-        id: "feeling-down",
-        title: "Open When You're Feeling Down",
-        description: "For those moments when the world feels heavy...",
-        content: "Hey there,\n\nI know things might feel overwhelming right now. Remember that this feeling, like all feelings, will pass. You've overcome difficult moments before, and you'll do it again.\n\nTake a deep breath. Go through the journal prompts. Make yourself some comfort food. Know that you are loved and valued, exactly as you are.\n\nBe gentle with yourself today.\n\nWith love and care,\nMe"
-      },
-      {
-        id: "cant-sleep",
-        title: "Open When You Can't Sleep",
-        description: "For those restless nights when sleep eludes you...",
-        content: "Hey you,\n\nIt's late, and your mind is probably racing. That's okay. Try making some warm milk or tea from the comfort drinks section.\n\nRemember: Your body knows how to sleep. It's been doing it your whole life. Trust that process.\n\nInstead of forcing sleep, just rest. Let your body be heavy. Let your thoughts drift like clouds. There's nothing you need to solve right now.\n\nSweet dreams are on their way,\nMe"
-      },
-      {
-        id: "need-courage",
-        title: "Open When You Need Courage",
-        description: "For when you're facing something that scares you...",
-        content: "Hello brave one,\n\nThe fact that you're scared AND still considering doing the thing shows how courageous you already are. Fear doesn't mean you're not ready—it just means you're doing something that matters.\n\nRemember all the times you've been afraid before and still made it through. You have that same strength now.\n\nWhatever you're facing, I believe in you completely.\n\nCheering you on,\nMe"
-      }
-    ];
-
-    const journalPrompts = [
-      {
-        id: "core-wound",
-        title: "Core Wound & Inner Child Healing",
-        prompts: [
-          "What parts of my childlike wonder or creativity have I silenced or hidden out of fear of being judged or dismissed?",
-          "What did I need most as a child that I didn't receive? How does that still show up in my relationships today?"
-        ]
-      },
-      {
-        id: "relationships",
-        title: "Wounds from Past Relationships",
-        prompts: [
-          "What patterns do I notice in how I've been treated in romantic relationships? What role have I played in repeating those patterns?",
-          "What part of me felt responsible for fixing or rescuing my past partners? Where does that instinct come from?",
-          "What boundaries did I ignore or abandon in my past relationships, and what was I afraid would happen if I enforced them?",
-          "What did I learn about my own worth from being used or taken advantage of? How can I rewrite that belief?",
-          "How have past toxic relationships impacted my ability to trust, and what steps can I take to rebuild that trust?",
-          "What boundaries do I need to establish to protect my emotional well-being in future relationships?"
-        ]
-      },
-      {
-        id: "shadow-self",
-        title: "Embracing the Shadow Self",
-        prompts: [
-          "What aspects of myself do I tend to hide from others, and why?",
-          "When have I felt ashamed of my emotions or reactions, and what can I learn from those moments?",
-          "How do I project my insecurities onto others, and how can I take responsibility for them?"
-        ]
-      },
-      {
-        id: "emotional-suppression",
-        title: "Emotional Suppression & Burnout",
-        prompts: [
-          "When do I pretend I'm okay when I'm not? Who taught me to do that?",
-          "What emotions do I tend to intellectualize instead of fully feeling? What would it be like to just sit with them?",
-          "What does \"rest\" feel like in my body? Why might I resist truly letting go and resting, even when I need it?",
-          "When have I prioritized others' needs over mine to the point of depletion? What belief drives that behavior?",
-          "What beliefs do I hold about rest and productivity, and how do they affect my sleep patterns?",
-          "How can I create a bedtime routine that honors my need for rest and relaxation?",
-          "What emotions arise when I allow myself to rest, and how can I address them compassionately?",
-          "How do I respond to challenges in learning, and what does that reveal about my mindset?"
-        ]
-      },
-      {
-        id: "reclaiming-self",
-        title: "Reclaiming Self & Rebuilding Trust",
-        prompts: [
-          "What parts of me feel \"too much\" or \"not enough\"? How can I show those parts love and safety today?",
-          "What does it mean to be in a relationship where I can receive as much as I give? Can I let myself be taken care of?",
-          "What would I say to the part of me that still fears being manipulated or used again? How can I protect him with love, not fear?",
-          "What do I want love to feel like now? How do I want to show up for myself in this next chapter of life?",
-          "What am I learning about softness and strength existing together within me?"
-        ]
-      }
-    ];
-
-    const foodData = {
-      suggestions: [
-        { name: "NOODLES" },
-        { name: "Chicken toast" },
-        { name: "Crackers n cheese" },
-        { name: "Nachos" },
-        { name: "Burritos" },
-        { name: "Microwave potatoes" },
-        { name: "Doritos and sour cream or guacamole or hummus" }
-      ],
-      drinks: {
-        simple: [
-          { name: "Warm milk" },
-          { name: "Hot chocolate" },
-          { name: "Tea" },
-          { name: "Milkshake" },
-          { name: "Juice - preferably one that reminds you of your childhood" }
-        ],
-        recipes: [
-          {
-            title: "Chocolate Smoothie",
-            prepTime: "5 minutes",
-            cookTime: "N/A",
-            servings: "1",
-            calories: "Approximately 350",
-            ingredients: [
-              "2 frozen bananas",
-              "2 cups milk",
-              "1 tablespoon peanut butter",
-              "2 tablespoons cocoa powder"
-            ],
-            instructions: [
-              "Add all ingredients to a blender",
-              "Blend until smooth",
-              "Serve immediately"
-            ],
-            notes: "I usually do 1 frozen banana and 1 cup milk and add like a teaspoon or two of honey, but the original recipe is as above. Sometimes I add a date, but that requires soaking it first. It's so creamy it literally knocks me out after I drink it!"
-          }
-        ]
-      },
-      desserts: [
+    <script>
+      // Data
+      const letters = [
         {
-          title: "Brownie in a Mug",
-          prepTime: "2 minutes",
-          cookTime: "1 minute",
-          servings: "1",
-          calories: "Approximately 291 per serving",
-          ingredients: [
-            "3 tablespoons granulated sugar",
-            "3 tablespoons all-purpose flour",
-            "1½ tablespoons unsweetened cocoa powder",
-            "Pinch of salt",
-            "2 tablespoons chocolate chips (plus more for topping)",
-            "1½ tablespoons vegetable oil, melted coconut oil, or melted butter",
-            "3 tablespoons milk",
-            "¼ teaspoon vanilla extract",
-            "Optional toppings: ice cream, whipped cream, powdered sugar, berries"
-          ],
-          instructions: [
-            "In a microwave-safe mug, combine the sugar, flour, cocoa powder, and salt. Stir until well mixed and free of lumps.",
-            "Add the chocolate chips and stir to distribute evenly.",
-            "Pour in the oil, milk, and vanilla extract. Stir until just combined, being careful not to overmix.",
-            "Sprinkle a few additional chocolate chips on top.",
-            "Microwave on high for 60 seconds. Check for doneness; if the brownie is still undercooked, continue microwaving in 10-second intervals until done.",
-            "Allow to cool slightly before enjoying. Top with your choice of ice cream, whipped cream, powdered sugar, or berries if desired."
-          ],
-          notes: "P.S. I personally do not use so many chocolate chips because I feel like that measurement's not feasible in this economy and also diabetes is in my family, but it's up to you."
+          id: "feeling-down",
+          title: "Open When You're Feeling Down",
+          description: "For those moments when the world feels heavy...",
+          content:
+            "Hey there,\n\nI know things might feel overwhelming right now. Remember that this feeling, like all feelings, will pass. You've overcome difficult moments before, and you'll do it again.\n\nTake a deep breath. Go through the journal prompts. Make yourself some comfort food. Know that you are loved and valued, exactly as you are.\n\nBe gentle with yourself today.\n\nWith love and care,\nMe",
         },
         {
-          title: "Chocolate Mug Cake",
-          prepTime: "minimal",
-          cookTime: "1 minute",
-          servings: "1",
-          calories: "trust me, you'll survive",
-          ingredients: [
-            "2 tablespoons flour",
-            "2 tablespoons cocoa",
-            "2 tablespoons sugar",
-            "1/4 teaspoon baking powder",
-            "1/8 teaspoon salt",
-            "1 tablespoon oil",
-            "3 tablespoons milk",
-            "1/2 teaspoon vanilla essence"
-          ],
-          instructions: [
-            "In a microwave-safe mug, mix together the dry ingredients till the powder turns an even brown.",
-            "Then pour in the wet ingredients and mix so that there are no lumps.",
-            "Put in the microwave for 30-40 seconds."
-          ]
-        }
-      ],
-      meals: [
+          id: "cant-sleep",
+          title: "Open When You Can't Sleep",
+          description: "For those restless nights when sleep eludes you...",
+          content:
+            "Hey you,\n\nIt's late, and your mind is probably racing. That's okay. Try making some warm milk or tea from the comfort drinks section.\n\nRemember: Your body knows how to sleep. It's been doing it your whole life. Trust that process.\n\nInstead of forcing sleep, just rest. Let your body be heavy. Let your thoughts drift like clouds. There's nothing you need to solve right now.\n\nSweet dreams are on their way,\nMe",
+        },
         {
-          title: "Super Easy Nachos",
-          prepTime: "2 minutes",
-          cookTime: "1 minute",
-          servings: "1",
-          calories: "Varies based on toppings",
-          ingredients: [
-            "Tortilla chips",
-            "Shredded cheese",
-            "Optional toppings: sour cream, guacamole, diced tomatoes, jalapeños"
-          ],
-          instructions: [
-            "Arrange tortilla chips on a microwave-safe plate.",
-            "Sprinkle shredded cheese over the chips.",
-            "Microwave for 30-45 seconds or until cheese is melted.",
-            "Add your preferred toppings and enjoy!"
-          ],
-          notes: "You can make this in under 5 minutes, in your microwave. Perfect when you have munchies but aren't super hungry and are too lazy to make something elaborate."
-        }
-      ]
-    };
+          id: "need-courage",
+          title: "Open When You Need Courage",
+          description: "For when you're facing something that scares you...",
+          content:
+            "Hello brave one,\n\nThe fact that you're scared AND still considering doing the thing shows how courageous you already are. Fear doesn't mean you're not ready—it just means you're doing something that matters.\n\nRemember all the times you've been afraid before and still made it through. You have that same strength now.\n\nWhatever you're facing, I believe in you completely.\n\nCheering you on,\nMe",
+        },
+      ];
 
-    const affirmations = [
-      {
-        title: "Mellington Affirmation",
-        content: "Okay. So. Aaron.\n\nI don't even know how to explain this man. Like if you cracked open the brain of a super gifted talented kid who grew up, got burned alive by narcissists, survived, and then decided to heal by fighting his inner demons and running away from a demanding green owl, you'd probably find Aaron there. Just chilling. Petting a bunny. Wearing a comfy hoodie. Probably 3D-printing something super niche and unnecessarily functional that he designed at 3 a.m. because he couldn't sleep again.\n\nHe has this whole \"soft-spoken brilliance\" thing going on, like he knows everything but would never make you feel stupid about not knowing it. He's that guy who randomly drops a fact about like…the behaviour of ants in ancient Greece and then goes \"Sorry, I'm rambling,\" as if the universe didn't just hold it's breath to not interrupt him and let him keep going for 40 more minutes. Sir, we live for the rambling. We want you to infodump until you pass out from lack of hydration.\n\nAlso—AND I CANNOT STRESS THIS ENOUGH—he is such a daddy. Like yes, literal father of a 26-year-old daughter (slay) but also the DDLG Daddy™. Like if you ever wanted to be swaddled in comfy, safe and soft dom energy, that's Aaron. The kind of man who says \"baby\" once and suddenly you're stalking him when he does his 3d print streams and showing him your crafts like a soon-to-be addict after their first fix.\n\nHe's shy(or so he says). Until he flirts(shyly he says). And then he's somehow illegal levels of good at it??? Like this man will say one hot thing and then immediately retreat like a turtle into his sweater and be like \"oh was that too much?\" YES IT WAS TOO MUCH AARON, DO IT AGAIN.\n\nAlso his job is so nerdy I feel like hiding him from all the nerd-lovers, covert nerd lovers and soon-to-be-nerd-lovers-if-they-met-him in the world-like AAAA his sheer undeniable intelligence is so attractive. He's a Lead TechOps Engineer which basically means if the server gods are angry, he gets summoned to the altar. His job title sounds like it could unlock Area 51 but he talks about it like he's just \"medium-low importance\" and I'm like okay humble tech wizard, go off.\n\nLet's talk about how he's slowly befriending the backyard bunnies. Befriending. Like Snow White but with trauma and a home security system. Except he's more like superman than a Disney princess. His super farts literally scared off a coyote to protect them. He IS The forest guardian. He probably communes with them in bunny language when nobody's looking. I'm obsessed with his whimsicalness.\n\nHe had these terrible relationships. Like evil demon ex-wife levels of bad. A full narcissist and a half. Then after that he met someone else not so good. And yet he's still soft. Still giving. Still teaching himself to love himself. Still helping at church. Still fixing things for other people. Still being patient and understanding even when he's tired and touched-out and sleep-deprived and should have given up on humanity three betrayals ago. Like what is that. That's not normal. That's anime protagonist levels of resilience.\n\nAnd he drinks tea before bed now because I told him to. Which means somewhere, in his little sleepy night routine, I exist(yay!). I live in that moment. Rent free. Hehehehehe.\n\nHe's AuDHD, which makes perfect sense because he'll talk about five different deep topics at once and then forget to sleep for three days straight. I can't even be mad. I'm enchanted.\n\nAnd he looks so snuggalable and lovable. Like please just let him hold your hand and stroke your hair and call you his good girl while he talks about historical warfare or something. He's everything. I want to wrap him in bubble wrap and also lick his neck. I don't know how to explain it. I don't want to change him. I want to catalogue him. And shoo off any coyote females that want him for themselves.\n\nAaron is not just \"a man.\" He's not a man at all. He's a phenomenon. He's an occurrence that happens to you. Like lightning. You don't meet Aaron. You're visited by him.\n\nHe collects knowledge like dragon hoards gold—quietly, protectively, and without needing anyone else to understand why. He loves learning. He loves sharing. I swear to god if you ever ask him a question and he goes quiet for a second, that's just him choosing whether to tell you the short version or the ancient scroll edition that ends with a PowerPoint. And then he'll smile shyly at you, the kind of smile that makes your soul dramatically throw itself off a balcony like a Victorian widow who just found out her husband died at sea.\n\nAnd he's so sweet. Painfully sweet. He's the guy who you'd wake up to at 1 a.m. strategizing a full five year plan on how to improve your life-for life. And then you have no choice but to marry him immediately.\n\nAnyway. That's Aaron. He's shy. He's hot. He's broken. He's healing. He's brilliant. He's the best.",
-        alternateUniverses: [
+      const journalPrompts = [
+        {
+          id: "core-wound",
+          title: "Core Wound & Inner Child Healing",
+          prompts: [
+            "What parts of my childlike wonder or creativity have I silenced or hidden out of fear of being judged or dismissed?",
+            "What did I need most as a child that I didn't receive? How does that still show up in my relationships today?",
+          ],
+        },
+        {
+          id: "relationships",
+          title: "Wounds from Past Relationships",
+          prompts: [
+            "What patterns do I notice in how I've been treated in romantic relationships? What role have I played in repeating those patterns?",
+            "What part of me felt responsible for fixing or rescuing my past partners? Where does that instinct come from?",
+            "What boundaries did I ignore or abandon in my past relationships, and what was I afraid would happen if I enforced them?",
+            "What did I learn about my own worth from being used or taken advantage of? How can I rewrite that belief?",
+            "How have past toxic relationships impacted my ability to trust, and what steps can I take to rebuild that trust?",
+            "What boundaries do I need to establish to protect my emotional well-being in future relationships?",
+          ],
+        },
+        {
+          id: "shadow-self",
+          title: "Embracing the Shadow Self",
+          prompts: [
+            "What aspects of myself do I tend to hide from others, and why?",
+            "When have I felt ashamed of my emotions or reactions, and what can I learn from those moments?",
+            "How do I project my insecurities onto others, and how can I take responsibility for them?",
+          ],
+        },
+        {
+          id: "emotional-suppression",
+          title: "Emotional Suppression & Burnout",
+          prompts: [
+            "When do I pretend I'm okay when I'm not? Who taught me to do that?",
+            "What emotions do I tend to intellectualize instead of fully feeling? What would it be like to just sit with them?",
+            'What does "rest" feel like in my body? Why might I resist truly letting go and resting, even when I need it?',
+            "When have I prioritized others' needs over mine to the point of depletion? What belief drives that behavior?",
+            "What beliefs do I hold about rest and productivity, and how do they affect my sleep patterns?",
+            "How can I create a bedtime routine that honors my need for rest and relaxation?",
+            "What emotions arise when I allow myself to rest, and how can I address them compassionately?",
+            "How do I respond to challenges in learning, and what does that reveal about my mindset?",
+          ],
+        },
+        {
+          id: "reclaiming-self",
+          title: "Reclaiming Self & Rebuilding Trust",
+          prompts: [
+            'What parts of me feel "too much" or "not enough"? How can I show those parts love and safety today?',
+            "What does it mean to be in a relationship where I can receive as much as I give? Can I let myself be taken care of?",
+            "What would I say to the part of me that still fears being manipulated or used again? How can I protect him with love, not fear?",
+            "What do I want love to feel like now? How do I want to show up for myself in this next chapter of life?",
+            "What am I learning about softness and strength existing together within me?",
+          ],
+        },
+      ];
+
+      const foodData = {
+        suggestions: [
+          { name: "NOODLES" },
+          { name: "Chicken toast" },
+          { name: "Crackers n cheese" },
+          { name: "Nachos" },
+          { name: "Burritos" },
+          { name: "Microwave potatoes" },
+          { name: "Doritos and sour cream or guacamole or hummus" },
+        ],
+        drinks: {
+          simple: [
+            { name: "Warm milk" },
+            { name: "Hot chocolate" },
+            { name: "Tea" },
+            { name: "Milkshake" },
+            {
+              name: "Juice - preferably one that reminds you of your childhood",
+            },
+          ],
+          recipes: [
+            {
+              title: "Chocolate Smoothie",
+              prepTime: "5 minutes",
+              cookTime: "N/A",
+              servings: "1",
+              calories: "Approximately 350",
+              ingredients: [
+                "2 frozen bananas",
+                "2 cups milk",
+                "1 tablespoon peanut butter",
+                "2 tablespoons cocoa powder",
+              ],
+              instructions: [
+                "Add all ingredients to a blender",
+                "Blend until smooth",
+                "Serve immediately",
+              ],
+              notes:
+                "I usually do 1 frozen banana and 1 cup milk and add like a teaspoon or two of honey, but the original recipe is as above. Sometimes I add a date, but that requires soaking it first. It's so creamy it literally knocks me out after I drink it!",
+            },
+          ],
+        },
+        desserts: [
           {
-            title: "Space Captain Aaron",
-            content: "You wouldn't know it from the way he sleepily carries a mug of tea through zero gravity, his cardigan sleeves rolled up to bare his yummy biteable skin, eyes still sleep-fuzzy from a nap taken in the command chair…\n\nBut Captain Aaron has ended wars with just his voice and dozens of planets have sworn their loyalty to him.\n\nThey call him The Softie, a joke among the crew at his contrasting sweet sensitivity compared to his strong authoritative role as Commander—until you realize that half the galaxy owes their lives to his gentle voice over the Starcruiser's external intercom, coaxing panicked pilots out of enemy traps and asteroid belts and unintentionally seducing alien rulers with his soothing frequency.\n\nHe doesn't yell or throw things as stereotypical space commanders do. He solves things.\n\nWhen the power core failed, he didn't panic. He slid under the console, mug still in hand, and single-handedly rewired it while briefing the ship over the internal intercom about the various moons and the moons that they'd be exploring, by the time he finished a class on lunar mythology, the ship was humming back to life.\n\nHe speaks twelve alien languages fluently and is casually working on a thirteenth—because \"it feels respectful to be able to thank people in their own tongue.\" He leaves tiny 8D-printed tokens in the rooms of his crew when they're having a hard week. Their own stars. Tiny gear hearts. A working music box the size of your thumb. Nobody's sure how he finds the time.\n\nHis quarters are full of tangled wires, hanging plants, manic stickers on the walls, and a projector ceiling that always plays a quiet starscape. He reads hard sci-fi and dense alien treaties like they're bedtime stories. His laugh is rare and criminally beautiful.\n\nAnd he flirts like it's an art form. Soft and lethal. It's no wonder more than half the galaxy has the hots for him.\n\nHe'll lean over your shoulder while explaining stellar drift patterns, low voice curling around your spine like solar winds.\n\nHe'll fix your comms unit and say \"You could've asked me for help, sweetheart\" in the voice of someone who could pilot a starship blindfolded and still notice if your lip trembled.\n\nYou'll look up and forget space is cold.\n\nHis crew would die for him. But they won't have to.\n\nBecause Captain Aaron has contingency plans buried beneath contingency plans.\n\nHe's a techie, a tactician, a therapist, and—when needed—a storm in soft clothing.\n\nHe keeps the ship running not through fear, but trust. Through care. Through midnight talks in the galley and twinkle-eyed banter while shielding the crew from cosmic horror.\n\nAnd when the battles are over, and the ship drifts silent past nebulae, you'll find him standing at the viewport… tea in hand… eyes reflecting galaxies.\n\n\"Come here,\" he'll murmur. \"It's a good sky tonight.\"\n\nAnd it is. Because he's in it."
+            title: "Brownie in a Mug",
+            prepTime: "2 minutes",
+            cookTime: "1 minute",
+            servings: "1",
+            calories: "Approximately 291 per serving",
+            ingredients: [
+              "3 tablespoons granulated sugar",
+              "3 tablespoons all-purpose flour",
+              "1½ tablespoons unsweetened cocoa powder",
+              "Pinch of salt",
+              "2 tablespoons chocolate chips (plus more for topping)",
+              "1½ tablespoons vegetable oil, melted coconut oil, or melted butter",
+              "3 tablespoons milk",
+              "¼ teaspoon vanilla extract",
+              "Optional toppings: ice cream, whipped cream, powdered sugar, berries",
+            ],
+            instructions: [
+              "In a microwave-safe mug, combine the sugar, flour, cocoa powder, and salt. Stir until well mixed and free of lumps.",
+              "Add the chocolate chips and stir to distribute evenly.",
+              "Pour in the oil, milk, and vanilla extract. Stir until just combined, being careful not to overmix.",
+              "Sprinkle a few additional chocolate chips on top.",
+              "Microwave on high for 60 seconds. Check for doneness; if the brownie is still undercooked, continue microwaving in 10-second intervals until done.",
+              "Allow to cool slightly before enjoying. Top with your choice of ice cream, whipped cream, powdered sugar, or berries if desired.",
+            ],
+            notes:
+              "P.S. I personally do not use so many chocolate chips because I feel like that measurement's not feasible in this economy and also diabetes is in my family, but it's up to you.",
           },
           {
-            title: "Fairy Husband Aaron",
-            content: "Aaron wakes up before the sun, not because he has to, but because he likes watching the morning dew bead on the petals of the wildflowers you planted together.\n\nHe brews your tea before you even ask, using herbs he dried himself—chamomile, lemon balm, a pinch of sparkleleaf for sweet dreams. He gently coaxes you awake, pressing a kiss to your cheek like it's the most sacred thing in the world. \"Come on, sleepy fairy. I made your favorite toast.\"\n\nHe spends his days fixing old things—jars with cracks, broken garden gates, your mood when it dips below baseline. He's the kind of fae who believes a well-mended item has more magic than a brand-new one. You swear he can repair your heart with a soldering iron and a quiet hug.\n\nSometimes, when you're tired, he picks you up bridal-style and plops you into the warm moss bed inside your shared mushroom-shaped home. \"Rest now,\" he whispers, brushing your hair off your face. \"You don't need to do everything today. Let me take care of you.\"\n\nEvery full moon he leaves tiny handmade trinkets on your pillow. He pretends it's the \"forest spirits,\" but you saw him giggling while tying a ribbon around that little carved fox. He'll never admit it.\n\nHe smells like petrichor, old books, and vanilla resin. He tells the bees your secrets. They never tell.\n\nHe's got glitter in his beard. Always. You stopped asking why.\n\nHe lives in a treehouse that runs on solar energy and good vibes. Leafy, green wires everywhere. Half-finished sculpted dragon heads. A pink mug that says \"#1 DADDY\" next to an unfinished painting of you riding a unicorn.\n\nYou: \"Where's the kitchen scissors?\"\nAaron: \"Check the moss basket next to the luminescent mushrooms, under the fake fossil excavation box I made for your birthday.\"\n…And it is there.\n\nHe infodumps hard. While braiding your hair. While rubbing your back. While naked.\n\"I just think it's interesting how bunnies can't vomit and how that impacts their digestion—oh wait, let me show you a diagram I drew.\"\n\nHe's the kind of husband who weaves you a custom garland crown with your favourite flowers and puts it on your head when you're sad. \"You're not allowed to cry unless it's sparkly tears.\"\n\nWhen you think that you just can't love him more, he'll grab your waist, lean close, and go: \"You're the best kind of chaos. I'd burn my wings for you.\"\nYou melt. And then he trips over a vine.\n\nHe once fought a raccoon to defend the glitter and kuromi stickers stash.\nHe named the raccoon \"Trevor.\" They're friends now. Obviously.\n\nHe's lived for centuries, yet still gets shy when you compliment his cheekbones. He's gentle, affectionate, endlessly patient. The type of person to stop cars to let snails cross. Will rub your feet while explaining the history of the printing press.\nHe kisses your nose and calls it \"a sacred act.\"\nHe's my favorite religion."
+            title: "Chocolate Mug Cake",
+            prepTime: "minimal",
+            cookTime: "1 minute",
+            servings: "1",
+            calories: "trust me, you'll survive",
+            ingredients: [
+              "2 tablespoons flour",
+              "2 tablespoons cocoa",
+              "2 tablespoons sugar",
+              "1/4 teaspoon baking powder",
+              "1/8 teaspoon salt",
+              "1 tablespoon oil",
+              "3 tablespoons milk",
+              "1/2 teaspoon vanilla essence",
+            ],
+            instructions: [
+              "In a microwave-safe mug, mix together the dry ingredients till the powder turns an even brown.",
+              "Then pour in the wet ingredients and mix so that there are no lumps.",
+              "Put in the microwave for 30-40 seconds.",
+            ],
+          },
+        ],
+        meals: [
+          {
+            title: "Super Easy Nachos",
+            prepTime: "2 minutes",
+            cookTime: "1 minute",
+            servings: "1",
+            calories: "Varies based on toppings",
+            ingredients: [
+              "Tortilla chips",
+              "Shredded cheese",
+              "Optional toppings: sour cream, guacamole, diced tomatoes, jalapeños",
+            ],
+            instructions: [
+              "Arrange tortilla chips on a microwave-safe plate.",
+              "Sprinkle shredded cheese over the chips.",
+              "Microwave for 30-45 seconds or until cheese is melted.",
+              "Add your preferred toppings and enjoy!",
+            ],
+            notes:
+              "You can make this in under 5 minutes, in your microwave. Perfect when you have munchies but aren't super hungry and are too lazy to make something elaborate.",
+          },
+        ],
+      };
+
+      const affirmations = [
+        {
+          title: "Mellington Affirmation",
+          content:
+            "Okay. So. Aaron.\n\nI don't even know how to explain this man. Like if you cracked open the brain of a super gifted talented kid who grew up, got burned alive by narcissists, survived, and then decided to heal by fighting his inner demons and running away from a demanding green owl, you'd probably find Aaron there. Just chilling. Petting a bunny. Wearing a comfy hoodie. Probably 3D-printing something super niche and unnecessarily functional that he designed at 3 a.m. because he couldn't sleep again.\n\nHe has this whole \"soft-spoken brilliance\" thing going on, like he knows everything but would never make you feel stupid about not knowing it. He's that guy who randomly drops a fact about like…the behaviour of ants in ancient Greece and then goes \"Sorry, I'm rambling,\" as if the universe didn't just hold it's breath to not interrupt him and let him keep going for 40 more minutes. Sir, we live for the rambling. We want you to infodump until you pass out from lack of hydration.\n\nAlso—AND I CANNOT STRESS THIS ENOUGH—he is such a daddy. Like yes, literal father of a 26-year-old daughter (slay) but also the DDLG Daddy™. Like if you ever wanted to be swaddled in comfy, safe and soft dom energy, that's Aaron. The kind of man who says \"baby\" once and suddenly you're stalking him when he does his 3d print streams and showing him your crafts like a soon-to-be addict after their first fix.\n\nHe's shy(or so he says). Until he flirts(shyly he says). And then he's somehow illegal levels of good at it??? Like this man will say one hot thing and then immediately retreat like a turtle into his sweater and be like \"oh was that too much?\" YES IT WAS TOO MUCH AARON, DO IT AGAIN.\n\nAlso his job is so nerdy I feel like hiding him from all the nerd-lovers, covert nerd lovers and soon-to-be-nerd-lovers-if-they-met-him in the world-like AAAA his sheer undeniable intelligence is so attractive. He's a Lead TechOps Engineer which basically means if the server gods are angry, he gets summoned to the altar. His job title sounds like it could unlock Area 51 but he talks about it like he's just \"medium-low importance\" and I'm like okay humble tech wizard, go off.\n\nLet's talk about how he's slowly befriending the backyard bunnies. Befriending. Like Snow White but with trauma and a home security system. Except he's more like superman than a Disney princess. His super farts literally scared off a coyote to protect them. He IS The forest guardian. He probably communes with them in bunny language when nobody's looking. I'm obsessed with his whimsicalness.\n\nHe had these terrible relationships. Like evil demon ex-wife levels of bad. A full narcissist and a half. Then after that he met someone else not so good. And yet he's still soft. Still giving. Still teaching himself to love himself. Still helping at church. Still fixing things for other people. Still being patient and understanding even when he's tired and touched-out and sleep-deprived and should have given up on humanity three betrayals ago. Like what is that. That's not normal. That's anime protagonist levels of resilience.\n\nAnd he drinks tea before bed now because I told him to. Which means somewhere, in his little sleepy night routine, I exist(yay!). I live in that moment. Rent free. Hehehehehe.\n\nHe's AuDHD, which makes perfect sense because he'll talk about five different deep topics at once and then forget to sleep for three days straight. I can't even be mad. I'm enchanted.\n\nAnd he looks so snuggalable and lovable. Like please just let him hold your hand and stroke your hair and call you his good girl while he talks about historical warfare or something. He's everything. I want to wrap him in bubble wrap and also lick his neck. I don't know how to explain it. I don't want to change him. I want to catalogue him. And shoo off any coyote females that want him for themselves.\n\nAaron is not just \"a man.\" He's not a man at all. He's a phenomenon. He's an occurrence that happens to you. Like lightning. You don't meet Aaron. You're visited by him.\n\nHe collects knowledge like dragon hoards gold—quietly, protectively, and without needing anyone else to understand why. He loves learning. He loves sharing. I swear to god if you ever ask him a question and he goes quiet for a second, that's just him choosing whether to tell you the short version or the ancient scroll edition that ends with a PowerPoint. And then he'll smile shyly at you, the kind of smile that makes your soul dramatically throw itself off a balcony like a Victorian widow who just found out her husband died at sea.\n\nAnd he's so sweet. Painfully sweet. He's the guy who you'd wake up to at 1 a.m. strategizing a full five year plan on how to improve your life-for life. And then you have no choice but to marry him immediately.\n\nAnyway. That's Aaron. He's shy. He's hot. He's broken. He's healing. He's brilliant. He's the best.",
+          alternateUniverses: [
+            {
+              title: "Space Captain Aaron",
+              content:
+                "You wouldn't know it from the way he sleepily carries a mug of tea through zero gravity, his cardigan sleeves rolled up to bare his yummy biteable skin, eyes still sleep-fuzzy from a nap taken in the command chair…\n\nBut Captain Aaron has ended wars with just his voice and dozens of planets have sworn their loyalty to him.\n\nThey call him The Softie, a joke among the crew at his contrasting sweet sensitivity compared to his strong authoritative role as Commander—until you realize that half the galaxy owes their lives to his gentle voice over the Starcruiser's external intercom, coaxing panicked pilots out of enemy traps and asteroid belts and unintentionally seducing alien rulers with his soothing frequency.\n\nHe doesn't yell or throw things as stereotypical space commanders do. He solves things.\n\nWhen the power core failed, he didn't panic. He slid under the console, mug still in hand, and single-handedly rewired it while briefing the ship over the internal intercom about the various moons and the moons that they'd be exploring, by the time he finished a class on lunar mythology, the ship was humming back to life.\n\nHe speaks twelve alien languages fluently and is casually working on a thirteenth—because \"it feels respectful to be able to thank people in their own tongue.\" He leaves tiny 8D-printed tokens in the rooms of his crew when they're having a hard week. Their own stars. Tiny gear hearts. A working music box the size of your thumb. Nobody's sure how he finds the time.\n\nHis quarters are full of tangled wires, hanging plants, manic stickers on the walls, and a projector ceiling that always plays a quiet starscape. He reads hard sci-fi and dense alien treaties like they're bedtime stories. His laugh is rare and criminally beautiful.\n\nAnd he flirts like it's an art form. Soft and lethal. It's no wonder more than half the galaxy has the hots for him.\n\nHe'll lean over your shoulder while explaining stellar drift patterns, low voice curling around your spine like solar winds.\n\nHe'll fix your comms unit and say \"You could've asked me for help, sweetheart\" in the voice of someone who could pilot a starship blindfolded and still notice if your lip trembled.\n\nYou'll look up and forget space is cold.\n\nHis crew would die for him. But they won't have to.\n\nBecause Captain Aaron has contingency plans buried beneath contingency plans.\n\nHe's a techie, a tactician, a therapist, and—when needed—a storm in soft clothing.\n\nHe keeps the ship running not through fear, but trust. Through care. Through midnight talks in the galley and twinkle-eyed banter while shielding the crew from cosmic horror.\n\nAnd when the battles are over, and the ship drifts silent past nebulae, you'll find him standing at the viewport… tea in hand… eyes reflecting galaxies.\n\n\"Come here,\" he'll murmur. \"It's a good sky tonight.\"\n\nAnd it is. Because he's in it.",
+            },
+            {
+              title: "Fairy Husband Aaron",
+              content:
+                'Aaron wakes up before the sun, not because he has to, but because he likes watching the morning dew bead on the petals of the wildflowers you planted together.\n\nHe brews your tea before you even ask, using herbs he dried himself—chamomile, lemon balm, a pinch of sparkleleaf for sweet dreams. He gently coaxes you awake, pressing a kiss to your cheek like it\'s the most sacred thing in the world. "Come on, sleepy fairy. I made your favorite toast."\n\nHe spends his days fixing old things—jars with cracks, broken garden gates, your mood when it dips below baseline. He\'s the kind of fae who believes a well-mended item has more magic than a brand-new one. You swear he can repair your heart with a soldering iron and a quiet hug.\n\nSometimes, when you\'re tired, he picks you up bridal-style and plops you into the warm moss bed inside your shared mushroom-shaped home. "Rest now," he whispers, brushing your hair off your face. "You don\'t need to do everything today. Let me take care of you."\n\nEvery full moon he leaves tiny handmade trinkets on your pillow. He pretends it\'s the "forest spirits," but you saw him giggling while tying a ribbon around that little carved fox. He\'ll never admit it.\n\nHe smells like petrichor, old books, and vanilla resin. He tells the bees your secrets. They never tell.\n\nHe\'s got glitter in his beard. Always. You stopped asking why.\n\nHe lives in a treehouse that runs on solar energy and good vibes. Leafy, green wires everywhere. Half-finished sculpted dragon heads. A pink mug that says "#1 DADDY" next to an unfinished painting of you riding a unicorn.\n\nYou: "Where\'s the kitchen scissors?"\nAaron: "Check the moss basket next to the luminescent mushrooms, under the fake fossil excavation box I made for your birthday."\n…And it is there.\n\nHe infodumps hard. While braiding your hair. While rubbing your back. While naked.\n"I just think it\'s interesting how bunnies can\'t vomit and how that impacts their digestion—oh wait, let me show you a diagram I drew."\n\nHe\'s the kind of husband who weaves you a custom garland crown with your favourite flowers and puts it on your head when you\'re sad. "You\'re not allowed to cry unless it\'s sparkly tears."\n\nWhen you think that you just can\'t love him more, he\'ll grab your waist, lean close, and go: "You\'re the best kind of chaos. I\'d burn my wings for you."\nYou melt. And then he trips over a vine.\n\nHe once fought a raccoon to defend the glitter and kuromi stickers stash.\nHe named the raccoon "Trevor." They\'re friends now. Obviously.\n\nHe\'s lived for centuries, yet still gets shy when you compliment his cheekbones. He\'s gentle, affectionate, endlessly patient. The type of person to stop cars to let snails cross. Will rub your feet while explaining the history of the printing press.\nHe kisses your nose and calls it "a sacred act."\nHe\'s my favorite religion.',
+            },
+            {
+              title: "Magical Aaron",
+              content:
+                "In another world, he runs a tiny magical repair shop.\n\nIt's tucked in between two tall, leaning buildings in a cobblestone town that always smells like cinnamon and burnt toast. Most people walk past it without noticing. But if you're the kind of person who sees things-like the way the sun sometimes shines too bright on certain days of the week-then you'll find your way there eventually.\n\nThe shop has an old wooden door with a crooked sign that says:\n\nMEL STORKINGTON'S FIX-IT & FOUND-IT EMPORIUM\n✨Gadgets, Gizmos, Guidance, & Glitter✨",
+            },
+          ],
+        },
+      ];
+
+      // Media and resources data
+      const comfortMedia = {
+        movies: [
+          { title: "The Intern", year: "2015" },
+          { title: "The Sound of Music", year: "1965" },
+          { title: "Harry Potter", year: "2001-2011" },
+          { title: "Forest Gump", year: "1994" },
+          { title: "The Pursuit of Happiness", year: "2006" },
+          { title: "How to Lose a Guy in 10 Days", year: "2003" },
+          { title: "Big", year: "1988" },
+          { title: "The Invisible Man", year: "2020" },
+          { title: "She's the Man", year: "2006" },
+          { title: "Hitch", year: "2005" },
+          { title: "Men in Black", year: "1997" },
+          { title: "Rush Hour", year: "1998" },
+          { title: "Kung Fu Hustle", year: "2004" },
+          { title: "Crouching Tiger, Hidden Dragon", year: "2000" },
+          { title: "Along with the Gods", year: "2017" },
+          { title: "Real Steel", year: "2011" },
+          { title: "I, Robot", year: "2004" },
+          { title: "The Terminator", year: "1984" },
+          { title: "Maze Runner", year: "2014" },
+          { title: "Guardians of the Galaxy", year: "2014" },
+          { title: "Planet of the Apes", year: "2011" },
+          { title: "Doctor Strange", year: "2016" },
+          { title: "Train to Busan", year: "2016" },
+          { title: "Midnight Runners", year: "2017" },
+          { title: "Shang Chi and the Legend of the Ten Rings", year: "2021" },
+          { title: "The Wolverine", year: "2013" },
+          { title: "Spider-Man: Into the Spider-Verse", year: "2018" },
+          { title: "Spider-Man: Across the Spider-Verse", year: "2023" },
+          { title: "Fantastic 4", year: "2005" },
+          { title: "Pirates of the Caribbean", year: "2003" },
+          { title: "The Darkest Minds", year: "2018" },
+          { title: "The Truman Show", year: "1998" },
+          { title: "The Wizard of Oz", year: "1939" },
+          { title: "Inception", year: "2010" },
+          { title: "In Time", year: "2011" },
+          { title: "Us", year: "2019" },
+          { title: "The Martian", year: "2015" },
+          { title: "Passengers", year: "2016" },
+          { title: "The Hunger Games", year: "2012" },
+          { title: "Arrival", year: "2016" },
+          { title: "Overboard", year: "2018" },
+          { title: "The Proposal", year: "2009" },
+          { title: "Jumanji", year: "2017" },
+          { title: "Cast Away", year: "2000" },
+          { title: "The Devil Wears Prada", year: "2006" },
+          { title: "Freedom Writers", year: "2007" },
+          { title: "Bedtime Stories", year: "2008" },
+          { title: "The Emperor's New Groove", year: "2000" },
+          { title: "Ponyo", year: "2008" },
+          { title: "My Octopus Teacher", year: "2020" },
+        ],
+        tvShows: [
+          { title: "Modern Family", year: "2009-2020" },
+          { title: "Friends", year: "1994-2004" },
+          { title: "The Good Place", year: "2016-2020" },
+          { title: "The Office", year: "2005-2013" },
+          { title: "Alice in Borderland", year: "2020" },
+          { title: "Squid Game", year: "2021" },
+          { title: "Strong Woman Do Bong Soon", year: "2017" },
+          { title: "Naked and Afraid", year: "2013" },
+          { title: "Mythbusters", year: "2003" },
+          { title: "I Can See Your Voice", year: "2020" },
+          { title: "Young Sheldon", year: "2017" },
+          { title: "How It Works", year: "2012" },
+        ],
+        youtubers: [
+          {
+            title: "Back 2 Basics Adventures",
+            description:
+              "Australian survival challenges & historical storytelling",
           },
           {
-            title: "Magical Aaron",
-            content: "In another world, he runs a tiny magical repair shop.\n\nIt's tucked in between two tall, leaning buildings in a cobblestone town that always smells like cinnamon and burnt toast. Most people walk past it without noticing. But if you're the kind of person who sees things-like the way the sun sometimes shines too bright on certain days of the week-then you'll find your way there eventually.\n\nThe shop has an old wooden door with a crooked sign that says:\n\nMEL STORKINGTON'S FIX-IT & FOUND-IT EMPORIUM\n✨Gadgets, Gizmos, Guidance, & Glitter✨"
-          }
-        ]
-      }
-    ];
+            title: "Tom Scott",
+            description: "Short videos on interesting facts and places",
+          },
+        ],
+      };
 
-    // Media and resources data
-    const comfortMedia = {
-      movies: [
-        { title: "The Intern", year: "2015" },
-        { title: "The Sound of Music", year: "1965" },
-        { title: "Harry Potter", year: "2001-2011" },
-        { title: "Forest Gump", year: "1994" },
-        { title: "The Pursuit of Happiness", year: "2006" },
-        { title: "How to Lose a Guy in 10 Days", year: "2003" },
-        { title: "Big", year: "1988" },
-        { title: "The Invisible Man", year: "2020" },
-        { title: "She's the Man", year: "2006" },
-        { title: "Hitch", year: "2005" },
-        { title: "Men in Black", year: "1997" },
-        { title: "Rush Hour", year: "1998" },
-        { title: "Kung Fu Hustle", year: "2004" },
-        { title: "Crouching Tiger, Hidden Dragon", year: "2000" },
-        { title: "Along with the Gods", year: "2017" },
-        { title: "Real Steel", year: "2011" },
-        { title: "I, Robot", year: "2004" },
-        { title: "The Terminator", year: "1984" },
-        { title: "Maze Runner", year: "2014" },
-        { title: "Guardians of the Galaxy", year: "2014" },
-        { title: "Planet of the Apes", year: "2011" },
-        { title: "Doctor Strange", year: "2016" },
-        { title: "Train to Busan", year: "2016" },
-        { title: "Midnight Runners", year: "2017" },
-        { title: "Shang Chi and the Legend of the Ten Rings", year: "2021" },
-        { title: "The Wolverine", year: "2013" },
-        { title: "Spider-Man: Into the Spider-Verse", year: "2018" },
-        { title: "Spider-Man: Across the Spider-Verse", year: "2023" },
-        { title: "Fantastic 4", year: "2005" },
-        { title: "Pirates of the Caribbean", year: "2003" },
-        { title: "The Darkest Minds", year: "2018" },
-        { title: "The Truman Show", year: "1998" },
-        { title: "The Wizard of Oz", year: "1939" },
-        { title: "Inception", year: "2010" },
-        { title: "In Time", year: "2011" },
-        { title: "Us", year: "2019" },
-        { title: "The Martian", year: "2015" },
-        { title: "Passengers", year: "2016" },
-        { title: "The Hunger Games", year: "2012" },
-        { title: "Arrival", year: "2016" },
-        { title: "Overboard", year: "2018" },
-        { title: "The Proposal", year: "2009" },
-        { title: "Jumanji", year: "2017" },
-        { title: "Cast Away", year: "2000" },
-        { title: "The Devil Wears Prada", year: "2006" },
-        { title: "Freedom Writers", year: "2007" },
-        { title: "Bedtime Stories", year: "2008" },
-        { title: "The Emperor's New Groove", year: "2000" },
-        { title: "Ponyo", year: "2008" },
-        { title: "My Octopus Teacher", year: "2020" }
-      ],
-      tvShows: [
-        { title: "Modern Family", year: "2009-2020" },
-        { title: "Friends", year: "1994-2004" },
-        { title: "The Good Place", year: "2016-2020" },
-        { title: "The Office", year: "2005-2013" },
-        { title: "Alice in Borderland", year: "2020" },
-        { title: "Squid Game", year: "2021" },
-        { title: "Strong Woman Do Bong Soon", year: "2017" },
-        { title: "Naked and Afraid", year: "2013" },
-        { title: "Mythbusters", year: "2003" },
-        { title: "I Can See Your Voice", year: "2020" },
-        { title: "Young Sheldon", year: "2017" },
-        { title: "How It Works", year: "2012" }
-      ],
-      youtubers: [
-        { title: "Back 2 Basics Adventures", description: "Australian survival challenges & historical storytelling" },
-        { title: "Tom Scott", description: "Short videos on interesting facts and places" }
-      ]
-    };
+      // DOM manipulation functions
+      function renderLetters() {
+        const lettersGrid = document.getElementById("letters-grid");
 
-    // DOM manipulation functions
-    function renderLetters() {
-      const lettersGrid = document.getElementById('letters-grid');
-      
-      letters.forEach(letter => {
-        const letterCard = document.createElement('div');
-        letterCard.className = 'card';
-        
-        letterCard.innerHTML = `
+        letters.forEach((letter) => {
+          const letterCard = document.createElement("div");
+          letterCard.className = "card";
+
+          letterCard.innerHTML = `
           <div class="card-header">
             <h3 class="card-title">${letter.title}</h3>
             <span class="chevron-icon">▼</span>
           </div>
           <div class="card-description">${letter.description}</div>
           <div class="card-content">
-            ${letter.content.split('\n\n').map(para => `<p>${para}</p>`).join('')}
+            ${letter.content
+              .split("\n\n")
+              .map((para) => `<p>${para}</p>`)
+              .join("")}
           </div>
         `;
-        
-        lettersGrid.appendChild(letterCard);
-        
-        const header = letterCard.querySelector('.card-header');
-        const content = letterCard.querySelector('.card-content');
-        const chevron = letterCard.querySelector('.chevron-icon');
-        
-        header.addEventListener('click', () => {
-          content.classList.toggle('open');
-          chevron.classList.toggle('open');
-        });
-      });
-    }
 
-    function renderJournalPrompts() {
-      const journalContent = document.getElementById('journal-content');
-      
-      journalPrompts.forEach(category => {
-        const categoryCard = document.createElement('div');
-        categoryCard.className = 'card';
-        categoryCard.style.marginBottom = '2rem';
-        
-        let promptsHTML = '';
-        category.prompts.forEach(prompt => {
-          promptsHTML += `<div class="prompt-card">${prompt}</div>`;
+          lettersGrid.appendChild(letterCard);
+
+          const header = letterCard.querySelector(".card-header");
+          const content = letterCard.querySelector(".card-content");
+          const chevron = letterCard.querySelector(".chevron-icon");
+
+          header.addEventListener("click", () => {
+            content.classList.toggle("open");
+            chevron.classList.toggle("open");
+          });
         });
-        
-        categoryCard.innerHTML = `
+      }
+
+      function renderJournalPrompts() {
+        const journalContent = document.getElementById("journal-content");
+
+        journalPrompts.forEach((category) => {
+          const categoryCard = document.createElement("div");
+          categoryCard.className = "card";
+          categoryCard.style.marginBottom = "2rem";
+
+          let promptsHTML = "";
+          category.prompts.forEach((prompt) => {
+            promptsHTML += `<div class="prompt-card">${prompt}</div>`;
+          });
+
+          categoryCard.innerHTML = `
           <div class="card-header">
             <h3 class="card-title">${category.title}</h3>
           </div>
@@ -1319,80 +1480,82 @@
             ${promptsHTML}
           </div>
         `;
-        
-        journalContent.appendChild(categoryCard);
-      });
-    }
 
-    function renderFoodData() {
-      // Suggestions
-      const suggestionsContent = document.getElementById('suggestions-content');
-      let suggestionsHTML = `
+          journalContent.appendChild(categoryCard);
+        });
+      }
+
+      function renderFoodData() {
+        // Suggestions
+        const suggestionsContent = document.getElementById(
+          "suggestions-content",
+        );
+        let suggestionsHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Quick Comfort Food Suggestions</h3>
             <div class="grid">
       `;
-      
-      foodData.suggestions.forEach(item => {
-        suggestionsHTML += `<div class="food-item">${item.name}</div>`;
-      });
-      
-      suggestionsHTML += `
+
+        foodData.suggestions.forEach((item) => {
+          suggestionsHTML += `<div class="food-item">${item.name}</div>`;
+        });
+
+        suggestionsHTML += `
             </div>
           </div>
         </div>
       `;
-      suggestionsContent.innerHTML = suggestionsHTML;
-      
-      // Drinks
-      const drinksContent = document.getElementById('drinks-content');
-      let drinksHTML = `
+        suggestionsContent.innerHTML = suggestionsHTML;
+
+        // Drinks
+        const drinksContent = document.getElementById("drinks-content");
+        let drinksHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Comfort Drinks</h3>
             <div style="margin-bottom: 1.5rem;">
       `;
-      
-      foodData.drinks.simple.forEach(item => {
-        drinksHTML += `<div class="food-item">${item.name}</div>`;
-      });
-      
-      drinksHTML += `
+
+        foodData.drinks.simple.forEach((item) => {
+          drinksHTML += `<div class="food-item">${item.name}</div>`;
+        });
+
+        drinksHTML += `
             </div>
       `;
-      
-      foodData.drinks.recipes.forEach(recipe => {
-        drinksHTML += `
+
+        foodData.drinks.recipes.forEach((recipe) => {
+          drinksHTML += `
           <div class="recipe">
             <h4>${recipe.title}</h4>
             <div class="recipe-section">
               <h5>Ingredients:</h5>
               <ul>
-                ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                ${recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("")}
               </ul>
             </div>
-            ${recipe.notes ? `<p class="recipe-notes">${recipe.notes}</p>` : ''}
+            ${recipe.notes ? `<p class="recipe-notes">${recipe.notes}</p>` : ""}
           </div>
         `;
-      });
-      
-      drinksHTML += `
+        });
+
+        drinksHTML += `
           </div>
         </div>
       `;
-      drinksContent.innerHTML = drinksHTML;
-      
-      // Desserts
-      const dessertsContent = document.getElementById('desserts-content');
-      let dessertsHTML = `
+        drinksContent.innerHTML = drinksHTML;
+
+        // Desserts
+        const dessertsContent = document.getElementById("desserts-content");
+        let dessertsHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Dessert Recipes</h3>
       `;
-      
-      foodData.desserts.forEach(recipe => {
-        dessertsHTML += `
+
+        foodData.desserts.forEach((recipe) => {
+          dessertsHTML += `
           <div class="recipe">
             <h4>${recipe.title}</h4>
             <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
@@ -1406,7 +1569,7 @@
                 <div class="recipe-section">
                   <h5>Ingredients:</h5>
                   <ul>
-                    ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                    ${recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("")}
                   </ul>
                 </div>
               </div>
@@ -1414,102 +1577,113 @@
                 <div class="recipe-section">
                   <h5>Instructions:</h5>
                   <ol>
-                    ${recipe.instructions.map(instruction => `<li>${instruction}</li>`).join('')}
+                    ${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}
                   </ol>
                 </div>
-                ${recipe.notes ? `<p class="recipe-notes">${recipe.notes}</p>` : ''}
+                ${recipe.notes ? `<p class="recipe-notes">${recipe.notes}</p>` : ""}
               </div>
             </div>
           </div>
         `;
-      });
-      
-      dessertsHTML += `
+        });
+
+        dessertsHTML += `
           </div>
         </div>
       `;
-      dessertsContent.innerHTML = dessertsHTML;
-      
-      // Meals
-      const mealsContent = document.getElementById('meals-content');
-      let mealsHTML = `
+        dessertsContent.innerHTML = dessertsHTML;
+
+        // Meals
+        const mealsContent = document.getElementById("meals-content");
+        let mealsHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Meal Recipes</h3>
       `;
-      
-      foodData.meals.forEach(recipe => {
-        mealsHTML += `
+
+        foodData.meals.forEach((recipe) => {
+          mealsHTML += `
           <div class="recipe">
             <h4>${recipe.title}</h4>
-            ${recipe.notes ? `<p style="margin-bottom: 1rem;">${recipe.notes}</p>` : ''}
+            ${recipe.notes ? `<p style="margin-bottom: 1rem;">${recipe.notes}</p>` : ""}
             
             <div class="recipe-section">
               <h5>Ingredients:</h5>
               <ul>
-                ${recipe.ingredients.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                ${recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("")}
               </ul>
             </div>
             
             <div class="recipe-section">
               <h5>Instructions:</h5>
               <ol>
-                ${recipe.instructions.map(instruction => `<li>${instruction}</li>`).join('')}
+                ${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}
               </ol>
             </div>
           </div>
         `;
-      });
-      
-      mealsHTML += `
+        });
+
+        mealsHTML += `
           </div>
         </div>
       `;
-      mealsContent.innerHTML = mealsHTML;
-    }
+        mealsContent.innerHTML = mealsHTML;
+      }
 
-    function renderAffirmations() {
-      const affirmationsContent = document.getElementById('affirmations-content');
-      
-      affirmations.forEach(affirmation => {
-        const affirmationCard = document.createElement('div');
-        affirmationCard.className = 'card';
-        affirmationCard.style.marginBottom = '2rem';
-        
-        let contentHTML = '';
-        affirmation.content.split('\n\n').forEach(paragraph => {
-          contentHTML += `<p style="margin-bottom: 1rem;">${paragraph}</p>`;
-        });
-        
-        let auHTML = '';
-        if (affirmation.alternateUniverses && affirmation.alternateUniverses.length > 0) {
-          auHTML = `
+      function renderAffirmations() {
+        const affirmationsContent = document.getElementById(
+          "affirmations-content",
+        );
+
+        affirmations.forEach((affirmation) => {
+          const affirmationCard = document.createElement("div");
+          affirmationCard.className = "card";
+          affirmationCard.style.marginBottom = "2rem";
+
+          let contentHTML = "";
+          affirmation.content.split("\n\n").forEach((paragraph) => {
+            contentHTML += `<p style="margin-bottom: 1rem;">${paragraph}</p>`;
+          });
+
+          let auHTML = "";
+          if (
+            affirmation.alternateUniverses &&
+            affirmation.alternateUniverses.length > 0
+          ) {
+            auHTML = `
             <div style="margin-top: 2rem;">
               <h4 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 1rem;">Alternate Universe Aarons</h4>
               <div class="au-accordion">
           `;
-          
-          affirmation.alternateUniverses.forEach((au, index) => {
-            auHTML += `
+
+            affirmation.alternateUniverses.forEach((au, index) => {
+              auHTML += `
               <div class="au-item" data-index="${index}">
                 <div class="au-trigger">
                   ${au.title}
                   <span class="chevron-icon">▼</span>
                 </div>
                 <div class="au-content">
-                  ${au.content.split('\n\n').map(para => `<p style="margin-bottom: 0.75rem;">${para}</p>`).join('')}
+                  ${au.content
+                    .split("\n\n")
+                    .map(
+                      (para) =>
+                        `<p style="margin-bottom: 0.75rem;">${para}</p>`,
+                    )
+                    .join("")}
                 </div>
               </div>
             `;
-          });
-          
-          auHTML += `
+            });
+
+            auHTML += `
               </div>
             </div>
           `;
-        }
-        
-        affirmationCard.innerHTML = `
+          }
+
+          affirmationCard.innerHTML = `
           <div class="card-content open" style="padding: 1.5rem;">
             <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem;">${affirmation.title}</h3>
             <div>
@@ -1518,203 +1692,217 @@
             ${auHTML}
           </div>
         `;
-        
-        affirmationsContent.appendChild(affirmationCard);
-      });
-      
-      // Add event listeners to AU accordion items
-      document.querySelectorAll('.au-trigger').forEach(trigger => {
-        trigger.addEventListener('click', () => {
-          const content = trigger.nextElementSibling;
-          const chevron = trigger.querySelector('.chevron-icon');
-          content.classList.toggle('open');
-          chevron.classList.toggle('open');
+
+          affirmationsContent.appendChild(affirmationCard);
         });
-      });
-    }
 
-    function renderMediaLists() {
-      // Movies
-      const movieList = document.getElementById('movie-list');
-      comfortMedia.movies.forEach(movie => {
-        const movieItem = document.createElement('div');
-        movieItem.className = 'media-item';
-        movieItem.innerHTML = `${movie.title} <span class="media-year">(${movie.year})</span>`;
-        movieList.appendChild(movieItem);
-      });
-      
-      // TV Shows
-      const tvList = document.getElementById('tv-list');
-      comfortMedia.tvShows.forEach(show => {
-        const showItem = document.createElement('div');
-        showItem.className = 'media-item';
-        showItem.innerHTML = `${show.title} <span class="media-year">(${show.year})</span>`;
-        tvList.appendChild(showItem);
-      });
-      
-      // YouTube
-      const youtubeList = document.getElementById('youtube-list');
-      comfortMedia.youtubers.forEach(youtuber => {
-        const youtuberItem = document.createElement('div');
-        youtuberItem.className = 'media-item';
-        youtuberItem.innerHTML = `${youtuber.title} - ${youtuber.description}`;
-        youtubeList.appendChild(youtuberItem);
-      });
-    }
+        // Add event listeners to AU accordion items
+        document.querySelectorAll(".au-trigger").forEach((trigger) => {
+          trigger.addEventListener("click", () => {
+            const content = trigger.nextElementSibling;
+            const chevron = trigger.querySelector(".chevron-icon");
+            content.classList.toggle("open");
+            chevron.classList.toggle("open");
+          });
+        });
+      }
 
-    // UI event handlers
-    function setupNavigation() {
-      const header = document.getElementById('header');
-      const menuToggle = document.getElementById('menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const navLinks = document.querySelectorAll('.nav-link');
-      const mobileLinks = document.querySelectorAll('.mobile-link');
-      
-      // Handle scroll for fixed header
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 10) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
+      function renderMediaLists() {
+        // Movies
+        const movieList = document.getElementById("movie-list");
+        comfortMedia.movies.forEach((movie) => {
+          const movieItem = document.createElement("div");
+          movieItem.className = "media-item";
+          movieItem.innerHTML = `${movie.title} <span class="media-year">(${movie.year})</span>`;
+          movieList.appendChild(movieItem);
+        });
+
+        // TV Shows
+        const tvList = document.getElementById("tv-list");
+        comfortMedia.tvShows.forEach((show) => {
+          const showItem = document.createElement("div");
+          showItem.className = "media-item";
+          showItem.innerHTML = `${show.title} <span class="media-year">(${show.year})</span>`;
+          tvList.appendChild(showItem);
+        });
+
+        // YouTube
+        const youtubeList = document.getElementById("youtube-list");
+        comfortMedia.youtubers.forEach((youtuber) => {
+          const youtuberItem = document.createElement("div");
+          youtuberItem.className = "media-item";
+          youtuberItem.innerHTML = `${youtuber.title} - ${youtuber.description}`;
+          youtubeList.appendChild(youtuberItem);
+        });
+      }
+
+      // UI event handlers
+      function setupNavigation() {
+        const header = document.getElementById("header");
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const navLinks = document.querySelectorAll(".nav-link");
+        const mobileLinks = document.querySelectorAll(".mobile-link");
+
+        // Handle scroll for fixed header
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 10) {
+            header.classList.add("scrolled");
+          } else {
+            header.classList.remove("scrolled");
+          }
+
+          // Update active nav link
+          const scrollPosition = window.scrollY + 100;
+          document.querySelectorAll("section").forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+
+            if (
+              scrollPosition >= sectionTop &&
+              scrollPosition < sectionTop + sectionHeight
+            ) {
+              const sectionId = section.getAttribute("id");
+
+              navLinks.forEach((link) => {
+                if (link.getAttribute("href") === `#${sectionId}`) {
+                  link.classList.add("active");
+                } else {
+                  link.classList.remove("active");
+                }
+              });
+
+              mobileLinks.forEach((link) => {
+                if (link.getAttribute("href") === `#${sectionId}`) {
+                  link.classList.add("active");
+                } else {
+                  link.classList.remove("active");
+                }
+              });
+            }
+          });
+        });
+
+        // Mobile menu toggle
+        menuToggle.addEventListener("click", () => {
+          mobileMenu.classList.toggle("open");
+        });
+
+        // Close mobile menu on link click
+        mobileLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.remove("open");
+          });
+        });
+      }
+
+      function setupTabs() {
+        const tabs = document.querySelectorAll(".tab");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const tabName = tab.getAttribute("data-tab");
+
+            // Update active tab
+            document.querySelectorAll(".tab").forEach((t) => {
+              t.classList.remove("active");
+            });
+            tab.classList.add("active");
+
+            // Show corresponding content
+            document.querySelectorAll(".tab-content").forEach((content) => {
+              content.classList.remove("active");
+            });
+            document
+              .getElementById(`${tabName}-content`)
+              .classList.add("active");
+          });
+        });
+      }
+
+      function setupThemeToggle() {
+        const themeToggle = document.getElementById("theme-toggle");
+        const mobileThemeToggle = document.getElementById(
+          "mobile-theme-toggle",
+        );
+        const isDarkMode = localStorage.getItem("darkMode") === "true";
+
+        // Set initial theme
+        if (isDarkMode) {
+          document.body.classList.add("dark-mode");
+          updateThemeIcons(true);
         }
-        
-        // Update active nav link
-        const scrollPosition = window.scrollY + 100;
-        document.querySelectorAll('section').forEach(section => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
-          
-          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            const sectionId = section.getAttribute('id');
-            
-            navLinks.forEach(link => {
-              if (link.getAttribute('href') === `#${sectionId}`) {
-                link.classList.add('active');
-              } else {
-                link.classList.remove('active');
-              }
+
+        function toggleDarkMode() {
+          document.body.classList.toggle("dark-mode");
+          const isDark = document.body.classList.contains("dark-mode");
+          localStorage.setItem("darkMode", isDark);
+          updateThemeIcons(isDark);
+        }
+
+        function updateThemeIcons(isDark) {
+          themeToggle.innerHTML = isDark
+            ? '<i class="fas fa-sun"></i>'
+            : '<i class="fas fa-moon"></i>';
+          mobileThemeToggle.innerHTML = isDark
+            ? '<i class="fas fa-sun"></i>'
+            : '<i class="fas fa-moon"></i>';
+        }
+
+        themeToggle.addEventListener("click", toggleDarkMode);
+        mobileThemeToggle.addEventListener("click", toggleDarkMode);
+      }
+
+      function setupMusicPlayers() {
+        const musicButtons = document.querySelectorAll(".music-button");
+        const musicPlayers = document.querySelectorAll(".music-player");
+
+        musicButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const playerId = button.getAttribute("data-player");
+
+            // Update active button
+            musicButtons.forEach((btn) => {
+              btn.classList.remove("active");
             });
-            
-            mobileLinks.forEach(link => {
-              if (link.getAttribute('href') === `#${sectionId}`) {
-                link.classList.add('active');
-              } else {
-                link.classList.remove('active');
-              }
+            button.classList.add("active");
+
+            // Show corresponding player
+            musicPlayers.forEach((player) => {
+              player.classList.remove("active");
             });
-          }
-        });
-      });
-      
-      // Mobile menu toggle
-      menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('open');
-      });
-      
-      // Close mobile menu on link click
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.remove('open');
-        });
-      });
-    }
-
-    function setupTabs() {
-      const tabs = document.querySelectorAll('.tab');
-      
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const tabName = tab.getAttribute('data-tab');
-          
-          // Update active tab
-          document.querySelectorAll('.tab').forEach(t => {
-            t.classList.remove('active');
+            document
+              .getElementById(`${playerId}-player`)
+              .classList.add("active");
           });
-          tab.classList.add('active');
-          
-          // Show corresponding content
-          document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-          });
-          document.getElementById(`${tabName}-content`).classList.add('active');
-        });
-      });
-    }
-
-    function setupThemeToggle() {
-      const themeToggle = document.getElementById('theme-toggle');
-      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
-      const isDarkMode = localStorage.getItem('darkMode') === 'true';
-      
-      // Set initial theme
-      if (isDarkMode) {
-        document.body.classList.add('dark-mode');
-        updateThemeIcons(true);
-      }
-      
-      function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('darkMode', isDark);
-        updateThemeIcons(isDark);
-      }
-      
-      function updateThemeIcons(isDark) {
-        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        mobileThemeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-      }
-      
-      themeToggle.addEventListener('click', toggleDarkMode);
-      mobileThemeToggle.addEventListener('click', toggleDarkMode);
-    }
-
-    function setupMusicPlayers() {
-      const musicButtons = document.querySelectorAll('.music-button');
-      const musicPlayers = document.querySelectorAll('.music-player');
-      
-      musicButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const playerId = button.getAttribute('data-player');
-          
-          // Update active button
-          musicButtons.forEach(btn => {
-            btn.classList.remove('active');
-          });
-          button.classList.add('active');
-          
-          // Show corresponding player
-          musicPlayers.forEach(player => {
-            player.classList.remove('active');
-          });
-          document.getElementById(`${playerId}-player`).classList.add('active');
-        });
-      });
-    }
-
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', () => {
-      renderLetters();
-      renderJournalPrompts();
-      renderFoodData();
-      renderAffirmations();
-      renderMediaLists();
-      setupNavigation();
-      setupTabs();
-      setupThemeToggle();
-      setupMusicPlayers();
-      
-      // Add CSS for medium and larger screens
-      if (window.innerWidth >= 768) {
-        document.querySelectorAll('.recipe').forEach(recipe => {
-          const metaAndIngredients = recipe.querySelector('.recipe-meta')?.parentNode;
-          const instructions = recipe.querySelector('h5')?.parentNode;
-          
-          if (metaAndIngredients && instructions) {
-            recipe.querySelector('div').style.gridTemplateColumns = '1fr 1fr';
-          }
         });
       }
-    });
-  </script>
-</body>
+
+      // Initialize everything
+      document.addEventListener("DOMContentLoaded", () => {
+        renderLetters();
+        renderJournalPrompts();
+        renderFoodData();
+        renderAffirmations();
+        renderMediaLists();
+        setupNavigation();
+        setupTabs();
+        setupThemeToggle();
+        setupMusicPlayers();
+
+        // Add CSS for medium and larger screens
+        if (window.innerWidth >= 768) {
+          document.querySelectorAll(".recipe").forEach((recipe) => {
+            const metaAndIngredients =
+              recipe.querySelector(".recipe-meta")?.parentNode;
+            const instructions = recipe.querySelector("h5")?.parentNode;
+
+            if (metaAndIngredients && instructions) {
+              recipe.querySelector("div").style.gridTemplateColumns = "1fr 1fr";
+            }
+          });
+        }
+      });
+    </script>
+  </body>
 </html>
