@@ -181,6 +181,7 @@
         transition: color 0.3s ease;
         display: flex;
         align-items: center;
+        padding: 0.5rem;
       }
 
       .theme-toggle:hover {
@@ -212,7 +213,7 @@
       /* Music section */
       .music-section {
         background-color: var(--prompt-bg);
-        padding: 2rem 1.5rem; /* Increased top/bottom padding from 1.5rem */
+        padding: 2rem 1.5rem;
         border-radius: 0.75rem;
         margin-bottom: 2rem;
         margin-top: 1rem;
@@ -226,8 +227,8 @@
         padding: 0 1rem;
         word-wrap: break-word;
         line-height: 1.4;
-        white-space: normal; /* Add this line */
-        overflow: visible; /* Add this line */
+        white-space: normal;
+        overflow: visible;
       }
 
       .music-buttons {
@@ -582,7 +583,7 @@
       .resources-grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 2rem; /* Increased from 1rem to create more space between cards */
+        gap: 2rem;
       }
 
       .resource-card {
@@ -609,8 +610,8 @@
       }
 
       .resource-card {
-        margin-bottom: 1rem; /* Added margin between cards */
-        overflow: hidden; /* Contain all content */
+        margin-bottom: 1rem;
+        overflow: hidden;
       }
       .resource-link {
         display: inline-block;
@@ -633,14 +634,14 @@
       /* Video container */
       .video-container {
         position: relative;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        padding-bottom: 56.25%;
         height: 0;
         overflow: hidden;
         border-radius: 0.75rem;
-        margin-top: 1.5rem; /* Increased from 1rem */
-        margin-bottom: 1rem; /* Added bottom margin */
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
         box-shadow: 0 4px 10px var(--shadow);
-        clear: both; /* Ensures it clears any floating elements */
+        clear: both;
       }
 
       .video-container iframe {
@@ -657,8 +658,8 @@
         display: grid;
         grid-template-columns: 1fr;
         gap: 1.5rem;
-        margin-top: 2rem; /* Increased from 1.5rem */
-        clear: both; /* Ensures it starts on a new line */
+        margin-top: 2rem;
+        clear: both;
       }
 
       .coloring-item {
@@ -1466,8 +1467,12 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
       // DOM manipulation functions
       function renderLetters() {
         const lettersGrid = document.getElementById("letters-grid");
-        lettersGrid.innerHTML = ''; // Clear any existing content
-  
+        if (!lettersGrid) {
+          console.error("Letters grid element not found");
+          return;
+        }
+        lettersGrid.innerHTML = '';
+
         letters.forEach((letter) => {
           const letterCard = document.createElement("div");
           letterCard.className = "card";
@@ -1501,6 +1506,11 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
 
       function renderJournalPrompts() {
         const journalContent = document.getElementById("journal-content");
+        if (!journalContent) {
+          console.error("Journal content element not found");
+          return;
+        }
+        journalContent.innerHTML = '';
 
         journalPrompts.forEach((category) => {
           const categoryCard = document.createElement("div");
@@ -1527,13 +1537,18 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
 
       function renderFoodData() {
         // Suggestions
-        const suggestionsContent = document.getElementById("suggestions-content",);
+        const suggestionsContent = document.getElementById("suggestions-content");
+        if (!suggestionsContent) {
+          console.error("Suggestions content element not found");
+          return;
+        }
+        
         let suggestionsHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Quick Comfort Food Suggestions</h3>
             <div class="grid">
-      `;
+        `;
 
         foodData.suggestions.forEach((item) => {
           suggestionsHTML += `<div class="food-item">${item.name}</div>`;
@@ -1543,17 +1558,22 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
             </div>
           </div>
         </div>
-      `;
+        `;
         suggestionsContent.innerHTML = suggestionsHTML;
 
         // Drinks
         const drinksContent = document.getElementById("drinks-content");
+        if (!drinksContent) {
+          console.error("Drinks content element not found");
+          return;
+        }
+        
         let drinksHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Comfort Drinks</h3>
             <div style="margin-bottom: 1.5rem;">
-      `;
+        `;
 
         foodData.drinks.simple.forEach((item) => {
           drinksHTML += `<div class="food-item">${item.name}</div>`;
@@ -1561,7 +1581,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
 
         drinksHTML += `
             </div>
-      `;
+        `;
 
         foodData.drinks.recipes.forEach((recipe) => {
           drinksHTML += `
@@ -1581,16 +1601,21 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         drinksHTML += `
           </div>
         </div>
-      `;
+        `;
         drinksContent.innerHTML = drinksHTML;
 
         // Desserts
         const dessertsContent = document.getElementById("desserts-content");
+        if (!dessertsContent) {
+          console.error("Desserts content element not found");
+          return;
+        }
+        
         let dessertsHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Dessert Recipes</h3>
-      `;
+        `;
 
         foodData.desserts.forEach((recipe) => {
           dessertsHTML += `
@@ -1628,16 +1653,21 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         dessertsHTML += `
           </div>
         </div>
-      `;
+        `;
         dessertsContent.innerHTML = dessertsHTML;
 
         // Meals
         const mealsContent = document.getElementById("meals-content");
+        if (!mealsContent) {
+          console.error("Meals content element not found");
+          return;
+        }
+        
         let mealsHTML = `
         <div class="card">
           <div class="card-content open">
             <h3 class="card-title" style="margin-bottom: 1rem;">Meal Recipes</h3>
-      `;
+        `;
 
         foodData.meals.forEach((recipe) => {
           mealsHTML += `
@@ -1665,12 +1695,17 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         mealsHTML += `
           </div>
         </div>
-      `;
+        `;
         mealsContent.innerHTML = mealsHTML;
       }
 
       function renderAffirmations() {
         const affirmationsContent = document.getElementById("affirmations-content");
+        if (!affirmationsContent) {
+          console.error("Affirmations content element not found");
+          return;
+        }
+        affirmationsContent.innerHTML = '';
 
         affirmations.forEach((affirmation) => {
           const affirmationCard = document.createElement("div");
@@ -1683,15 +1718,12 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
           });
 
           let auHTML = "";
-          if (
-            affirmation.alternateUniverses &&
-            affirmation.alternateUniverses.length > 0
-          ) {
+          if (affirmation.alternateUniverses && affirmation.alternateUniverses.length > 0) {
             auHTML = `
             <div style="margin-top: 2rem;">
               <h4 style="font-size: 1.25rem; color: var(--primary); margin-bottom: 1rem;">Alternate Universe Aarons</h4>
               <div class="au-accordion">
-          `;
+            `;
 
             affirmation.alternateUniverses.forEach((au, index) => {
               auHTML += `
@@ -1703,10 +1735,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
                 <div class="au-content">
                   ${au.content
                     .split("\n\n")
-                    .map(
-                      (para) =>
-                        `<p style="margin-bottom: 0.75rem;">${para}</p>`,
-                    )
+                    .map((para) => `<p style="margin-bottom: 0.75rem;">${para}</p>`)
                     .join("")}
                 </div>
               </div>
@@ -1716,7 +1745,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
             auHTML += `
               </div>
             </div>
-          `;
+            `;
           }
 
           affirmationCard.innerHTML = `
@@ -1727,7 +1756,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
             </div>
             ${auHTML}
           </div>
-        `;
+          `;
 
           affirmationsContent.appendChild(affirmationCard);
         });
@@ -1746,30 +1775,39 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
       function renderMediaLists() {
         // Movies
         const movieList = document.getElementById("movie-list");
-        comfortMedia.movies.forEach((movie) => {
-          const movieItem = document.createElement("div");
-          movieItem.className = "media-item";
-          movieItem.innerHTML = `${movie.title} <span class="media-year">(${movie.year})</span>`;
-          movieList.appendChild(movieItem);
-        });
+        if (movieList) {
+          movieList.innerHTML = '';
+          comfortMedia.movies.forEach((movie) => {
+            const movieItem = document.createElement("div");
+            movieItem.className = "media-item";
+            movieItem.innerHTML = `${movie.title} <span class="media-year">(${movie.year})</span>`;
+            movieList.appendChild(movieItem);
+          });
+        }
 
         // TV Shows
         const tvList = document.getElementById("tv-list");
-        comfortMedia.tvShows.forEach((show) => {
-          const showItem = document.createElement("div");
-          showItem.className = "media-item";
-          showItem.innerHTML = `${show.title} <span class="media-year">(${show.year})</span>`;
-          tvList.appendChild(showItem);
-        });
+        if (tvList) {
+          tvList.innerHTML = '';
+          comfortMedia.tvShows.forEach((show) => {
+            const showItem = document.createElement("div");
+            showItem.className = "media-item";
+            showItem.innerHTML = `${show.title} <span class="media-year">(${show.year})</span>`;
+            tvList.appendChild(showItem);
+          });
+        }
 
         // YouTube
         const youtubeList = document.getElementById("youtube-list");
-        comfortMedia.youtubers.forEach((youtuber) => {
-          const youtuberItem = document.createElement("div");
-          youtuberItem.className = "media-item";
-          youtuberItem.innerHTML = `${youtuber.title} - ${youtuber.description}`;
-          youtubeList.appendChild(youtuberItem);
-        });
+        if (youtubeList) {
+          youtubeList.innerHTML = '';
+          comfortMedia.youtubers.forEach((youtuber) => {
+            const youtuberItem = document.createElement("div");
+            youtuberItem.className = "media-item";
+            youtuberItem.innerHTML = `${youtuber.title} - ${youtuber.description}`;
+            youtubeList.appendChild(youtuberItem);
+          });
+        }
       }
 
       // UI event handlers
@@ -1820,14 +1858,18 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         });
 
         // Mobile menu toggle
-        menuToggle.addEventListener("click", () => {
-          mobileMenu.classList.toggle("open");
-        });
+        if (menuToggle && mobileMenu) {
+          menuToggle.addEventListener("click", () => {
+            mobileMenu.classList.toggle("open");
+          });
+        }
 
         // Close mobile menu on link click
         mobileLinks.forEach((link) => {
           link.addEventListener("click", () => {
-            mobileMenu.classList.remove("open");
+            if (mobileMenu) {
+              mobileMenu.classList.remove("open");
+            }
           });
         });
       }
@@ -1849,47 +1891,74 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
             document.querySelectorAll(".tab-content").forEach((content) => {
               content.classList.remove("active");
             });
-            document
-              .getElementById(`${tabName}-content`)
-              .classList.add("active");
+            const tabContent = document.getElementById(`${tabName}-content`);
+            if (tabContent) {
+              tabContent.classList.add("active");
+            }
           });
         });
       }
 
       function setupThemeToggle() {
         const themeToggle = document.getElementById("theme-toggle");
-        const mobileThemeToggle = document.getElementById(
-          "mobile-theme-toggle",
-        );
-        const isDarkMode = localStorage.getItem("darkMode") === "true";
+        const mobileThemeToggle = document.getElementById("mobile-theme-toggle");
+        
+        // Check for saved theme preference or use system preference
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDarkMode = localStorage.getItem("darkMode");
+        
+        // If no preference saved, use system preference
+        if (isDarkMode === null) {
+          isDarkMode = systemPrefersDark;
+        } else {
+          // Convert string to boolean
+          isDarkMode = isDarkMode === "true";
+        }
 
         // Set initial theme
-        if (isDarkMode) {
-          document.body.classList.add("dark-mode");
-          updateThemeIcons(true);
+        setTheme(isDarkMode);
+
+        // Toggle function
+        function toggleTheme() {
+          isDarkMode = !document.body.classList.contains("dark-mode");
+          setTheme(isDarkMode);
         }
 
-        function toggleDarkMode() {
-          document.body.classList.toggle("dark-mode");
-          const isDark = document.body.classList.contains("dark-mode");
-          localStorage.setItem("darkMode", isDark);
-          updateThemeIcons(isDark);
+        // Apply theme function
+        function setTheme(darkMode) {
+          if (darkMode) {
+            document.body.classList.add("dark-mode");
+            localStorage.setItem("darkMode", "true");
+            updateThemeIcons(true);
+          } else {
+            document.body.classList.remove("dark-mode");
+            localStorage.setItem("darkMode", "false");
+            updateThemeIcons(false);
+          }
         }
 
+        // Update icon function
         function updateThemeIcons(isDark) {
-          themeToggle.innerHTML = isDark
-            ? '<i class="fas fa-sun"></i>'
-            : '<i class="fas fa-moon"></i>';
-          mobileThemeToggle.innerHTML = isDark
-            ? '<i class="fas fa-sun"></i>'
-            : '<i class="fas fa-moon"></i>';
+          const icon = isDark ? "sun" : "moon";
+          [themeToggle, mobileThemeToggle].forEach(button => {
+            if (button) {
+              button.innerHTML = `<i class="fas fa-${icon}"></i>`;
+            }
+          });
         }
 
-        themeToggle.addEventListener("click", toggleDarkMode);
-        mobileThemeToggle.addEventListener("click", toggleDarkMode);
+        // Event listeners
+        if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
+        if (mobileThemeToggle) mobileThemeToggle.addEventListener("click", toggleTheme);
+
+        // Watch for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+          if (localStorage.getItem("darkMode") === null) {
+            setTheme(e.matches);
+          }
+        });
       }
 
-      // Ensure only one YouTube embed plays at a time
       function setupMusicPlayerExclusivity() {
         const musicButtons = document.querySelectorAll(".music-button");
         const musicPlayers = document.querySelectorAll(".music-player");
@@ -1922,15 +1991,17 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
             musicPlayers.forEach((player) => {
               player.classList.remove("active");
             });
-            document
-              .getElementById(`${playerId}-player`)
-              .classList.add("active");
+            const playerElement = document.getElementById(`${playerId}-player`);
+            if (playerElement) {
+              playerElement.classList.add("active");
+            }
           });
         });
       }
 
       // Initialize everything
       function initializeApp() {
+        console.log("Initializing app...");
         renderLetters();
         renderJournalPrompts();
         renderFoodData();
@@ -1941,12 +2012,13 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         setupThemeToggle();
         setupMusicPlayerExclusivity();
       }
-      
+
+      // Multiple initialization triggers
       document.addEventListener("DOMContentLoaded", initializeApp);
       window.addEventListener("load", initializeApp);
-      
-        }
-      });
+
+      // Also run after a short delay in case of race conditions
+      setTimeout(initializeApp, 500);
     </script>
   </body>
 </html>
