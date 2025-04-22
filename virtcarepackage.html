@@ -221,11 +221,13 @@
 
       .music-heading {
         font-size: 1.25rem;
-        margin-bottom: 1.5rem; /* Increased from 1rem */
+        margin-bottom: 1.5rem;
         text-align: center;
-        padding: 0 1rem; /* Added padding */
-        word-wrap: break-word; /* Ensures text wraps properly */
-        line-height: 1.4; /* Improved line height for readability */
+        padding: 0 1rem;
+        word-wrap: break-word;
+        line-height: 1.4;
+        white-space: normal; /* Add this line */
+        overflow: visible; /* Add this line */
       }
 
       .music-buttons {
@@ -1525,9 +1527,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
 
       function renderFoodData() {
         // Suggestions
-        const suggestionsContent = document.getElementById(
-          "suggestions-content",
-        );
+        const suggestionsContent = document.getElementById("suggestions-content",);
         let suggestionsHTML = `
         <div class="card">
           <div class="card-content open">
@@ -1670,9 +1670,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
       }
 
       function renderAffirmations() {
-        const affirmationsContent = document.getElementById(
-          "affirmations-content",
-        );
+        const affirmationsContent = document.getElementById("affirmations-content");
 
         affirmations.forEach((affirmation) => {
           const affirmationCard = document.createElement("div");
@@ -1932,7 +1930,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
       }
 
       // Initialize everything
-      document.addEventListener("DOMContentLoaded", () => {
+      function initializeApp() {
         renderLetters();
         renderJournalPrompts();
         renderFoodData();
@@ -1942,18 +1940,11 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         setupTabs();
         setupThemeToggle();
         setupMusicPlayerExclusivity();
-
-        // Add CSS for medium and larger screens
-        if (window.innerWidth >= 768) {
-          document.querySelectorAll(".recipe").forEach((recipe) => {
-            const metaAndIngredients =
-              recipe.querySelector(".recipe-meta")?.parentNode;
-            const instructions = recipe.querySelector("h5")?.parentNode;
-
-            if (metaAndIngredients && instructions) {
-              recipe.querySelector("div").style.gridTemplateColumns = "1fr 1fr";
-            }
-          });
+      }
+      
+      document.addEventListener("DOMContentLoaded", initializeApp);
+      window.addEventListener("load", initializeApp);
+      
         }
       });
     </script>
