@@ -867,7 +867,7 @@
       }
     </style>
   </head>
-  <body>
+    <body>
     <header id="header">
       <div class="container">
         <nav>
@@ -998,98 +998,65 @@
         <h2>Comfort Media</h2>
         <p>
           A curated list of movies, TV shows, and content creators to bring you
-          comfort.
+          comfort when you need it.
         </p>
-        <div class="media-grid">
-          <div class="media-card">
-            <h4>Comfort Movies</h4>
-            <div class="media-list" id="movie-list"></div>
-          </div>
-          <div class="media-card">
-            <h4>TV Shows</h4>
-            <div class="media-list" id="tv-list"></div>
-          </div>
-          <div class="media-card">
-            <h4>YouTube Channels</h4>
-            <div class="media-list" id="youtube-list"></div>
-          </div>
+        <div class="media-grid" id="media-grid"></div>
+
+        <!-- TikTok video link -->
+        <div class="video-link-container">
+          <a href="/mellington-care-den/images/blessedtiktok.mp4" target="_blank" class="video-link">
+            <div class="video-thumbnail">
+              <i class="fas fa-video"></i>
+              <span>Watch some blessed TikToks</span>
+            </div>
+          </a>
         </div>
       </section>
 
       <section id="resources">
-        <h2>Helpful Resources</h2>
-        <p>Additional resources to support your well-being.</p>
+        <h2>Resources</h2>
+        <p>Links, tools, and resources to help during difficult times.</p>
+
         <div class="resources-grid">
+          <!-- Digital Hugs -->
           <div class="resource-card animated">
             <h4>Digital Hugs</h4>
             <p>
-              Sometimes we all need a virtual embrace. Click below to access a
-              collection of comforting hug gifs.
+              Sometimes we all need a hug, even if it's virtual. Here's a
+              collection of comforting digital hugs for when you need them:
             </p>
             <a
-              href="https://giphy.com/explore/virtual-hug"
+              href="https://giphy.com/explore/hug"
               class="resource-link"
               target="_blank"
-              >Find a digital hug <i class="fas fa-external-link-alt"></i
+              rel="noopener"
+              >Browse Hug GIFs <i class="fas fa-external-link-alt"></i
             ></a>
           </div>
+
+          <!-- Gentle Reminders -->
           <div class="resource-card animated">
             <h4>Gentle Reminders</h4>
-            <div class="prompt-card">
-              <p><i class="fas fa-lungs"></i> Breathe deeply</p>
-              <p><i class="fas fa-glass-water"></i> Drink some water</p>
-              <p><i class="fas fa-heart"></i> You matter, exactly as you are</p>
-            </div>
-          </div>
-
-          <div class="resource-card animated">
-            <h4>Wholesome Content</h4>
             <p>
-              Sometimes you just need to see something heartwarming to brighten
-              your day.
+              Gentle reminder: breathe, drink water, you matter, and it's okay
+              to take breaks.
             </p>
-            <div class="video-link-container">
-              <a
-                href="/mellington-care-den/images/blessedtiktok.mp4"
-                target="_blank"
-                class="video-link"
-              >
-                <div class="video-thumbnail">
-                  <i class="fas fa-play-circle"></i>
-                  <span>Click to watch video in new tab</span>
-                </div>
-              </a>
-            </div>
           </div>
 
+          <!-- Custom Coloring Pages -->
           <div class="resource-card animated">
             <h4>Custom Coloring Pages</h4>
             <p>
-              Creative expression can be therapeutic. Download these custom
-              coloring pages.
+              Coloring can be meditative and calming. Download these custom
+              pages to print and color whenever you need a mindful activity:
             </p>
+
             <div class="coloring-grid">
-              <div class="coloring-item">
-                <img
-                  src="/mellington-care-den/images/turningbadladyintofrog.png"
-                  alt="Wizard with a frog"
-                  class="coloring-image"
-                />
-                <div class="coloring-caption">
-                  Turning Bad Lady into a Frog
-                  <br />
-                  <a
-                    href="/mellington-care-den/images/turningbadladyintofrog.png"
-                    class="download-btn"
-                    download="wizard_frog.png"
-                    ><i class="fas fa-download"></i> Download</a
-                  >
-                </div>
-              </div>
+              <!-- Coloring Page 1 -->
               <div class="coloring-item">
                 <img
                   src="/mellington-care-den/images/forestvibe.png"
-                  alt="Forest with animals"
+                  alt="Forest Vibe Coloring Page"
                   class="coloring-image"
                 />
                 <div class="coloring-caption">
@@ -1097,42 +1064,65 @@
                   <br />
                   <a
                     href="/mellington-care-den/images/forestvibe.png"
+                    download
                     class="download-btn"
-                    download="forest_vibes.png"
                     ><i class="fas fa-download"></i> Download</a
                   >
                 </div>
               </div>
+
+              <!-- Coloring Page 2 -->
               <div class="coloring-item">
                 <img
-                  src="/mellington-care-den/images/Melreadingwithtea.png"
-                  alt="Reading with tea"
+                  src="/mellington-care-den/images/turningbadladyintofrog.png"
+                  alt="Frog Transformation Coloring Page"
                   class="coloring-image"
                 />
                 <div class="coloring-caption">
-                  Mel Reading with Tea
+                  Frog Transformation
                   <br />
                   <a
-                    href="/mellington-care-den/images/Melreadingwithtea.png"
+                    href="/mellington-care-den/images/turningbadladyintofrog.png"
+                    download
                     class="download-btn"
-                    download="mel_reading.png"
                     ><i class="fas fa-download"></i> Download</a
                   >
                 </div>
               </div>
+
+              <!-- Coloring Page 3 -->
               <div class="coloring-item">
                 <img
                   src="/mellington-care-den/images/sleepndbunny.png"
-                  alt="Sleeping with bunny"
+                  alt="Sleepy Bunny Coloring Page"
                   class="coloring-image"
                 />
                 <div class="coloring-caption">
-                  Sleep and Bunny
+                  Sleepy Bunny
                   <br />
                   <a
                     href="/mellington-care-den/images/sleepndbunny.png"
+                    download
                     class="download-btn"
-                    download="sleep_bunny.png"
+                    ><i class="fas fa-download"></i> Download</a
+                  >
+                </div>
+              </div>
+
+              <!-- Coloring Page 4 -->
+              <div class="coloring-item">
+                <img
+                  src="/mellington-care-den/images/Melreadingwithtea.png"
+                  alt="Reading with Tea Coloring Page"
+                  class="coloring-image"
+                />
+                <div class="coloring-caption">
+                  Reading with Tea
+                  <br />
+                  <a
+                    href="/mellington-care-den/images/Melreadingwithtea.png"
+                    download
+                    class="download-btn"
                     ><i class="fas fa-download"></i> Download</a
                   >
                 </div>
@@ -1148,155 +1138,155 @@
         <div class="footer-content">
           <div class="footer-logo">
             <h2>Virtual Care Package</h2>
-            <p>Made with love, for when you need it most.</p>
+            <p>Created with 💖 for Aaron</p>
           </div>
           <div class="footer-text">
-            <p>Remember to be gentle with yourself.</p>
-            <p>You are doing your best, and that's enough.</p>
+            <p>&copy; 2023 Virtual Care Package</p>
+            <p>May this bring you comfort whenever you need it.</p>
           </div>
         </div>
       </div>
     </footer>
-
-    <script>
-      // Data
+        <script>
+      // Data for the site
       const letters = [
         {
-          id: "feeling-down",
-          title: "Open When You're Feeling Down",
-          description: "For those moments when the world feels heavy...",
+          title: "Open When You're Feeling Low",
+          description: "For those days when everything feels heavy.",
           content:
-            "Hey there,\n\nI know things might feel overwhelming right now. Remember that this feeling, like all feelings, will pass. You've overcome difficult moments before, and you'll do it again.\n\nTake a deep breath. Go through the journal prompts. Make yourself some comfort food. Know that you are loved and valued, exactly as you are.\n\nBe gentle with yourself today.\n\nWith love and care,\nMe",
+            "Hey you,\n\nI know right now feels hard. The world is heavy, and maybe you're carrying more than your share of it. That's okay. You're allowed to feel this way.\n\nRemember when you told me about that time you stayed up all night to help your friend through a crisis? Or how you check on people when they're quiet, just to make sure they're alright? That's who you are. Someone who cares deeply, who notices things others miss, who makes people feel seen.\n\nYour heart is not a weakness. It's your superpower.\n\nWhen you're feeling low, it's easy to forget all the light you've brought into the world. But trust me, it's there. I've seen it. Others have too. And even on days when you can't shine, the impact you've had remains.\n\nBe gentle with yourself today. Put on that song you love. Wrap yourself in something soft. Remember that healing isn't linear, and tomorrow might feel different. Better, even.\n\nUntil then, I'm holding space for you. You don't have to be anything but exactly as you are right now.\n\nWith love,",
         },
         {
-          id: "cant-sleep",
-          title: "Open When You Can't Sleep",
-          description: "For those restless nights when sleep eludes you...",
+          title: "Open When You Need a Laugh",
+          description: "A dose of humor for the tough days.",
           content:
-            "Hey you,\n\nIt's late, and your mind is probably racing. That's okay. Try making some warm milk or tea from the comfort drinks section.\n\nRemember: Your body knows how to sleep. It's been doing it your whole life. Trust that process.\n\nInstead of forcing sleep, just rest. Let your body be heavy. Let your thoughts drift like clouds. There's nothing you need to solve right now.\n\nSweet dreams are on their way,\nMe",
+            "Greetings, human in need of laughter!\n\nI'm legally obligated to inform you that reading this letter may cause:\n- Unexpected snorting\n- Temporary face cramps from smiling\n- Neighbors wondering why you're cackling at 2 AM\n\nRemember when you told me about accidentally sending that formal email with 'thx bestie xoxo' at the end? Or when you spent 10 minutes talking to a stranger thinking it was me? Your life is basically a sitcom.\n\nHere's a joke: Why don't scientists trust atoms? Because they make up everything!\n\nOkay that was terrible. But I bet you smiled a little.\n\nHere's another: What do you call a fake noodle? An impasta!\n\nStill terrible? Perfect.\n\nSometimes the best remedy is just embracing the absurdity of existence. So here's your reminder to watch those ridiculous videos you've saved, the ones that make no sense but make you laugh until you cry. Call that friend who knows all your embarrassing stories and still likes you anyway.\n\nAnd remember: in a world of serious problems, your laughter is an act of rebellion. Be rebellious today!\n\nGo forth and giggle,",
         },
         {
-          id: "need-courage",
-          title: "Open When You Need Courage",
-          description: "For when you're facing something that scares you...",
+          title: "Open When You Need Motivation",
+          description: "A push when you're feeling stuck.",
           content:
-            "Hello brave one,\n\nThe fact that you're scared AND still considering doing the thing shows how courageous you already are. Fear doesn't mean you're not ready—it just means you're doing something that matters.\n\nRemember all the times you've been afraid before and still made it through. You have that same strength now.\n\nWhatever you're facing, I believe in you completely.\n\nCheering you on,\nMe",
+            "Hey there,\n\nSo you're in one of those moments. The ones where everything feels stuck, motivation has left the building, and your to-do list looks like it was written in a language you don't speak.\n\nFirst, take a breath. A real one.\n\nNow, remember this: you're the same person who [insert something impressive they've done]. You've faced harder days than this and found your way through.\n\nMotivation is fickle—it comes and goes like an unreliable friend. But you know what's more powerful? Tiny actions. Just one small step.\n\nDon't think about the mountain. Think about the next step on the path.\n\nBroken down to its smallest form, what's one thing you could do right now? Send one email? Write one paragraph? Clean one corner of one room? Put on clothes that aren't pajamas?\n\nStart there.\n\nRemember that motivation often follows action, not the other way around. The simple act of starting can create momentum.\n\nAnd if you're beating yourself up about procrastination or feeling stuck—stop. That energy can be used for better things. Like actually doing the thing, or being kind to yourself.\n\nYou've got this. Not because you're superhuman, but because you're human. Perfectly, imperfectly human with a history of figuring things out, even when it's messy.\n\nOne step. That's all you need right now.\n\nRouting for you always,",
         },
       ];
 
       const journalPrompts = [
         {
-          id: "core-wound",
-          title: "Core Wound & Inner Child Healing",
+          title: "Acknowledging Your Shadow Self",
           prompts: [
-            "What parts of my childlike wonder or creativity have I silenced or hidden out of fear of being judged or dismissed?",
-            "What did I need most as a child that I didn't receive? How does that still show up in my relationships today?",
+            "What parts of yourself do you try to hide from others? Why?",
+            "When do you find yourself acting in ways that contradict your values?",
+            "What criticism from others triggers the strongest emotional reaction in you? What might this reveal about your insecurities?",
+            "In what situations do you feel most inauthentic or like you're wearing a mask?",
+            "What recurring patterns or behaviors do you wish you could change?",
           ],
         },
         {
-          id: "relationships",
-          title: "Wounds from Past Relationships",
+          title: "Processing Difficult Emotions",
           prompts: [
-            "What patterns do I notice in how I've been treated in romantic relationships? What role have I played in repeating those patterns?",
-            "What part of me felt responsible for fixing or rescuing my past partners? Where does that instinct come from?",
-            "What boundaries did I ignore or abandon in my past relationships, and what was I afraid would happen if I enforced them?",
-            "What did I learn about my own worth from being used or taken advantage of? How can I rewrite that belief?",
-            "How have past toxic relationships impacted my ability to trust, and what steps can I take to rebuild that trust?",
-            "What boundaries do I need to establish to protect my emotional well-being in future relationships?",
+            "Describe a recent situation where you felt angry. What was beneath that anger?",
+            "What fear has the strongest grip on your life right now?",
+            "What grief or loss have you not fully processed?",
+            "When do you tend to shame yourself? What would you say to a friend in the same situation?",
+            "What emotions do you find most difficult to express? Why?",
           ],
         },
         {
-          id: "shadow-self",
-          title: "Embracing the Shadow Self",
+          title: "Examining Your Relationships",
           prompts: [
-            "What aspects of myself do I tend to hide from others, and why?",
-            "When have I felt ashamed of my emotions or reactions, and what can I learn from those moments?",
-            "How do I project my insecurities onto others, and how can I take responsibility for them?",
-          ],
-        },
-        {
-          id: "emotional-suppression",
-          title: "Emotional Suppression & Burnout",
-          prompts: [
-            "When do I pretend I'm okay when I'm not? Who taught me to do that?",
-            "What emotions do I tend to intellectualize instead of fully feeling? What would it be like to just sit with them?",
-            'What does "rest" feel like in my body? Why might I resist truly letting go and resting, even when I need it?',
-            "When have I prioritized others' needs over mine to the point of depletion? What belief drives that behavior?",
-            "What beliefs do I hold about rest and productivity, and how do they affect my sleep patterns?",
-            "How can I create a bedtime routine that honors my need for rest and relaxation?",
-            "What emotions arise when I allow myself to rest, and how can I address them compassionately?",
-            "How do I respond to challenges in learning, and what does that reveal about my mindset?",
-          ],
-        },
-        {
-          id: "reclaiming-self",
-          title: "Reclaiming Self & Rebuilding Trust",
-          prompts: [
-            'What parts of me feel "too much" or "not enough"? How can I show those parts love and safety today?',
-            "What does it mean to be in a relationship where I can receive as much as I give? Can I let myself be taken care of?",
-            "What would I say to the part of me that still fears being manipulated or used again? How can I protect him with love, not fear?",
-            "What do I want love to feel like now? How do I want to show up for myself in this next chapter of life?",
-            "What am I learning about softness and strength existing together within me?",
+            "In what ways do your past relationships influence your current ones?",
+            "What boundaries do you need to establish or reinforce in your relationships?",
+            "How do you react when you feel abandoned or rejected?",
+            "What patterns do you notice in your choice of friends or partners?",
+            "Whose approval do you seek most? What does this reveal about your values or insecurities?",
           ],
         },
       ];
 
       const foodData = {
         suggestions: [
-          { name: "NOODLES" },
-          { name: "Chicken toast" },
-          { name: "Crackers n cheese" },
-          { name: "Nachos" },
-          { name: "Burritos" },
-          { name: "Microwave potatoes" },
-          {
-            name: "Doritos and sour cream or guacamole or hummus....but hummus is the old people option and you can't change my mind.",
-          },
+          { name: "Grilled cheese sandwich" },
+          { name: "Chicken soup" },
+          { name: "Mashed potatoes" },
+          { name: "Mac and cheese" },
+          { name: "Warm oatmeal with fruit" },
+          { name: "Pancakes with syrup" },
+          { name: "Pizza (any kind)" },
+          { name: "Pasta with simple sauce" },
+          { name: "Baked potato with toppings" },
+          { name: "Scrambled eggs on toast" },
+          { name: "Homemade chocolate chip cookies" },
+          { name: "Ice cream (your favorite flavor)" },
         ],
         drinks: {
           simple: [
-            { name: "Warm milk" },
-            { name: "Hot chocolate" },
-            { name: "Tea" },
-            { name: "Milkshake" },
-            {
-              name: "Juice - preferably one that reminds you of your childhood",
-            },
+            { name: "Hot chocolate with marshmallows" },
+            { name: "Chamomile tea with honey" },
+            { name: "Warm milk with cinnamon and honey" },
+            { name: "Fresh lemonade" },
+            { name: "Peppermint tea" },
+            { name: "Vanilla milkshake" },
           ],
           recipes: [
             {
+              title: "Soothing Golden Milk",
+              prepTime: "5 minutes",
+              cookTime: "5 minutes",
+              servings: "1",
+              calories: "120",
+              ingredients: [
+                "1 cup milk of choice (dairy or plant-based)",
+                "1 tsp ground turmeric",
+                "1/2 tsp ground cinnamon",
+                "1/4 tsp ground ginger",
+                "Pinch of black pepper",
+                "1-2 tsp honey or maple syrup",
+                "1/2 tsp vanilla extract (optional)",
+              ],
+              instructions: [
+                "Add milk and spices to a small saucepan.",
+                "Heat over medium-low heat until warm (do not boil).",
+                "Whisk occasionally to combine ingredients and prevent burning.",
+                "Remove from heat and add sweetener and vanilla.",
+                "Pour into a mug and enjoy while warm.",
+              ],
+              notes:
+                "The black pepper helps your body absorb the anti-inflammatory compounds in the turmeric. This is great for reducing stress and promoting relaxation before bed.",
+            },
+            {
               title: "Chocolate Smoothie",
               prepTime: "5 minutes",
-              cookTime: "N/A",
+              cookTime: "0 minutes",
               servings: "1",
-              calories: "Approximately 350",
+              calories: "350",
               ingredients: [
                 "2 frozen bananas",
                 "2 cups milk",
                 "1 tablespoon peanut butter",
                 "2 tablespoons cocoa powder",
+                "1 tablespoon honey",
+                "1/2 teaspoon cinnamon",
+                "Ice cubes (optional)",
               ],
               instructions: [
-                "Add all ingredients to a blender",
-                "Blend until smooth",
-                "Serve immediately",
+                "Place all ingredients in a blender.",
+                "Blend until smooth.",
+                "Pour into a glass and enjoy immediately.",
               ],
-              notes:
-                "I usually do 1 frozen banana and 1 cup milk and add like a teaspoon or two of honey but the og recipe is as above except she sometimes adds a date sometimes but that.....is too much effort(I have to soak the date first before I can blend it but I have the patience of a four year old). Sometimes I do the og recipe as well, but I swear it's so creamy it literally knocks me out after I drink it. Or my body just adapted to surviving society by making it super easy to fall asleep whenever I do mundane things.",
             },
           ],
         },
         desserts: [
           {
-            title: "Brownie in a Mug",
+            title: "5-Minute Microwave Brownie Mug Cake",
             prepTime: "2 minutes",
             cookTime: "1 minute",
             servings: "1",
-            calories: "Approximately 291 per serving",
+            calories: "who cares, you deserve this",
             ingredients: [
-              "3 tablespoons granulated sugar",
               "3 tablespoons all-purpose flour",
-              "1½ tablespoons unsweetened cocoa powder",
+              "3 tablespoons sugar",
+              "2 tablespoons cocoa powder",
               "Pinch of salt",
               "2 tablespoons chocolate chips (plus more for topping)",
               "1½ tablespoons vegetable oil, melted coconut oil, or melted butter",
@@ -1372,89 +1362,103 @@ MEL STORKINGTON'S FIX-IT & FOUND-IT EMPORIUM
 ✨Gadgets, Gizmos, Guidance, & Glitter✨
 Inside, it smells like warm tea, soldering iron, and pine. There's a wall of antique tools, a shelf full of strange glowing boxes, and a workbench covered in half-finished ideas: little metal birds that hum when you touch them, broken clocks rewound into music boxes, tiny printed dragons that breathe wisps of gentle smoke.
 Aaron is always in the back, wearing a soft cardigan and reading glasses that constantly slide down his nose. He speaks quietly, but his words are always warm. And when he laughs—oh gods, when he laughs—it's like hearing an old song you forgot you loved.
-He keeps a little notebook where he writes down things he learns every day. Things customers tell him. Things he sees. "Bunnies use body language like cats," one page says. "Humans sleep better when they feel safe," says another. "She smiled when I remembered her favorite tea. I felt like a planet with gravity."
-Kids adore him. So do cats. Lonely people wander into his shop just to hear him talk about how stars are born or how old trees store memories. He'll quietly fix your broken necklace or hand you a 3D-printed fox that glows when you're anxious. And he never charges more than he needs to. Sometimes he asks for stories as payment.
-At night, he drinks lavender tea and watches the bunnies in his garden. Sometimes he reads by lantern light. Sometimes he stargazes. Sometimes, if you're very lucky, he'll invite you in. He'll let you curl up beside him with a blanket, and he'll explain some part of the universe until you fall asleep.
-And when you wake up, he'll be there. Watching over you. Mending the world in his own quiet, glittering ways.`,
+He keeps a little notebook where he writes down things he learns every day. Things customers tell him. Things he sees. "Bunnies use body language like cats," one page says. "Humans sleep better when they feel safe," says another. "She smiled when I remembered her favorite tea. I felt like a planet being orbited by a sun."
+His hands are always covered in ink or oil or tiny burns. But they're impossibly gentle when he handles broken things. You'll bring him something—a watch that stopped the moment your grandmother died, a music box that played your parents' wedding song, a locket that won't open—and he'll cup it in his palms like it holds your entire heart. Maybe it does.
+"I can fix this," he'll say softly, not with arrogance but with the quiet certainty of someone who understands that all magic is just advanced physics, and all broken things want to be whole again.
+The townspeople come to him with problems beyond broken objects. Heartbreak. Insomnia. The feeling that something's missing but they can't name it. He listens, really listens, head tilted slightly, eyes focused entirely on you like you're the only being in the universe worth understanding.
+Then he'll nod, disappear into the back of his shop, and emerge with a tiny music box or a glass vial of something that changes color in the light or a set of wind chimes made from old keys. "Try this," he'll say.
+And somehow, it always helps.
+Children adore him. They bring him frogs and interesting rocks and wildflowers. He accepts each gift with solemn gratitude, placing them carefully on his "treasure shelf." He makes them tiny mechanical toys that no one else could dream up—miniature carousels where the horses gallop in place, paper butterflies that really fly, little shadow boxes that, when you look inside, seem to contain entire galaxies.
+He drinks tea at precisely 4:17 every afternoon, but can never explain why that specific time feels right. He has a wall of books organized by how they make him feel rather than by author or subject. "I need something blue today," he'll say, and pull out a physics textbook or a book of old sea shanties or a children's story about talking animals.
+At night, when everyone thinks the shop is closed, sometimes music drifts from the windows—strange, haunting melodies that don't quite sound human. If you catch him at it, he'll blush and say he was "just tinkering." But those who hear his midnight music often have the most vivid, healing dreams of their lives.
+Not everyone in town understands him. Some whisper he's odd or lost in his own world. But those who truly see him know: Aaron doesn't fix things because he's magical.
+Things fix themselves because Aaron sees them as they truly are—and more importantly, as they could be.
+And in a world full of jagged edges and broken hearts, that might be the most powerful magic of all.`,
             },
           ],
         },
       ];
 
-      // Media and resources data
-      const comfortMedia = {
+      const mediaLists = {
         movies: [
-          { title: "The Intern", year: "2015" },
-          { title: "The Sound of Music", year: "1965" },
-          { title: "Harry Potter", year: "2001-2011" },
-          { title: "Forest Gump", year: "1994" },
-          { title: "The Pursuit of Happiness", year: "2006" },
-          { title: "How to Lose a Guy in 10 Days", year: "2003" },
-          { title: "Big", year: "1988" },
-          { title: "The Invisible Man", year: "2020" },
-          { title: "She's the Man", year: "2006" },
-          { title: "Hitch", year: "2005" },
-          { title: "Men in Black", year: "1997" },
-          { title: "Rush Hour", year: "1998" },
-          { title: "Kung Fu Hustle", year: "2004" },
-          { title: "Crouching Tiger, Hidden Dragon", year: "2000" },
-          { title: "Along with the Gods", year: "2017" },
-          { title: "Real Steel", year: "2011" },
-          { title: "I, Robot", year: "2004" },
-          { title: "The Terminator", year: "1984" },
-          { title: "Maze Runner", year: "2014" },
-          { title: "Guardians of the Galaxy", year: "2014" },
-          { title: "Planet of the Apes", year: "2011" },
-          { title: "Doctor Strange", year: "2016" },
-          { title: "Train to Busan", year: "2016" },
-          { title: "Midnight Runners", year: "2017" },
-          { title: "Shang Chi and the Legend of the Ten Rings", year: "2021" },
-          { title: "The Wolverine", year: "2013" },
-          { title: "Spider-Man: Into the Spider-Verse", year: "2018" },
-          { title: "Spider-Man: Across the Spider-Verse", year: "2023" },
-          { title: "Fantastic 4", year: "2005" },
-          { title: "Pirates of the Caribbean", year: "2003" },
-          { title: "The Darkest Minds", year: "2018" },
-          { title: "The Truman Show", year: "1998" },
-          { title: "The Wizard of Oz", year: "1939" },
-          { title: "Inception", year: "2010" },
-          { title: "In Time", year: "2011" },
-          { title: "Us", year: "2019" },
-          { title: "The Martian", year: "2015" },
-          { title: "Passengers", year: "2016" },
-          { title: "The Hunger Games", year: "2012" },
-          { title: "Arrival", year: "2016" },
-          { title: "Overboard", year: "2018" },
-          { title: "The Proposal", year: "2009" },
-          { title: "Jumanji", year: "2017" },
-          { title: "Cast Away", year: "2000" },
-          { title: "The Devil Wears Prada", year: "2006" },
-          { title: "Freedom Writers", year: "2007" },
-          { title: "Bedtime Stories", year: "2008" },
-          { title: "The Emperor's New Groove", year: "2000" },
-          { title: "Ponyo", year: "2008" },
-          { title: "My Octopus Teacher", year: "2020" },
-        ],
-        tvShows: [
-          { title: "Modern Family", year: "2009-2020" },
-          { title: "Kim's Convenience", year: "2016-2022" },
-          { title: "Friends", year: "1994-2004" },
-          { title: "The Good Place", year: "2016-2020" },
-          { title: "The Office", year: "2005-2013" },
-          { title: "Alice in Borderland", year: "2020" },
-          { title: "Squid Game", year: "2021" },
-          { title: "Strong Woman Do Bong Soon", year: "2017" },
-          { title: "Naked and Afraid", year: "2013" },
-          { title: "Mythbusters", year: "2003" },
-          { title: "I Can See Your Voice", year: "2020" },
-          { title: "Young Sheldon", year: "2017" },
-          { title: "How It Works", year: "2012" },
-        ],
-        youtubers: [
           {
-            title: "Back 2 Basics Adventures",
+            title: "The Secret Life of Walter Mitty",
+            year: "2013",
             description:
-              "Australian dude that does survival challenges and explains the history of the places he does the survival challenges in(videos are typically about 30 mins to 1 hour long)",
+              "A daydreamer embarks on a real adventure. Beautiful cinematography and a story about finding courage.",
+          },
+          {
+            title: "Big Hero 6",
+            year: "2014",
+            description:
+              "A heartwarming animated film about healing, friendship, and cute healthcare robots.",
+          },
+          {
+            title: "My Neighbor Totoro",
+            year: "1988",
+            description:
+              "Studio Ghibli's gentle masterpiece about childhood wonder and magical forest spirits.",
+          },
+          {
+            title: "The Princess Bride",
+            year: "1987",
+            description:
+              "A perfect blend of romance, adventure, comedy, and quotable lines.",
+          },
+          {
+            title: "Paddington 2",
+            year: "2017",
+            description:
+              "The most wholesome tale of a bear spreading kindness and marmalade.",
+          },
+        ],
+        shows: [
+          {
+            title: "Ted Lasso",
+            year: "2020-2023",
+            description:
+              "An American football coach brings relentless optimism to a British soccer team.",
+          },
+          {
+            title: "The Good Place",
+            year: "2016-2020",
+            description:
+              "A philosophical comedy about becoming better people (even in the afterlife).",
+          },
+          {
+            title: "Avatar: The Last Airbender",
+            year: "2005-2008",
+            description:
+              "Beautiful animation, compelling characters, and themes of balance and healing.",
+          },
+          {
+            title: "Heartstopper",
+            year: "2022-",
+            description:
+              "A sweet coming-of-age romance story that will make your heart flutter.",
+          },
+          {
+            title: "Parks and Recreation",
+            year: "2009-2015",
+            description:
+              "Funny, heartwarming workplace comedy with lovable characters.",
+          },
+        ],
+        creators: [
+          {
+            title: "Hank Green",
+            description:
+              "Educational content creator who explains complex topics with infectious enthusiasm.",
+          },
+          {
+            title: "Yoga With Adriene",
+            description:
+              "Gentle, accessible yoga practices with the motto \"Find What Feels Good.\"",
+          },
+          {
+            title: "The Financial Diet",
+            description:
+              "Money advice that's actually supportive, understanding, and non-judgmental.",
           },
           {
             title: "Tom Scott",
@@ -1463,8 +1467,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
           },
         ],
       };
-
-      // DOM manipulation functions
+            // DOM manipulation functions
       function renderLetters() {
         const lettersGrid = document.getElementById("letters-grid");
         if (!lettersGrid) {
@@ -1571,8 +1574,8 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         let drinksHTML = `
         <div class="card">
           <div class="card-content open">
-            <h3 class="card-title" style="margin-bottom: 1rem;">Comfort Drinks</h3>
-            <div style="margin-bottom: 1.5rem;">
+            <h3 class="card-title" style="margin-bottom: 1rem;">Simple Comfort Drinks</h3>
+            <div class="grid">
         `;
 
         foodData.drinks.simple.forEach((item) => {
@@ -1581,19 +1584,32 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
 
         drinksHTML += `
             </div>
+            <h3 class="card-title" style="margin: 2rem 0 1rem;">Drink Recipes</h3>
         `;
 
         foodData.drinks.recipes.forEach((recipe) => {
           drinksHTML += `
           <div class="recipe">
             <h4>${recipe.title}</h4>
+            <div class="recipe-meta">
+              Prep: ${recipe.prepTime} | Cook: ${recipe.cookTime} | Serves: ${recipe.servings}
+            </div>
+            
             <div class="recipe-section">
               <h5>Ingredients:</h5>
               <ul>
                 ${recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("")}
               </ul>
             </div>
-            ${recipe.notes ? `<p class="recipe-notes">${recipe.notes}</p>` : ""}
+            
+            <div class="recipe-section">
+              <h5>Instructions:</h5>
+              <ol>
+                ${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}
+              </ol>
+            </div>
+            
+            ${recipe.notes ? `<div class="recipe-notes">${recipe.notes}</div>` : ""}
           </div>
         `;
         });
@@ -1621,31 +1637,25 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
           dessertsHTML += `
           <div class="recipe">
             <h4>${recipe.title}</h4>
-            <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
-              <div>
-                <div class="recipe-meta">
-                  <p>Prep Time: ${recipe.prepTime}</p>
-                  <p>Cook Time: ${recipe.cookTime}</p>
-                  <p>Servings: ${recipe.servings}</p>
-                  <p>Calories: ${recipe.calories}</p>
-                </div>
-                <div class="recipe-section">
-                  <h5>Ingredients:</h5>
-                  <ul>
-                    ${recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("")}
-                  </ul>
-                </div>
-              </div>
-              <div>
-                <div class="recipe-section">
-                  <h5>Instructions:</h5>
-                  <ol>
-                    ${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}
-                  </ol>
-                </div>
-                ${recipe.notes ? `<p class="recipe-notes">${recipe.notes}</p>` : ""}
-              </div>
+            <div class="recipe-meta">
+              Prep: ${recipe.prepTime} | Cook: ${recipe.cookTime} | Serves: ${recipe.servings}
             </div>
+            
+            <div class="recipe-section">
+              <h5>Ingredients:</h5>
+              <ul>
+                ${recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("")}
+              </ul>
+            </div>
+            
+            <div class="recipe-section">
+              <h5>Instructions:</h5>
+              <ol>
+                ${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}
+              </ol>
+            </div>
+            
+            ${recipe.notes ? `<div class="recipe-notes">${recipe.notes}</div>` : ""}
           </div>
         `;
         });
@@ -1678,14 +1688,14 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
             <div class="recipe-section">
               <h5>Ingredients:</h5>
               <ul>
-                ${recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("")}
+                ${recipe.ingredients ? recipe.ingredients.map((ingredient) => `<li>${ingredient}</li>`).join("") : "<li>See notes</li>"}
               </ul>
             </div>
             
             <div class="recipe-section">
               <h5>Instructions:</h5>
               <ol>
-                ${recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("")}
+                ${recipe.instructions ? recipe.instructions.map((instruction) => `<li>${instruction}</li>`).join("") : "<li>See notes</li>"}
               </ol>
             </div>
           </div>
@@ -1714,7 +1724,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
 
           let contentHTML = "";
           affirmation.content.split("\n\n").forEach((paragraph) => {
-            contentHTML += `<p style="margin-bottom: 1rem;">${paragraph}</p>`;
+            contentHTML += `<p style="margin-bottom: 1rem; white-space: pre-line;">${paragraph}</p>`;
           });
 
           let auHTML = "";
@@ -1735,7 +1745,7 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
                 <div class="au-content">
                   ${au.content
                     .split("\n\n")
-                    .map((para) => `<p style="margin-bottom: 0.75rem;">${para}</p>`)
+                    .map((para) => `<p style="margin-bottom: 0.75rem; white-space: pre-line;">${para}</p>`)
                     .join("")}
                 </div>
               </div>
@@ -1759,102 +1769,129 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
           `;
 
           affirmationsContent.appendChild(affirmationCard);
-        });
 
-        // Add event listeners to AU accordion items
-        document.querySelectorAll(".au-trigger").forEach((trigger) => {
-          trigger.addEventListener("click", () => {
-            const content = trigger.nextElementSibling;
-            const chevron = trigger.querySelector(".chevron-icon");
-            content.classList.toggle("open");
-            chevron.classList.toggle("open");
+          // Setup AU accordion toggles
+          const auItems = affirmationCard.querySelectorAll(".au-item");
+          auItems.forEach((item) => {
+            const trigger = item.querySelector(".au-trigger");
+            const content = item.querySelector(".au-content");
+            const chevron = item.querySelector(".chevron-icon");
+
+            trigger.addEventListener("click", () => {
+              content.classList.toggle("open");
+              chevron.classList.toggle("open");
+            });
           });
         });
       }
 
       function renderMediaLists() {
-        // Movies
-        const movieList = document.getElementById("movie-list");
-        if (movieList) {
-          movieList.innerHTML = '';
-          comfortMedia.movies.forEach((movie) => {
-            const movieItem = document.createElement("div");
-            movieItem.className = "media-item";
-            movieItem.innerHTML = `${movie.title} <span class="media-year">(${movie.year})</span>`;
-            movieList.appendChild(movieItem);
-          });
+        const mediaGrid = document.getElementById("media-grid");
+        if (!mediaGrid) {
+          console.error("Media grid element not found");
+          return;
         }
+        mediaGrid.innerHTML = '';
 
-        // TV Shows
-        const tvList = document.getElementById("tv-list");
-        if (tvList) {
-          tvList.innerHTML = '';
-          comfortMedia.tvShows.forEach((show) => {
-            const showItem = document.createElement("div");
-            showItem.className = "media-item";
-            showItem.innerHTML = `${show.title} <span class="media-year">(${show.year})</span>`;
-            tvList.appendChild(showItem);
-          });
-        }
+        // Movies card
+        const moviesCard = document.createElement("div");
+        moviesCard.className = "media-card animated";
 
-        // YouTube
-        const youtubeList = document.getElementById("youtube-list");
-        if (youtubeList) {
-          youtubeList.innerHTML = '';
-          comfortMedia.youtubers.forEach((youtuber) => {
-            const youtuberItem = document.createElement("div");
-            youtuberItem.className = "media-item";
-            youtuberItem.innerHTML = `${youtuber.title} - ${youtuber.description}`;
-            youtubeList.appendChild(youtuberItem);
-          });
-        }
+        let moviesHTML = `<h4>Movies That Feel Like a Hug</h4><div class="media-list">`;
+        mediaLists.movies.forEach((item) => {
+          moviesHTML += `
+          <div class="media-item">
+            <div><strong>${item.title}</strong> <span class="media-year">(${item.year})</span><br>${item.description}</div>
+          </div>
+        `;
+        });
+        moviesHTML += `</div>`;
+        moviesCard.innerHTML = moviesHTML;
+        mediaGrid.appendChild(moviesCard);
+
+        // Shows card
+        const showsCard = document.createElement("div");
+        showsCard.className = "media-card animated";
+
+        let showsHTML = `<h4>TV Shows to Comfort Watch</h4><div class="media-list">`;
+        mediaLists.shows.forEach((item) => {
+          showsHTML += `
+          <div class="media-item">
+            <div><strong>${item.title}</strong> <span class="media-year">(${item.year})</span><br>${item.description}</div>
+          </div>
+        `;
+        });
+        showsHTML += `</div>`;
+        showsCard.innerHTML = showsHTML;
+        mediaGrid.appendChild(showsCard);
+
+        // Content creators card
+        const creatorsCard = document.createElement("div");
+        creatorsCard.className = "media-card animated";
+
+        let creatorsHTML = `<h4>YouTube/Content Creators</h4><div class="media-list">`;
+        mediaLists.creators.forEach((item) => {
+          creatorsHTML += `
+          <div class="media-item">
+            <div><strong>${item.title}</strong><br>${item.description}</div>
+          </div>
+        `;
+        });
+        creatorsHTML += `</div>`;
+        creatorsCard.innerHTML = creatorsHTML;
+        mediaGrid.appendChild(creatorsCard);
       }
-
-      // UI event handlers
+            // UI interaction functions
       function setupNavigation() {
         const header = document.getElementById("header");
-        const menuToggle = document.getElementById("menu-toggle");
-        const mobileMenu = document.getElementById("mobile-menu");
         const navLinks = document.querySelectorAll(".nav-link");
         const mobileLinks = document.querySelectorAll(".mobile-link");
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
 
-        // Handle scroll for fixed header
+        // Header scroll effect
         window.addEventListener("scroll", () => {
-          if (window.scrollY > 10) {
+          if (window.scrollY > 50) {
             header.classList.add("scrolled");
           } else {
             header.classList.remove("scrolled");
           }
+        });
 
-          // Update active nav link
-          const scrollPosition = window.scrollY + 100;
-          document.querySelectorAll("section").forEach((section) => {
+        // Active link highlighting
+        const sections = document.querySelectorAll("section");
+        
+        window.addEventListener("scroll", () => {
+          let current = "";
+          sections.forEach((section) => {
             const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-
-            if (
-              scrollPosition >= sectionTop &&
-              scrollPosition < sectionTop + sectionHeight
-            ) {
-              const sectionId = section.getAttribute("id");
-
-              navLinks.forEach((link) => {
-                if (link.getAttribute("href") === `#${sectionId}`) {
-                  link.classList.add("active");
-                } else {
-                  link.classList.remove("active");
-                }
-              });
-
-              mobileLinks.forEach((link) => {
-                if (link.getAttribute("href") === `#${sectionId}`) {
-                  link.classList.add("active");
-                } else {
-                  link.classList.remove("active");
-                }
-              });
+            const sectionHeight = section.clientHeight;
+            if (window.scrollY >= sectionTop - 200) {
+              current = section.getAttribute("id");
             }
           });
+
+          if (current) {
+            navLinks.forEach((link) => {
+              const href = link.getAttribute("href");
+              const sectionId = href ? href.replace("#", "") : null;
+              if (sectionId === current) {
+                link.classList.add("active");
+              } else {
+                link.classList.remove("active");
+              }
+            });
+
+            mobileLinks.forEach((link) => {
+              const href = link.getAttribute("href");
+              const sectionId = href ? href.replace("#", "") : null;
+              if (link.getAttribute("href") === `#${current}`) {
+                link.classList.add("active");
+              } else {
+                link.classList.remove("active");
+              }
+            });
+          }
         });
 
         // Mobile menu toggle
@@ -2013,12 +2050,10 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
         setupMusicPlayerExclusivity();
       }
 
-      // Multiple initialization triggers
+      // Use only one event listener for initialization
       document.addEventListener("DOMContentLoaded", initializeApp);
-      window.addEventListener("load", initializeApp);
-
-      // Also run after a short delay in case of race conditions
-      setTimeout(initializeApp, 500);
     </script>
   </body>
 </html>
+
+    
