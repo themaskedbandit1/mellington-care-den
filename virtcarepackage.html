@@ -1743,15 +1743,17 @@ And in a world full of jagged edges and broken hearts, that might be the most po
                   ${au.title}
                   <span class="chevron-icon">▼</span>
                 </div>
-               <div class="au-content">
-                 <div style="margin-bottom: 0.75rem; white-space: pre-line;">
-                   ${au.content.substring(0, 300)}... 
-                   <a href="#" onclick="window.open('about:blank').document.write('<html><head><title>'+encodeURIComponent('${au.title}')+'</title><style>body{font-family:sans-serif; line-height:1.6; max-width:800px; margin:0 auto; padding:20px; white-space:pre-line;}</style></head><body><h1>'+encodeURIComponent('${au.title}')+'</h1>'+encodeURIComponent('${au.content}')+'</body></html>'.replace(/\\n/g, '<br>')); return false;" style="color:var(--primary); text-decoration:underline;">Read full story in new tab</a>
-                   </div>
+                <div class="au-content">
+                  <div style="margin-bottom: 0.75rem; white-space: pre-line;">
+                    ${au.content.substring(0, 300)}... 
+                    <a href="#" onclick="showFullStory('${au.title.replace(/'/g, "\\'").replace(/"/g, '\\"')}', '${au.content.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n')}'); return false;" style="color:var(--primary); text-decoration:underline;">
+                      Read full story in new tab
+                    </a>
                   </div>
-        </div>
-      `;
-    });
+                </div>
+              </div>
+              `;
+            });
 
             auHTML += `
               </div>
@@ -1798,7 +1800,6 @@ And in a world full of jagged edges and broken hearts, that might be the most po
         const moviesCard = document.createElement("div");
         moviesCard.className = "media-card animated";
 
-        moviesHTML += `</div>`;
         let moviesHTML = `<h4>Movies That Feel Like a Hug</h4><div class="media-list">`;
         mediaLists.movies.forEach((item) => {
           moviesHTML += `
@@ -2042,6 +2043,8 @@ And in a world full of jagged edges and broken hearts, that might be the most po
 
       function showFullStory(title, content) {
         const win = window.open('', '_blank');
+        const processedContent = content.replace(/\\n/g, '\n');
+  
         win.document.write(`
         <html>
           <head>
@@ -2064,7 +2067,7 @@ And in a world full of jagged edges and broken hearts, that might be the most po
         </html>
       `);
       return false;
-    }    
+      }    
     
       function initializeApp() {
         console.log("Initializing app...");
