@@ -500,6 +500,37 @@
         box-shadow: 0 10px 15px var(--shadow);
       }
 
+      .video-link-container {
+        margin-top: 1.5rem;
+        text-align: center;
+      }
+      .video-link {
+        display: inline-block;
+        text-decoration: none;
+        color: var(--primary);
+        transition: transform 0.3s ease;
+      }
+      .video-link:hover {
+        transform: scale(1.05);
+      }
+      .video-thumbnail {
+        background-color: var(--prompt-bg);
+        border-radius: 0.75rem;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        box-shadow: 0 4px 10px var(--shadow);
+      }
+      .video-thumbnail i {
+        font-size: 3rem;
+        color: var(--primary);
+      }
+      .video-thumbnail span {
+        font-weight: 500;
+      }
+
       .media-card h4 {
         font-size: 1.25rem;
         margin-bottom: 0.75rem;
@@ -1009,14 +1040,22 @@
           </div>
 
           <div class="resource-card animated">
-            <h4>Blessed tiktok</h4>
-            <div class="video-container">
-              <video controls width="100%">
-                <source
-                  src="/mellington-care-den/images/blessedtiktok.mp4"
-                  type="video/mp4"
-                />
-              </video>
+            <h4>Wholesome Content</h4>
+            <p>
+              Sometimes you just need to see something heartwarming to brighten
+              your day.
+            </p>
+            <div class="video-link-container">
+              <a
+                href="/mellington-care-den/images/blessedtiktok.mp4"
+                target="_blank"
+                class="video-link"
+              >
+                <div class="video-thumbnail">
+                  <i class="fas fa-play-circle"></i>
+                  <span>Click to watch video in new tab</span>
+                </div>
+              </a>
             </div>
           </div>
 
@@ -1853,13 +1892,28 @@
         mobileThemeToggle.addEventListener("click", toggleDarkMode);
       }
 
-      function setupMusicPlayers() {
+      // Ensure only one YouTube embed plays at a time
+      function setupMusicPlayerExclusivity() {
         const musicButtons = document.querySelectorAll(".music-button");
         const musicPlayers = document.querySelectorAll(".music-player");
+
+        // Function to stop all YouTube videos
+        function stopAllVideos() {
+          musicPlayers.forEach((player) => {
+            const iframe = player.querySelector("iframe");
+            if (iframe) {
+              // This reloads the iframe, effectively stopping the video
+              iframe.src = iframe.src;
+            }
+          });
+        }
 
         musicButtons.forEach((button) => {
           button.addEventListener("click", () => {
             const playerId = button.getAttribute("data-player");
+
+            // First stop all videos
+            stopAllVideos();
 
             // Update active button
             musicButtons.forEach((btn) => {
@@ -1877,6 +1931,12 @@
           });
         });
       }
+
+      // Call this function during initialization
+      document.addEventListener("DOMContentLoaded", () => {
+        setupMusicPlayerExclusivity();
+        // ... your other initialization code
+      });
 
       // Initialize everything
       document.addEventListener("DOMContentLoaded", () => {
