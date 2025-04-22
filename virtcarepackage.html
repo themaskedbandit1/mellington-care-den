@@ -1030,7 +1030,7 @@
               class="resource-link"
               target="_blank"
               rel="noopener"
-              >Browse Hug GIFs <i class="fas fa-external-link-alt"></i
+              >Digital Hugs <i class="fas fa-external-link-alt"></i
             ></a>
           </div>
 
@@ -1746,13 +1746,9 @@ And in a world full of jagged edges and broken hearts, that might be the most po
                <div class="au-content">
                  <div style="margin-bottom: 0.75rem; white-space: pre-line;">
                    ${au.content.substring(0, 300)}... 
-                   <a href="#"
-                onclick="window.open('about:blank').document.write('<html><head><title>${au.title}</title><style>body{font-family:sans-serif; line-height:1.6; max-width:800px; margin:0 auto; padding:20px; white-space:pre-line;}</style></head><body><h1>${au.title}</h1>${au.content}</body></html>'); return false;" 
-                style="color:var(--primary); text-decoration:underline;">
-                Read full story in new tab
-              </a>
-            </div>
-          </div>
+                   <a href="#" onclick="window.open('about:blank').document.write('<html><head><title>'+encodeURIComponent('${au.title}')+'</title><style>body{font-family:sans-serif; line-height:1.6; max-width:800px; margin:0 auto; padding:20px; white-space:pre-line;}</style></head><body><h1>'+encodeURIComponent('${au.title}')+'</h1>'+encodeURIComponent('${au.content}')+'</body></html>'.replace(/\\n/g, '<br>')); return false;" style="color:var(--primary); text-decoration:underline;">Read full story in new tab</a>
+                   </div>
+                  </div>
         </div>
       `;
     });
@@ -1802,11 +1798,13 @@ And in a world full of jagged edges and broken hearts, that might be the most po
         const moviesCard = document.createElement("div");
         moviesCard.className = "media-card animated";
 
+        moviesHTML += `</div>`;
         let moviesHTML = `<h4>Movies That Feel Like a Hug</h4><div class="media-list">`;
         mediaLists.movies.forEach((item) => {
           moviesHTML += `
           <div class="media-item">
-            <div><strong>${item.title}</strong> <span class="media-year">(${item.year})</span><br>${item.description}</div>
+            <strong>${item.title}</strong>
+            ${item.year ? `<span class="media-year">(${item.year})</span>` : ''}
           </div>
         `;
         });
@@ -1822,7 +1820,8 @@ And in a world full of jagged edges and broken hearts, that might be the most po
         mediaLists.shows.forEach((item) => {
           showsHTML += `
           <div class="media-item">
-            <div><strong>${item.title}</strong> <span class="media-year">(${item.year})</span><br>${item.description}</div>
+            <strong>${item.title}</strong>
+            ${item.year ? `<span class="media-year">(${item.year})</span>` : ''}
           </div>
         `;
         });
@@ -2041,7 +2040,32 @@ And in a world full of jagged edges and broken hearts, that might be the most po
         });
       }
 
-      // Initialize everything
+      function showFullStory(title, content) {
+        const win = window.open('', '_blank');
+        win.document.write(`
+        <html>
+          <head>
+            <title>${title}</title>
+            <style>
+              body {
+                font-family: sans-serif;
+                line-height: 1.6;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                white-space: pre-line;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>${title}</h1>
+            ${decodeURIComponent(content)}
+          </body>
+        </html>
+      `);
+      return false;
+    }    
+    
       function initializeApp() {
         console.log("Initializing app...");
         renderLetters();
