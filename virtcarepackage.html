@@ -874,7 +874,7 @@
             <a href="#letters" class="nav-link">Letters</a>
             <a href="#journal" class="nav-link">Journal</a>
             <a href="#food" class="nav-link">Food</a>
-            <a href="#affirmations" class="nav-link">Affirmations</a>
+            <a href="#affirmations" class="nav-link">Evidence of me being an ADHD bij</a>
             <a href="#media" class="nav-link">Media</a>
             <a href="#resources" class="nav-link">Resources</a>
             <button
@@ -902,7 +902,7 @@
         <a href="#letters" class="mobile-link">Letters</a>
         <a href="#journal" class="mobile-link">Journal</a>
         <a href="#food" class="mobile-link">Food</a>
-        <a href="#affirmations" class="mobile-link">Affirmations</a>
+        <a href="#affirmations" class="mobile-link">Evidence of me being an ADHD bij</a>
         <a href="#media" class="mobile-link">Media</a>
         <a href="#resources" class="mobile-link">Resources</a>
       </div>
@@ -986,8 +986,8 @@
       </section>
 
       <section id="affirmations">
-        <h2>Affirmations & Writings</h2>
-        <p>Heartfelt words to remind you of what's true and beautiful.</p>
+        <h2>ADHD meat riding/glazing of Mellington</h2>
+        <p>Read at your own risk</p>
         <div id="affirmations-content"></div>
       </section>
 
@@ -1464,24 +1464,25 @@ And when you wake up, he'll be there. Watching over you. Mending the world in hi
       // DOM manipulation functions
       function renderLetters() {
         const lettersGrid = document.getElementById("letters-grid");
-
+        lettersGrid.innerHTML = ''; // Clear any existing content
+  
         letters.forEach((letter) => {
           const letterCard = document.createElement("div");
           letterCard.className = "card";
 
           letterCard.innerHTML = `
-          <div class="card-header">
-            <h3 class="card-title">${letter.title}</h3>
-            <span class="chevron-icon">▼</span>
-          </div>
-          <div class="card-description">${letter.description}</div>
-          <div class="card-content">
-            ${letter.content
-              .split("\n\n")
-              .map((para) => `<p>${para}</p>`)
-              .join("")}
-          </div>
-        `;
+            <div class="card-header">
+              <h3 class="card-title">${letter.title}</h3>
+              <span class="chevron-icon">▼</span>
+            </div>
+            <div class="card-description">${letter.description}</div>
+            <div class="card-content">
+              ${letter.content
+                .split("\n\n")
+                .map((para) => `<p>${para}</p>`)
+                .join("")}
+            </div>
+          `;
 
           lettersGrid.appendChild(letterCard);
 
