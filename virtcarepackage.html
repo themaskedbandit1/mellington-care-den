@@ -2035,7 +2035,7 @@ And in a world full of jagged edges and broken hearts, that might be the most po
           win.document.write(`
           <html>
             <head>
-              <title>${title}</title>
+              <title>${decodedTitle}</title>
               <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
               <style>
                 body {
@@ -2059,8 +2059,8 @@ And in a world full of jagged edges and broken hearts, that might be the most po
               </style>
             </head>
             <body>
-              <h1>${title}</h1>
-              <div class="content">${processedContent}</div>
+              <h1>${decodedTitle}</h1>
+              <div class="content">${decodedContent}</div>
             </body>
           </html>
           `);
