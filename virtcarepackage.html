@@ -2105,5 +2105,27 @@ And when you wake up, he’ll be there. Watching over you. Mending the world in 
       // Use only one event listener for initialization
       document.addEventListener("DOMContentLoaded", initializeApp);
     </script>
+
+    <!-- Back to Lobby Button -->
+    <div style="text-align: center; margin: 3rem 0;">
+      <a href="index.html" 
+         class="lobby-button"
+         style="
+          display: inline-block;
+          padding: 0.75rem 1.5rem;
+          background-color: var(--primary);
+          color: white;
+          text-decoration: none;
+          font-weight: 500;
+          border-radius: 0.5rem;
+          box-shadow: 0 4px 6px var(--shadow);
+          transition: all 0.3s ease;
+         "
+onmouseover="this.style.backgroundColor='var(--secondary)'; this.style.transform='translateY(-2px)'"
+onmouseout="this.style.backgroundColor='var(--primary)'; this.style.transform='translateY(0)'">
+        <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+        Back to Lobby
+      </a>
+    </div>
   </body>
 </html>
