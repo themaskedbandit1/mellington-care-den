@@ -2032,10 +2032,11 @@ And in a world full of jagged edges and broken hearts, that might be the most po
           </head>
           <body>
             <h1>${title}</h1>
-            ${decodeURIComponent(content)}
+            ${processedContent}
           </body>
         </html>
       `);
+      win.document.close();
       return false;
       }    
     
