@@ -1707,13 +1707,17 @@ And in a world full of jagged edges and broken hearts, that might be the most po
             `;
 
             affirmation.alternateUniverses.forEach((au, index) => {
+              const encodedTitle = btoa(encodeURIComponent(au.title));
+              const encodedContent = btoa(encodeURIComponent(au.content));
+              
               auHTML += `
               <div class="au-item" data-index="${index}">
                 <div class="au-trigger">
                   ${au.title}
                   <a href="#" 
-                     onclick="event.stopPropagation(); showFullStory('${au.title.replace(/'/g, "\\'").replace(/"/g, '\\"')}', '${au.content.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n')}'); return false;" 
-                     style="margin-left: 8px; color:var(--primary); font-size: 0.9em;">
+                     onclick="event.stopPropagation(); openEncodedStory('${encodedTitle}', '${encodedContent}'); return false;" 
+                     style="margin-left: 8px; color:var(--primary); font-size: 0.9em;"
+                     title="Open in new tab">
                     <i class="fas fa-external-link-alt"></i>
                   </a>
                   <span class="chevron-icon">▼</span>
@@ -1721,7 +1725,7 @@ And in a world full of jagged edges and broken hearts, that might be the most po
                 <div class="au-content">
                   <div style="margin-bottom: 0.75rem; white-space: pre-line;">
                     ${au.content.substring(0, 300)}... 
-                    <a href="#" onclick="showFullStory('${au.title.replace(/'/g, "\\'").replace(/"/g, '\\"')}', '${au.content.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n')}'); return false;" style="color:var(--primary); text-decoration:underline;">
+                    <a href="#" onclick="openEncodedStory('${encodedTitle}', '${encodedContent}'); return false;" style="color:var(--primary); text-decoration:underline;">
                       Read full story in new tab
                     </a>
                   </div>
@@ -2017,45 +2021,75 @@ And in a world full of jagged edges and broken hearts, that might be the most po
       }
 
       function showFullStory(title, content) {
-        const win = window.open('', '_blank');
-        const processedContent = content.replace(/\\n/g, '\n');
+        try {
+          const win = window.open('', '_blank');
+          if (!win) {
+            alert("Popup blocked! Please allow popups for this site to view the full story.");
+            return false;
+          }
+
+          let decodedTitle = decodeEntities(title);
+          let decodedContent = decodeEntities(content);
+          decodedContent = decodedContent.replace(/\\n/g, '\n');
   
-        win.document.write(`
-        <html>
-          <head>
-            <title>${title}</title>
-            <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-            <style>
-              body {
-                font-family: 'Poppins', sans-serif;
-                line-height: 1.6;
-                color: #3D405B;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 2rem;
-                background-color: #fffbf8;
-                white-space: pre-line;
-              }
-              h1 {
-                font-family: 'Playfair Display', serif;
-                color: #a57456;
-                margin-bottom: 1.5rem;
-              }
-              .content {
-                white-space: pre-line;
-              }
-            </style>
-          </head>
-          <body>
-            <h1>${title}</h1>
-            <div class="content">${processedContent}</div>
-          </body>
-        </html>
-        `);
-        win.document.close();
+          win.document.write(`
+          <html>
+            <head>
+              <title>${title}</title>
+              <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+              <style>
+                body {
+                  font-family: 'Poppins', sans-serif;
+                  line-height: 1.6;
+                  color: #3D405B;
+                  max-width: 800px;
+                  margin: 0 auto;
+                  padding: 2rem;
+                  background-color: #fffbf8;
+                  white-space: pre-line;
+                }
+                h1 {
+                  font-family: 'Playfair Display', serif;
+                  color: #a57456;
+                  margin-bottom: 1.5rem;
+                }
+                .content {
+                  white-space: pre-line;
+                }
+              </style>
+            </head>
+            <body>
+              <h1>${title}</h1>
+              <div class="content">${processedContent}</div>
+            </body>
+          </html>
+          `);
+          win.document.close();
+        } catch (error) {
+          console.error("Error opening story in new tab:", error);
+          alert("There was an error opening the story. Please try again.");
+        }
         return false;
       }  
 
+      function decodeEntities(text) {
+        const textarea = document.createElement('textarea');
+        textarea.innerHTML = text;
+        return textarea.value;
+      }
+          
+      function openEncodedStory(encodedTitle, encodedContent) {
+        try {
+          const title = decodeURIComponent(atob(encodedTitle));
+          const content = decodeURIComponent(atob(encodedContent));
+          return showFullStory(title, content);
+        } catch (error) {
+          console.error("Error decoding story:", error);
+          alert("There was an error opening the story. Please try again.");
+          return false;
+        }
+      }
+          
       function initializeApp() {
         console.log("Initializing app...");
         renderLetters();
