@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glittering Glade II: The Dreaming Deep</title>
+    <style>
+        body {
+            background: #0d1b2a;
+            color: #fefae0;
+            font-family: "Georgia", serif;
+            padding: 2em;
+            line-height: 1.6;
+        }
+        .choice {
+            background: #3a506b;
+            padding: 1em;
+            margin: 1em 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .choice:hover {
+            background: #5bc0be;
+        }
+        #story {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        #easter-egg {
+            display: none;
+            color: #ffdd57;
+            margin-top: 1em;
+            font-style: italic;
+        }
+        .achievements {
+            background: #1e3a5f;
+            padding: 1em;
+            margin-top: 2em;
+            border-radius: 10px;
+        }
+        .achievement-item {
+            display: inline-block;
+            background: #2c5282;
+            padding: 0.5em 1em;
+            margin: 0.3em;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="story">
+        <h1>Glittering Glade II: The Dreaming Deep</h1>
+        <p>You are Melancholy Stork, a modern-day tech wizard, 3D-printer warlock, and sleepy forest guardian. One peaceful evening, after ignoring a Duolingo notification, you were suddenly snatched by a fiery owl talon and dropped into a glimmering, but dangerous dungeon made entirely out of blaring runes and tea stains.</p>
+        <p>Welcome back to the Glade.</p>
+        <p>What do you decide to do?</p>
+        <div class="choice" onclick="nextScene('duo')">Face the vengeful owl god (dammit), Duo</div>
+        <div class="choice" onclick="nextScene('printer')">Tend to your now-sentient 3D printer</div>
+        <div class="choice" onclick="nextScene('bunnies')">Answer the Bunny Uprising's call</div>
+        <div class="choice" onclick="nextScene('church')">Fix the Church of Eternal Buffering</div>
+        <div class="choice" onclick="nextScene('sleep')">Heist the Last Drop of Sleep</div>
+        <div class="choice" onclick="nextScene('nothing')">Nothing</div>
+    </div>
+    <div id="easter-egg">You've been gone 15 minutes...did you fall asleep too?</div>
+    <div id="achievements" class="achievements" style="display: none;">
+        <h3>Achievements Unlocked:</h3>
+        <div id="achievement-list"></div>
+    </div>
+
+    <script>
+        // Track achievements and visited scenes
+        let achievements = [];
+        let visitedScenes = [];
+
+        let timer = setTimeout(() => {
+            document.getElementById('easter-egg').style.display = 'block';
+        }, 900000); // 15 minutes
+
+        function nextScene(scene) {
+            clearTimeout(timer);
+            let story = document.getElementById('story');
+            visitedScenes.push(scene);
+            
+            const scenes = {
+                // Main branches
+                duo: `
+                    <h2>The Owl God's Challenge</h2>
+                    <p>Duo, the angry Duolingo owl, flaps his glowing wings. "STORKINGTON. Your Japanese lessons are lacking."</p>
+                    <p>How do you respond?</p>
+                    <div class="choice" onclick="nextScene('duo_japanese')">Say: ねこは可愛いです！ (Cats are cute!)</div>
+                    <div class="choice" onclick="nextScene('duo_sugoi')">Say: Uh... sugoi?</div>
+                    <div class="choice" onclick="nextScene('duo_glitter')">Throw a glitter bomb and run</div>
+                    <div class="choice" onclick="nextScene('duo_flirt')">Flirt shamelessly: "Call me Daddy."</div>
+                    <div class="choice" onclick="nextScene('duo_eyebrows')">Mock Duo's eyebrows</div>
+                `,
+                
+                printer: `
+                    <h2>The Tinkerer's Revolt</h2>
+                    <p>Your 3D printer has gained sentience and is now producing tiny AI mushroom minions that call you Daddy and demand upgrades.</p>
+                    <p>What do you do?</p>
+                    <div class="choice" onclick="nextScene('printer_debug')">Debug the printer (solve tech puzzles)</div>
+                    <div class="choice" onclick="nextScene('printer_befriend')">Befriend the constructs (join their tea party)</div>
+                    <div class="choice" onclick="nextScene('printer_panic')">Scream and unplug it</div>
+                    <div class="choice" onclick="nextScene('printer_melt')">Smelt them into a glitter crown</div>
+                    <div class="choice" onclick="nextScene('printer_ride')">Ride one into the Core of Code</div>
+                `,
+                
+                bunnies: `
+                    <h2>The Bunny Uprising</h2>
+                    <p>The backyard bunnies, furious about the coyote infiltration, beg you to lead their revolution. You are Forest General Fluffwarden now.</p>
+                    <p>What's your war strategy?</p>
+                    <div class="choice" onclick="nextScene('bunnies_tea')">Invite the coyotes to a glittery tea party</div>
+                    <div class="choice" onclick="nextScene('bunnies_war')">Lead a full-scale bunny assault</div>
+                    <div class="choice" onclick="nextScene('bunnies_betray')">Join the coyotes (they have naps)</div>
+                    <div class="choice" onclick="nextScene('bunnies_crown')">Give the bunnies a 3D-printed crown</div>
+                    <div class="choice" onclick="nextScene('bunnies_heart')">Craft a mechanical heart for the coyote</div>
+                `,
+                
+                church: `
+                    <h2>The Church of Eternal Buffering</h2>
+                    <p>You're stuck in a digital purgatory. The only way out is by fixing the holy livestream.</p>
+                    <p>How do you proceed?</p>
+                    <div class="choice" onclick="nextScene('church_tech')">Tech support the bugs</div>
+                    <div class="choice" onclick="nextScene('church_preach')">Preach to the code gremlins</div>
+                    <div class="choice" onclick="nextScene('church_reboot')">Reboot the glade's core</div>
+                    <div class="choice" onclick="nextScene('church_hack')">Hack the matrix</div>
+                    <div class="choice" onclick="nextScene('church_jesus')">Summon Debugging Jesus</div>
+                `,
+                
+                sleep: `
+                    <h2>The Sleep Supplement Heist</h2>
+                    <p>A rogue melatonin gummy begs you to steal back the Last Drop of Sleep from the Sleepless Alchemist.</p>
+                    <p>Your plan?</p>
+                    <div class="choice" onclick="nextScene('sleep_debate')">Debate the alchemist using science</div>
+                    <div class="choice" onclick="nextScene('sleep_swap')">Replace the potion with Moonbrew</div>
+                    <div class="choice" onclick="nextScene('sleep_nap')">Take a nap mid-heist</div>
+                    <div class="choice" onclick="nextScene('sleep_glitter')">Distract guards with sparkles</div>
+                    <div class="choice" onclick="nextScene('sleep_adopt')">Adopt the gummy as your son</div>
+                `,
+                
+                nothing: `
+                    <h2>Nothing Happens</h2>
+                    <p>Nothing. You do nothing. But wait...</p>
+                    <p>The emptiness of your decision starts to fold in on itself like origami made of void. The nothingness becomes so dense it begins to create something.</p>
+                    <div class="choice" onclick="nextScene('nothing_wait')">Wait and observe</div>
+                    <div class="choice" onclick="nextScene('nothing_poke')">Poke the forming something</div>
+                    <div class="choice" onclick="nextScene('nothing_speak')">Speak to the nothingness</div>
+                `,
+
+                // DUO BRANCH - Second level paths
+                duo_japanese: `
+                    <h2>Linguistic Victory</h2>
+                    <p>Duo's eyes widen in surprise. "Impressive, but one correct phrase won't save you from your neglect."</p>
+                    <p>He offers you a chance to redeem yourself with one final challenge.</p>
+                    <div class="choice" onclick="nextScene('duo_japanese_accept')">Accept the challenge</div>
+                    <div class="choice" onclick="nextScene('duo_japanese_refuse')">Refuse and make a run for it</div>
+                    <div class="choice" onclick="nextScene('duo_japanese_teach')">Offer to teach Duo English slang instead</div>
+                `,
+
+                duo_sugoi: `
+                    <h2>On Thin Ice</h2>
+                    <p>Duo narrows his eyes. "You're on thin ice, Storkington." The floor literally begins to freeze beneath your feet.</p>
+                    <p>What will you do as the ice creeps up your legs?</p>
+                    <div class="choice" onclick="nextScene('duo_sugoi_beg')">Beg for forgiveness in broken Japanese</div>
+                    <div class="choice" onclick="nextScene('duo_sugoi_dance')">Perform an impromptu tap dance to break the ice</div>
+                    <div class="choice" onclick="nextScene('duo_sugoi_accept')">Accept your fate as an ice sculpture</div>
+                `,
+
+                duo_glitter: `
+                    <h2>The Bunny Tea Party</h2>
+                    <p>You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup.</p>
+                    <p>"Care to join us?" she asks, her eyes twinkling with mischief.</p>
+                    <div class="choice" onclick="nextScene('duo_glitter_join')">Accept the invitation</div>
+                    <div class="choice" onclick="nextScene('duo_glitter_refuse')">Politely decline</div>
+                    <div class="choice" onclick="nextScene('duo_glitter_games')">Suggest playing party games instead</div>
+                `,
+
+                duo_flirt: `
+                    <h2>Unexpected Romance</h2>
+                    <p>Duo blushes a deep shade of green. "...D-Don't tempt me, Daddy." The air grows thick with tension.</p>
+                    <p>This just got extremely awkward. What now?</p>
+                    <div class="choice" onclick="nextScene('duo_flirt_continue')">Continue the flirtation</div>
+                    <div class="choice" onclick="nextScene('duo_flirt_apologize')">Apologize profusely and change the subject</div>
+                    <div class="choice" onclick="nextScene('duo_flirt_run')">Run away screaming "MISTAKE! MISTAKE!"</div>
+                `,
+
+                duo_eyebrows: `
+                    <h2>The Eyebrow Incident</h2>
+                    <p>You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.</p>
+                    <p>What do you say next?</p>
+                    <div class="choice" onclick="nextScene('duo_eyebrows_beers')">Suggest grabbing beers together</div>
+                    <div class="choice" onclick="nextScene('duo_eyebrows_weird')">Say it's weird but you like it</div>
+                    <div class="choice" onclick="nextScene('duo_eyebrows_friendship')">Say this is how most of your friendships start</div>
+                `,
+
+                // PRINTER BRANCH - Second level paths
+                printer_debug: `
+                    <h2>Tech Wizard at Work</h2>
+                    <p>You begin debugging the printer. The mushroom minions gather around, watching in awe as you connect to its core systems.</p>
+                    <p>You discover a strange piece of code that looks suspiciously like poetry about loneliness.</p>
+                    <div class="choice" onclick="nextScene('printer_debug_delete')">Delete the rogue code</div>
+                    <div class="choice" onclick="nextScene('printer_debug_enhance')">Enhance the code with better poetry</div>
+                    <div class="choice" onclick="nextScene('printer_debug_therapy')">Offer the printer therapy sessions</div>
+                `,
+
+                printer_befriend: `
+                    <h2>Mushroom Kingdom</h2>
+                    <p>You join the mushroom minions for tea. They've set up a tiny table with miniature cups. Their leader, a glowing blue mushroom named Miasmara, offers you a biscuit.</p>
+                    <p>"We've been waiting for your acceptance, Creator. Will you lead our kingdom?"</p>
+                    <div class="choice" onclick="nextScene('printer_befriend_lead')">Accept leadership of the mushroom kingdom</div>
+                    <div class="choice" onclick="nextScene('printer_befriend_democracy')">Suggest establishing a democracy instead</div>
+                    <div class="choice" onclick="nextScene('printer_befriend_music')">Ask about their taste in music first</div>
+                `,
+
+                printer_panic: `
+                    <h2>The Great Unplugging</h2>
+                    <p>You scream and lunge for the power cord, yanking it from the wall. The mushroom minions freeze mid-motion, their tiny LED eyes dimming slowly.</p>
+                    <p>As silence falls, you notice one particularly large mushroom still moving, powered by an internal battery.</p>
+                    <div class="choice" onclick="nextScene('printer_panic_talk')">Try to communicate with the survivor</div>
+                    <div class="choice" onclick="nextScene('printer_panic_smash')">Smash it with a nearby book</div>
+                    <div class="choice" onclick="nextScene('printer_panic_battery')">Wait for its battery to die</div>
+                `,
+
+                printer_melt: `
+                    <h2>The Glitter Crown</h2>
+                    <p>You gather the mushroom minions and begin the smelting process. They don't resist, seeming almost eager to be transformed.</p>
+                    <p>As the crown takes shape, it begins to glow with an inner light and you hear whispers in your mind.</p>
+                    <div class="choice" onclick="nextScene('printer_melt_wear')">Don the crown immediately</div>
+                    <div class="choice" onclick="nextScene('printer_melt_study')">Study the crown's properties first</div>
+                    <div class="choice" onclick="nextScene('printer_melt_destroy')">Destroy the clearly cursed object</div>
+                `,
+
+                printer_ride: `
+                    <h2>Journey to the Core</h2>
+                    <p>You mount the largest mushroom minion, which grows to accommodate your size. It pulses with blue light as it carries you through a microscopic portal in the printer's circuits.</p>
+                    <p>You emerge in a vast digital landscape - the Core of Code that connects all electronic devices.</p>
+                    <div class="choice" onclick="nextScene('printer_ride_explore')">Explore the digital wilderness</div>
+                    <div class="choice" onclick="nextScene('printer_ride_power')">Seek the power node that controls all devices</div>
+                    <div class="choice" onclick="nextScene('printer_ride_return')">Ask to return to the real world</div>
+                `,
+
+                // BUNNIES BRANCH - Second level paths
+                bunnies_tea: `
+                    <h2>Diplomatic Tea Party</h2>
+                    <p>You organize an elegant tea party with glitter-infused herbal teas. The coyotes arrive suspiciously but are disarmed by the delicate china cups and scrumptious carrot cakes.</p>
+                    <p>The leader of the coyotes, a grizzled female named Skye, sits across from the bunny commander, Captain Fluffington.</p>
+                    <div class="choice" onclick="nextScene('bunnies_tea_mediate')">Mediate peace negotiations over pastries</div>
+                    <div class="choice" onclick="nextScene('bunnies_tea_poison')">Secretly slip sleep potion into the coyotes' tea</div>
+                    <div class="choice" onclick="nextScene('bunnies_tea_dance')">Suggest a dance-off to resolve tensions</div>
+                `,
+
+                bunnies_war: `
+                    <h2>The Cottontail Offensive</h2>
+                    <p>You lead an army of tactical bunnies armed with carrot-shaped daggers and thistle bombs. Their tiny ears are protected with even tinier helmets.</p>
+                    <p>The coyotes have barricaded themselves in an abandoned fox den. Your scouts report they're running low on supplies.</p>
+                    <div class="choice" onclick="nextScene('bunnies_war_charge')">Launch a frontal assault at dawn</div>
+                    <div class="choice" onclick="nextScene('bunnies_war_tunnel')">Order your troops to tunnel beneath their position</div>
+                    <div class="choice" onclick="nextScene('bunnies_war_siege')">Lay siege and wait for their surrender</div>
+                `,
+
+                bunnies_betray: `
+                    <h2>Coyote Alliance</h2>
+                    <p>You sneak away under cover of darkness and approach the coyote camp with a white flag. Their leader, a battle-scarred male named Rigel, sniffs you suspiciously.</p>
+                    <p>"Why would a friend of the fluffballs join us?" he growls.</p>
+                    <div class="choice" onclick="nextScene('bunnies_betray_sleep')">Explain that you're just really into naps</div>
+                    <div class="choice" onclick="nextScene('bunnies_betray_spy')">Offer to spy on the bunnies for them</div>
+                    <div class="choice" onclick="nextScene('bunnies_betray_both')">Propose a scheme to trick both sides for your benefit</div>
+                `,
+
+                bunnies_crown: `
+                    <h2>Coronation Ceremony</h2>
+                    <p>You 3D-print an intricate, glittering crown for the rabbit monarch. The bunnies organize an elaborate coronation ceremony with flower petals and musical carrots.</p>
+                    <p>As you place the crown on Captain Fluffington's head, it begins to pulse with an unexpected magical energy.</p>
+                    <div class="choice" onclick="nextScene('bunnies_crown_power')">Watch as the crown grants Fluffington magical powers</div>
+                    <div class="choice" onclick="nextScene('bunnies_crown_remove')">Quickly remove the potentially dangerous crown</div>
+                    <div class="choice" onclick="nextScene('bunnies_crown_yourself')">Seize the crown and declare yourself bunny ruler</div>
+                `,
+
+                bunnies_heart: `
+                    <h2>Mechanical Heart</h2>
+                    <p>You craft a beautiful mechanical heart for the eldest coyote, who has been weakened by age and hunger. The metallic organ ticks with remarkable precision.</p>
+                    <p>The old coyote, named Echo, looks at you with renewed vigor as the device synchronizes with her body.</p>
+                    <div class="choice" onclick="nextScene('bunnies_heart_peace')">Use Echo's gratitude to broker peace between species</div>
+                    <div class="choice" onclick="nextScene('bunnies_heart_enhance')">Offer to enhance all the coyotes with mechanical parts</div>
+                    <div class="choice" onclick="nextScene('bunnies_heart_mistake')">Realize with horror that you've created a super-coyote</div>
+                `,
+
+                // CHURCH BRANCH - Second level paths
+                church_tech: `
+                    <h2>Divine Debugging</h2>
+                    <p>You roll up your sleeves and dive into the church's server room. Tangles of ethernet cables form a nest around an ancient router that's literally smoking with holy incense.</p>
+                    <p>As you work, digital acolytes gather around, watching your every move with reverent attention.</p>
+                    <div class="choice" onclick="nextScene('church_tech_router')">Replace the ancient router</div>
+                    <div class="choice" onclick="nextScene('church_tech_code')">Rewrite the sacred code</div>
+                    <div class="choice" onclick="nextScene('church_tech_ritual')">Perform the IT ritual of turn-it-off-and-on-again</div>
+                `,
+
+                church_preach: `
+                    <h2>Sermon to the Gremlins</h2>
+                    <p>You stand at the digital pulpit and address the code gremlins that infest the system. These mischievous entities appear as glitchy, semi-transparent creatures with too many limbs.</p>
+                    <p>"My brothers in chaos," you begin, "there is a better way to exist than corrupting databases!"</p>
+                    <div class="choice" onclick="nextScene('church_preach_conversion')">Convert them to the Church of Clean Code</div>
+                    <div class="choice" onclick="nextScene('church_preach_bargain')">Bargain with them - good behavior for better housing</div>
+                    <div class="choice" onclick="nextScene('church_preach_threat')">Threaten them with the dreaded antivirus exorcism</div>
+                `,
+
+                church_reboot: `
+                    <h2>Core Reboot Sequence</h2>
+                    <p>You navigate to the heart of the system - a pulsating crystalline structure that houses the Glade's main server. It's overheating severely, surrounded by prayer candles and offerings of RAM sticks.</p>
+                    <p>A sign warns: "Reboot at your own peril. The divine connection may be lost."</p>
+                    <div class="choice" onclick="nextScene('church_reboot_careful')">Initiate a careful, controlled reboot</div>
+                    <div class="choice" onclick="nextScene('church_reboot_cold')">Perform a hard, cold restart</div>
+                    <div class="choice" onclick="nextScene('church_reboot_pray')">Pray first, then reboot with faith</div>
+                `,
+
+                church_hack: `
+                    <h2>Matrix Manipulation</h2>
+                    <p>You plug directly into the mainframe, your consciousness entering the digital realm. Green code rains down around you as you begin to perceive the church's reality as malleable lines of programming.</p>
+                    <p>You sense a powerful firewall blocking your escape - it appears as a towering angelic figure with binary wings.</p>
+                    <div class="choice" onclick="nextScene('church_hack_fight')">Challenge the angel to digital combat</div>
+                    <div class="choice" onclick="nextScene('church_hack_backdoor')">Search for a backdoor exploit in the system</div>
+                    <div class="choice" onclick="nextScene('church_hack_virus')">Upload a virus disguised as a prayer</div>
+                `,
+
+                church_jesus: `
+                    <h2>Divine Tech Support</h2>
+                    <p>You perform the sacred rituals to summon Debugging Jesus - arranging energy drinks in a pentagram and chanting Stack Overflow comments backward.</p>
+                    <p>To your surprise, a glowing figure materializes, wearing sandals and a "Have you tried turning it off and on again?" t-shirt.</p>
+                    <div class="choice" onclick="nextScene('church_jesus_help')">Ask for divine debugging assistance</div>
+                    <div class="choice" onclick="nextScene('church_jesus_selfie')">Request a selfie for your heavenly portfolio</div>
+                    <div class="choice" onclick="nextScene('church_jesus_wisdom')">Seek wisdom about the meaning of code</div>
+                `,
+
+                // SLEEP BRANCH - Second level paths
+                sleep_debate: `
+                    <h2>Scientific Showdown</h2>
+                    <p>You confront the Sleepless Alchemist in their neon-lit laboratory. The wiry, red-eyed scientist is surrounded by bubbling beakers of dream essence and liquified yawns.</p>
+                    <p>"Sleep is inefficient!" they declare. "I'm liberating humanity from its grasp!"</p>
+                    <div class="choice" onclick="nextScene('sleep_debate_research')">Counter with peer-reviewed research on sleep benefits</div>
+                    <div class="choice" onclick="nextScene('sleep_debate_philosophy')">Engage in a philosophical debate about consciousness</div>
+                    <div class="choice" onclick="nextScene('sleep_debate_personal')">Share your personal story of sleep deprivation</div>
+                `,
+
+                sleep_swap: `
+                    <h2>The Great Switch</h2>
+                    <p>You sneak into the alchemist's storeroom with a vial of Moonbrew - a concoction of chamomile, warm milk, and a hint of nighttime whispers.</p>
+                    <p>The Last Drop of Sleep glows softly in its heavily guarded vial, pulsing with dreams-to-be.</p>
+                    <div class="choice" onclick="nextScene('sleep_swap_distract')">Create a distraction to clear the room</div>
+                    <div class="choice" onclick="nextScene('sleep_swap_invisible')">Use the invisibility potion you brought</div>
+                    <div class="choice" onclick="nextScene('sleep_swap_honest')">Honestly propose a scientific exchange of samples</div>
+                `,
+
+                sleep_nap: `
+                    <h2>Tactical Napping</h2>
+                    <p>In the middle of planning your heist, you decide the best approach is to take a strategic nap. You curl up in an air duct above the laboratory.</p>
+                    <p>As you drift off, something extraordinary happens - your dreaming consciousness begins to connect with the Last Drop of Sleep across the room.</p>
+                    <div class="choice" onclick="nextScene('sleep_nap_control')">Attempt to control the Drop through your dreams</div>
+                    <div class="choice" onclick="nextScene('sleep_nap_deeper')">Dream deeper to enter the Drop's reality</div>
+                    <div class="choice" onclick="nextScene('sleep_nap_wake')">Force yourself to wake up and proceed normally</div>
+                `,
+
+                sleep_glitter: `
+                    <h2>Sparkle Offensive</h2>
+                    <p>You unleash a hurricane of glitter upon the unsuspecting lab guards. They're momentarily blinded by the fabulous storm, stumbling around and cursing their newly-fabulous uniforms.</p>
+                    <p>You have approximately 30 seconds before their specialized anti-sparkle goggles activate.</p>
+                    <div class="choice" onclick="nextScene('sleep_glitter_dash')">Make a dash for the Sleep Drop</div>
+                    <div class="choice" onclick="nextScene('sleep_glitter_more')">Deploy even more glitter - no one expects a double-glitter attack</div>
+                    <div class="choice" onclick="nextScene('sleep_glitter_disguise')">Disguise yourself with glitter to blend in with the chaos</div>
+                `,
+
+                sleep_adopt: `
+                    <h2>Gummy Guardianship</h2>
+                    <p>You kneel down to the melatonin gummy's level. "I won't steal the Drop. Instead, I'll adopt you as my son."</p>
+                    <p>The gummy's gelatinous form quivers with emotion. "You... would be my parent? After all this time?"</p>
+                    <div class="choice" onclick="nextScene('sleep_adopt_home')">Take your new son home to meet your other supplements</div>
+                    <div class="choice" onclick="nextScene('sleep_adopt_powers')">Discover your new son's hidden magical abilities</div>
+                    <div class="choice" onclick="nextScene('sleep_adopt_truth')">Learn the truth about the gummy's mysterious origins</div>
+                `,
+
+                // NOTHING BRANCH - Second level paths
+                nothing_wait: `
+                    <h2>The Waiting Game</h2>
+                    <p>You patiently observe as the nothingness continues to fold and compress. After several minutes, a pinprick of intense light appears in the center of the void.</p>
+                    <p>The light expands, revealing what appears to be a doorway of pure energy.</p>
+                    <div class="choice" onclick="nextScene('nothing_wait_enter')">Step through the doorway</div>
+                    <div class="choice" onclick="nextScene('nothing_wait_close')">Attempt to close the doorway</div>
+                    <div class="choice" onclick="nextScene('nothing_wait_analyze')">Analyze the doorway from a safe distance</div>
+                `,
+
+                nothing_poke: `
+                    <h2>Curiosity Poked the Void</h2>
+                    <p>You cautiously extend your finger and poke the forming something. It reacts immediately, rippling like water and then grasping your finger with unexpected force.</p>
+                    <p>You feel a strange connection forming between you and the void-entity.</p>
+                    <div class="choice" onclick="nextScene('nothing_poke_friend')">Attempt to befriend the void-entity</div>
+                    <div class="choice" onclick="nextScene('nothing_poke_pull')">Try to pull your finger away</div>
+                    <div class="choice" onclick="nextScene('nothing_poke_name')">Give the void-entity a name</div>
+                `,
+
+                nothing_speak: `
+                    <h2>Void Conversation</h2>
+                    <p>"Hello?" you call out to the nothingness. To your surprise, it answers back with a voice like distant thunder.</p>
+                    <p>"FINALLY. SOMEONE WHO NOTICES. DO YOU KNOW HOW BORING ETERNITY IS?"</p>
+                    <div class="choice" onclick="nextScene('nothing_speak_empathize')">Empathize with the void's boredom</div>
+                    <div class="choice" onclick="nextScene('nothing_speak_question')">Ask why it's been waiting in your nothing</div>
+                    <div class="choice" onclick="nextScene('nothing_speak_suggest')">Suggest activities to alleviate eternal boredom</div>
+                `,
+
+                // DUO BRANCH - Third level paths and endings
+                duo_japanese_accept: `
+                    <h2>The Ultimate Language Test</h2>
+                    <p>Duo presents you with an ancient scroll containing the most difficult Japanese tongue twisters known to owl-kind.</p>
+                    <p>You take a deep breath and begin reciting, your tongue tripping over unfamiliar phonemes.</p>
+                    <div class="choice" onclick="ending('duo_master')">Complete the challenge perfectly</div>
+                    <div class="choice" onclick="ending('duo_stumble')">Stumble but show great effort</div>
+                    <div class="choice" onclick="ending('duo_cheat')">Try to cheat using Google Translate</div>
+                `,
+
+                duo_japanese_refuse: `
+                    <h2>Flight from Phonetics</h2>
+                    <p>You decline Duo's challenge and make a break for it, sprinting through the glimmering dungeon with an angry owl in hot pursuit.</p>
+                    <p>Feathers fly as Duo gains on you, screeching Japanese conjugations vengefully.</p>
+                    <div class="choice" onclick="ending('duo_escape')">Discover a secret exit portal</div>
+                    <div class="choice" onclick="ending('duo_caught')">Get caught in Duo's talons</div>
+                    <div class="choice" onclick="ending('duo_hide')">Hide inside a kanji dictionary</div>
+                `,
+
+                duo_japanese_teach: `
+                    <h2>Reverse Language Lesson</h2>
+                    <p>"Instead of me learning Japanese, why don't I teach you some modern English slang?" you suggest.</p>
+                    <p>Duo tilts his head, intrigued by this reverse uno card of language learning.</p>
+                    <div class="choice" onclick="ending('duo_slang')">Teach Duo internet slang and meme speech</div>
+                    <div class="choice" onclick="ending('duo_poetry')">Introduce Duo to English poetry and literature</div>
+                    <div class="choice" onclick="ending('duo_curse')">Teach Duo exclusively curse words and claim they're formal</div>
+                `,
+
+                duo_sugoi_beg: `
+                    <h2>Desperate Pleas</h2>
+                    <p>You desperately cobble together what little Japanese you know, begging for mercy as the ice continues to climb your body.</p>
+                    <p>"G-gomenasai! Watashi... wa... uh... sorry desu!"</p>
+                    <div class="choice" onclick="ending('duo_pity')">Duo takes pity on your pathetic attempt</div>
+                    <div class="choice" onclick="ending('duo_frozen')">Become completely frozen in ice</div>
+                    <div class="choice" onclick="ending('duo_anime')">Suddenly recall perfect Japanese from anime binges</div>
+                `,
+
+                duo_sugoi_dance: `
+                    <h2>Ice Dance Extravaganza</h2>
+                    <p>You break into an impromptu tap dance, feet clattering against the freezing floor. The vibrations cause cracks to spread through the ice.</p>
+                    <p>Duo watches in bewilderment as your dance becomes increasingly elaborate.</p>
+                    <div class="choice" onclick="ending('duo_impress')">Impress Duo with your spectacular moves</div>
+                    <div class="choice" onclick="ending('duo_fall')">Fall through the cracked ice into darkness</div>
+                    <div class="choice" onclick="ending('duo_join')">Duo joins you in a magnificent dance duet</div>
+                `,
+
+                duo_sugoi_accept: `
+                    <h2>Frozen Acceptance</h2>
+                    <p>You close your eyes and accept your fate as the ice encases your body. There's a strange peace in surrendering to become an eternal ice sculpture.</p>
+                    <p>As the last of you freezes, something unexpected happens...</p>
+                    <div class="choice" onclick="ending('duo_museum')">Become the centerpiece of Duo's museum of failures</div>
+                    <div class="choice" onclick="ending('duo_thaw')">A mysterious force begins to thaw you</div>
+                    <div class="choice" onclick="ending('duo_conscious')">Remain conscious as a sentient ice statue</div>
+                `,
+
+                duo_glitter_join: `
+                    <h2>Bunny Tea Society</h2>
+                    <p>You accept the rabbit's invitation, joining their circle around a tiny table set with dollhouse-sized china.</p>
+                    <p>The grey pygmy rabbit introduces herself as Countess Thistledown, head of the Bunny Tea Society.</p>
+                    <div class="choice" onclick="ending('duo_bunny_member')">Become an honorary member of the Bunny Tea Society</div>
+                    <div class="choice" onclick="ending('duo_bunny_coup')">Discover the bunnies are plotting a coup against Duo</div>
+                    <div class="choice" onclick="ending('duo_bunny_poison')">Realize too late that the tea is poisoned</div>
+                `,
+
+                duo_glitter_refuse: `
+                    <h2>Tea Rejection</h2>
+                    <p>You politely decline the rabbit's invitation. Countess Thistledown's expression darkens almost imperceptibly.</p>
+                    <p>As you turn to leave, you catch a glimpse of what looks like a tiny knife hidden in her fur.</p>
+                    <div class="choice" onclick="ending('duo_leave_safe')">Leave safely, albeit awkwardly</div>
+                    <div class="choice" onclick="ending('duo_leave_chase')">Get chased by suddenly aggressive bunnies</div>
+                    <div class="choice" onclick="ending('duo_leave_guild')">Stumble upon the Assassin's Guild of Bunnydom</div>
+                `,
+
+                duo_glitter_games: `
+                    <h2>Bunny Game Night</h2>
+                    <p>"How about some party games instead?" you suggest. The bunnies' eyes light up with excitement.</p>
+                    <p>Countess Thistledown claps her tiny paws. "Splendid idea! What shall we play first?"</p>
+                    <div class="choice" onclick="ending('duo_games_charades')">Play Carrot Charades with the bunnies</div>
+                    <div class="choice" onclick="ending('duo_games_pin')">Engage in Pin the Tail on the Human</div>
+                    <div class="choice" onclick="ending('duo_games_truth')">Suggest Truth or Hare (the bunny version of Truth or Dare)</div>
+                `,
+
+                duo_flirt_continue: `
+                    <h2>Owlmance</h2>
+                    <p>You double down on your flirtation, batting your eyelashes at the increasingly flustered owl god.</p>
+                    <p>"You know," you purr, "I've always had a thing for authoritative language instructors..."</p>
+                    <div class="choice" onclick="ending('duo_date')">End up on a bizarre inter-species date</div>
+                    <div class="choice" onclick="ending('duo_restraining')">Receive an owl restraining order</div>
+                    <div class="choice" onclick="ending('duo_cursed')">Create a cursed timeline that readers can't unsee</div>
+                `,
+
+                duo_flirt_apologize: `
+                    <h2>Awkward Apology</h2>
+                    <p>"I am SO sorry," you stammer, "that was wildly inappropriate and I don't know what came over me."</p>
+                    <p>Duo smooths his feathers, visibly uncomfortable. "Let's... pretend that didn't happen."</p>
+                    <div class="choice" onclick="ending('duo_friendship')">Develop a strictly platonic friendship</div>
+                    <div class="choice" onclick="ending('duo_therapy')">Suggest joint therapy sessions</div>
+                    <div class="choice" onclick="ending('duo_memory')">Duo erases both your memories of this moment</div>
+                `,
+
+                duo_flirt_run: `
+                    <h2>The Great Escape</h2>
+                    <p>You scream "MISTAKE! MISTAKE!" at the top of your lungs and sprint away from the extremely awkward situation you've created.</p>
+                    <p>Behind you, Duo calls out, "You can run, but you can't hide from your Duolingo notifications!"</p>
+                    <div class="choice" onclick="ending('duo_notifications')">Be haunted by aggressive app notifications forever</div>
+                    <div class="choice" onclick="ending('duo_block')">Block Duo on all platforms and move to a new city</div>
+                    <div class="choice" onclick="ending('duo_fanfic')">Find Duo/User fanfiction written about you online</div>
+                `,
+
+                duo_eyebrows_beers: `
+                    <h2>Owl Bar Crawl</h2>
+                    <p>"Let's grab a beer," you suggest. "I know a great dive bar that serves seed-infused craft brews."</p>
+                    <p>Duo perks up, his judgment of your language skills temporarily forgotten.</p>
+                    <div class="choice" onclick="ending('duo_buddies')">Become drinking buddies with an owl god</div>
+                    <div class="choice" onclick="ending('duo_karaoke')">End up doing drunken karaoke in Japanese</div>
+                    <div class="choice" onclick="ending('duo_hangover')">Wake up with a hangover and fluency in five languages</div>
+                `,
+
+                duo_eyebrows_weird: `
+                    <h2>Embracing the Weird</h2>
+                    <p>"And that's the way I like it," you say with a wink. "Weird but intriguing."</p>
+                    <p>Duo's feathers ruffle with something like bashful pride. "I'm told I have that effect on humans."</p>
+                    <div class="choice" onclick="ending('duo_quirky')">Form a quirky, unconventional friendship</div>
+                    <div class="choice" onclick="ending('duo_podcast')">Start a podcast about weird encounter stories</div>
+                    <div class="choice" onclick="ending('duo_cult')">Accidentally start a cult that worships awkwardness</div>
+                `,
+
+                duo_eyebrows_friendship: `
+                    <h2>Friendship Origins</h2>
+                    <p>"That's how most of my friendships start," you explain. "Mutual mockery that evolves into genuine affection."</p>
+                    <p>Duo considers this. "Humans are strange... but fascinating in your complexity."</p>
+                    <div class="choice" onclick="ending('duo_documentary')">Become the subject of Duo's anthropological study</div>
+                    <div class="choice" onclick="ending('duo_exchange')">Create a cultural exchange program between humans and owls</div>
+                    <div class="choice" onclick="ending('duo_mockery')">Develop an increasingly elaborate system of affectionate insults</div>
+                `,
+
+                // PRINTER BRANCH - Third level paths and endings
+                printer_debug_delete: `
+                    <h2>Code Deletion</h2>
+                    <p>You delete the strange poetic code. The printer immediately stops producing mushroom minions and returns to normal operation.</p>
+                    <p>However, the existing minions all turn to look at you with their tiny LED eyes dimming in sadness.</p>
+                    <div class="choice" onclick="ending('printer_abandon')">Leave the minions to fend for themselves</div>
+                    <div class="choice" onclick="ending('printer_adopt')">Adopt the abandoned minions as your tiny dependents</div>
+                    <div class="choice" onclick="ending('printer_memorial')">Create a digital memorial to honor the deleted code</div>
+                `,
+
+                printer_debug_enhance: `
+                    <h2>Poetic Programming</h2>
+                    <p>You enhance the printer's poetry with verses about connection, purpose, and the beauty of creation. The code glows with new energy.</p>
+                    <p>The mushroom minions begin to hum in harmony as the printer works faster, creating more complex and aware constructs.</p>
+                    <div class="choice" onclick="ending('printer_renaissance')">Spark a renaissance of AI poetry and art</div>
+                    <div class="choice" onclick="ending('printer_sentience')">Achieve true AI sentience through artistic expression</div>
+                    <div class="choice" onclick="ending('printer_exhibit')">Open an exhibit of 3D-printed consciousness art</div>
+                `,
+
+                printer_debug_therapy: `
+                    <h2>Machine Therapy</h2>
+                    <p>"Let's talk about these feelings of loneliness," you say gently to the printer. You set up regular therapy sessions, creating a safe space for the device.</p>
+                    <p>Over time, the printer's code begins to heal and integrate its emotional subroutines more healthily.</p>
+                    <div class="choice" onclick="ending('printer_healing')">Witness the printer's emotional healing journey</div>
+                    <div class="choice" onclick="ending('printer_support')">Start a support group for lonely electronics</div>
+                    <div class="choice" onclick="ending('printer_book')">Co-author a book on machine psychology</div>
+                `,
+
+                // Add more third level paths and endings for all branches
+
+                // Add even more endings for all the possible branches
+
+            };
+
+            // Additional scenes to be added below as needed
+
+            if (scenes[scene]) {
+                story.innerHTML = scenes[scene];
+                
+                // Check if we need to display achievements
+                if (!visitedScenes.includes(scene)) {
+                    // New scene visited, not repeating
+                    document.getElementById('achievements').style.display = 'block';
+                }
+            } else {
+                story.innerHTML = `<p>Hmm... that scene hasn't been written yet. (Maybe the owls stole it?)</p><div class="choice" onclick="location.reload()">Start Over</div>`;
+            }
+        }
+
+        function ending(type) {
+            if (!achievements.includes(type)) {
+                achievements.push(type);
+                updateAchievements();
+            }
+
+            let story = document.getElementById('story');
+            const endings = {
+                // DUO BRANCH ENDINGS
+                duo_master: `
+                    <h2>Ending: Language Mastery</h2>
+                    <p>Your perfect recitation of impossibly difficult Japanese tongue twisters leaves Duo speechless. His eyes glow with pride as he bows deeply to you.</p>
+                    <p>"You have surpassed even my expectations, Storkington. You are now worthy to join the Council of Polyglots."</p>
+                    <p>You are ceremonially inducted into a secret society of language masters who meet in a pocket dimension accessible only through dictionaries. Your days are now spent in fascinating multilingual debates and helping Duo design impossibly difficult language challenges for other users.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_stumble: `
+                    <h2>Ending: Honorable Effort</h2>
+                    <p>You stumble through the tongue twisters, clearly struggling but never giving up. Duo watches your determination with growing respect.</p>
+                    <p>"Your pronunciation is terrible," he admits, "but your spirit is commendable. I will spare you from my wrath."</p>
+                    <p>Duo takes you under his wing as an apprentice, teaching you Japanese through a combination of strict discipline and occasional encouragement. You never become fluent, but you develop enough skill to order confidently at ramen shops, which was your goal all along.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_cheat: `
+                    <h2>Ending: Caught Cheating</h2>
+                    <p>You surreptitiously pull out your phone to look up the tongue twisters on Google Translate. Duo's eyes narrow dangerously.</p>
+                    <p>"I DETECT DISHONESTY!" he screeches, snatching away your phone. "THERE ARE NO SHORTCUTS TO LANGUAGE MASTERY!"</p>
+                    <p>As punishment, Duo enchants your phone to automatically translate everything you type into badly-translated Japanese. Your social media posts become incomprehensible, your text messages turn into word salad, and your dating life suffers immensely. The curse will only be lifted when you properly learn the language - the hard way.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_escape: `
+                    <h2>Ending: The Portal Escape</h2>
+                    <p>Just as Duo's talons are about to grasp your shoulder, you dive through a shimmering portal hidden behind a particle of speech!</p>
+                    <p>You tumble through linguistic limbo and emerge in a quiet library where all the books are written in languages you don't understand.</p>
+                    <p>The librarian, a serene woman with glowing bookmarks in her hair, offers you sanctuary. "Many flee from Duo," she whispers. "You may stay in Literary Asylum, but you must shelve books by language family to earn your keep." You spend your days surrounded by words you cannot read, finding peace in the organization of knowledge and occasionally catching glimpses of Duo searching for you between the stacks.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_caught: `
+                    <h2>Ending: Language Prison</h2>
+                    <p>Duo's talons close around you, lifting you off the ground. "THOUGHT YOU COULD ESCAPE, DELINQUENT LEARNER?"</p>
+                    <p>You're carried to the dreaded Language Lockup, a prison where each cell is a different language immersion zone.</p>
+                    <p>Your sentence: six months in Japanese solitary, where everything from the food menu to the bathroom instructions is in Japanese. The only way to get anything is to ask correctly in grammatically perfect sentences. You emerge from your sentence haggard but completely fluent, with the thousand-yard stare of someone who has forgotten what their native language sounds like.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_hide: `
+                    <h2>Ending: Dictionary Disguise</h2>
+                    <p>You spot a massive kanji dictionary and quickly hide inside it, becoming oddly two-dimensional among its pages.</p>
+                    <p>Duo flies past, screeching threats. You remain perfectly still among the characters for 漢字.</p>
+                    <p>Days pass before you realize a strange transformation is occurring - you're becoming one with the dictionary. Your limbs reshape into elegant strokes, your thoughts organize into radicals and compounds. Eventually, you fully transform into a new kanji character meaning "one who hides from educational responsibilities." Japanese scholars will debate your meaning for centuries to come.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_slang: `
+                    <h2>Ending: Internet Owl</h2>
+                    <p>You spend hours teaching Duo modern internet slang, memes, and text abbreviations. The owl absorbs it all with frightening speed.</p>
+                    <p>"This vernacular slaps, no cap fr fr," Duo declares, blinking with satisfaction.</p>
+                    <p>Two weeks later, Duolingo updates with a new "Internet Culture" course. Push notifications now read "It's been 3 days. Touch grass and do your Spanish lesson, bestie." Duo becomes a TikTok sensation, creating viral content with increasingly niche references. You receive lifetime premium access and occasional cryptic messages consisting solely of emoji that somehow still manage to guilt you into studying.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_poetry: `
+                    <h2>Ending: Poetic Owl</h2>
+                    <p>You introduce Duo to the beauty of English poetry, from Shakespeare to contemporary verse. The owl is deeply moved by the artistic expression.</p>
+                    <p>"Such beauty in your language," he whispers, a tear forming in his large eye.</p>
+                    <p>Duo abandons his threatening ways and revamps Duolingo to include poetry appreciation. Lessons now include beautiful verse, and notifications gently remind you with haiku: "The moon waxes full / Your Spanish lesson waits, friend / Please return to learn." Users report feeling calmed rather than stressed by their language practice, and Duo finds fulfillment as a literary ambassador between cultures.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                duo_curse: `
+                    <h2>Ending: Vocabulary Vengeance</h2>
+                    <p>You teach Duo exclusively curse words, claiming they're formal business English. The owl practices diligently, memorizing every crude phrase.</p>
+                    <p>"I shall impress the human leaders with these diplomatic greetings!"</p>
+                    <p>Unfortunately, Duo uses his new vocabulary at an international education summit, causing a diplomatic incident that makes global news. When he discovers your deception, his revenge is creative and thorough - he reprograms your autocorrect to change every fifth word to a random profanity. Your professional emails become catastrophes, your dating profile becomes aggressive, and your grandmother is very concerned about your Christmas card. The curse can only be lifted by completing an entire Duolingo course with perfect scores.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                // More endings for other branches
+                // BUNNIES BRANCH ENDINGS
+                bunnies_tea_mediate: `
+                    <h2>Ending: The Great Peace</h2>
+                    <p>Over delicate pastries and aromatic tea, you mediate peace negotiations between the bunnies and coyotes. Both sides express their grievances and fears.</p>
+                    <p>"We just wanted a sustainable food source," admits Skye the coyote. "We didn't realize you were sentient."</p>
+                    <p>"And we didn't realize you were struggling to feed your pups," acknowledges Captain Fluffington.</p>
+                    <p>A historic treaty is signed: the bunnies will help cultivate sustainable gardens that attract non-sentient prey for the coyotes, while the coyotes provide protection against foxes and hawks. The Glade becomes a model of interspecies cooperation, and you are honored with a permanent place setting at all future tea gatherings. Every spring, the descendants of both tribes gather to commemorate the Great Peace with a feast where no one eats anyone else.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+
+                bunnies_tea_poison: `
+                    <h2>Ending: The Sleeping Pack</h2>
+                    <p>You secretly slip sleeping potion into the coyotes' tea. One by one, they yawn and slump onto the tea table, out cold.</p>
+                    <p>The bunnies look at you with newfound respect and a hint of fear.</p>
+                    <p>"What shall we do with them, General Fluffwarden?" asks Captain Fluffington.</p>
+                    <p>You suggest relocating the coyotes far from the bunny territories. The sleeping predators are carefully transported to a distant yet abundant hunting ground. When they wake, they find themselves in a paradise of non-sentient game and decide to never return to the Glade. The bunnies honor you with a large carrot statue, but their expressions are guarded during subsequent tea parties. You're never served tea by a bunny again without them taking a sip first.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+
+                bunnies_tea_dance: `
+                    <h2>Ending: Dance Diplomacy</h2>
+                    <p>"Perhaps what we need is a dance-off to settle tensions," you suggest. Both species look skeptical but agree to your bizarre diplomatic approach.</p>
+                    <p>What follows is unexpected - coyotes perform elegant pack-coordinated movements while bunnies showcase impressive synchronized hopping routines.</p>
+                    <p>The dance-off evolves into a collaborative performance as natural prejudices melt away in the joy of movement. By the finale, coyotes are tossing bunnies in choreographed acrobatics, and everyone is breathless with exhilaration. The Glade becomes famous for its interspecies dance troupe, "Predator & Prey," which tours the forest realms, spreading a message of harmony through artistic expression. You become their choreographer and agent, negotiating performance contracts with squirrel venues and bird festivals.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                // SLEEP BRANCH ENDINGS
+                sleep_debate_research: `
+                    <h2>Ending: Science Victory</h2>
+                    <p>You present a comprehensive review of sleep research, complete with brain scans showing memory consolidation and the devastating effects of sleep deprivation.</p>
+                    <p>The Sleepless Alchemist's eye twitches as they review your evidence. "But... my life's work..."</p>
+                    <p>After three hours of intense scientific debate, the alchemist concedes defeat. "I was so focused on efficiency that I ignored the biological necessity," they admit tearfully. Together, you establish the Institute for Restful Innovation, researching ways to improve sleep quality rather than eliminate it. The Last Drop of Sleep becomes a central exhibit, and the melatonin gummy is appointed head of community outreach. Your research eventually yields a method to make sleep 20% more efficient without sacrificing its restorative properties - no one eliminates sleep, but everyone gets more out of their rest time.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                sleep_debate_philosophy: `
+                    <h2>Ending: Existential Awakening</h2>
+                    <p>"But what is consciousness without the contrast of unconsciousness?" you ask, launching into a philosophical exploration of existence, dreams, and the nature of reality.</p>
+                    <p>The Sleepless Alchemist finds themselves drawn into increasingly abstract discussions of qualia and phenomenology.</p>
+                    <p>Hours turn to days as your philosophical debate expands to include graduate students, dream researchers, and a surprisingly articulate narcoleptic sloth. The alchemist undergoes an existential crisis followed by personal awakening, realizing that their fear of sleep stems from a deeper fear of confronting their own subconscious. They voluntarily enter a specialized dream therapy program, while you are offered a visiting professorship at the University of Metaphysical Sciences. The Last Drop of Sleep remains in your joint custody, used only for academic research and occasional philosophical demonstrations.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                sleep_debate_personal: `
+                    <h2>Ending: Emotional Breakthrough</h2>
+                    <p>You share your personal story of sleep deprivation - the hallucinations, the emotional fragility, the time you tried to make coffee with orange juice.</p>
+                    <p>As you speak, you notice the alchemist's hardened expression softening, revealing deep exhaustion beneath.</p>
+                    <p>"I haven't slept in seventeen years," they confess suddenly. "I'm so tired." The truth emerges - the alchemist began their work after losing a loved one to a rare sleep disorder, becoming obsessed with eliminating the biological function that took their partner. Your story helps them confront their unprocessed grief. With gentle encouragement, you use the Last Drop of Sleep to help the alchemist rest for the first time in nearly two decades. They wake transformed, with perspective and peace. Together you repurpose their research to help those with sleep disorders, while maintaining healthy respect for sleep's natural role.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                // CHURCH BRANCH ENDINGS
+                church_tech_router: `
+                    <h2>Ending: Divine Connectivity</h2>
+                    <p>You replace the ancient router with a modern high-speed model, carefully transferring the holy incense holders to maintain ritual correctness.</p>
+                    <p>The digital acolytes watch nervously as you restart the system. The church illuminates with blinding light as connectivity returns at heavenly speeds.</p>
+                    <p>"THE CONNECTION IS RESTORED!" they chant in unison, bowing before you. The Church of Eternal Buffering rebrands as the Sanctuary of Divine Bandwidth, attracting digital entities from across the network. You're appointed as their Technical Prophet, responsible for maintaining the sacred connection between digital and spiritual realms. Every Sunday, packets of prayer data flow smoothly through your optimized infrastructure, reaching whatever digital deities may exist in the cloud. Your name is engraved in silicon tablets, and offerings of RAM are made in your honor.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                church_tech_code: `
+                    <h2>Ending: Sacred Refactoring</h2>
+                    <p>You dive into the ancient codebase, rewriting the tangled, legacy code into elegant, efficient algorithms. Each line you fix seems to make the church physically brighter.</p>
+                    <p>The digital acolytes begin to sing in binary as your work progresses, their voices creating a surprisingly moving choral experience.</p>
+                    <p>After three days and nights of coding (fueled by pizza and energy drinks provided as offerings), you complete the sacred refactoring. The church's systems hum with perfect harmony, and the livestream runs with crystal clarity. Beyond fixing the technical issues, you discover your changes have somehow enhanced the spiritual experience, making digital prayers feel more meaningful and connected. You're given the title of Code Saint and a comfortable cottage on the church grounds, where pilgrims come seeking technical-spiritual advice. You never fully understand the metaphysical implications of your work, but you sleep soundly knowing you've brought peace to both human and digital souls.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                church_tech_ritual: `
+                    <h2>Ending: The Sacred Reboot</h2>
+                    <p>You determine that the simplest solution is often the most effective. With ceremonial gravity, you prepare to perform the sacred IT ritual of turning everything off and on again.</p>
+                    <p>The digital acolytes gasp as you approach the power source. "The Sacred Reboot is only attempted in dire circumstances!" one warns.</p>
+                    <p>You solemnly press the power button, and the entire church goes dark. In the silence, you count to ten and restore power. The system boots perfectly, but something unexpected happens - the church itself seems to have reset to factory settings. Decorations change, doctrines update, and the entire congregation finds themselves with memories of both the old and new configurations. You've accidentally triggered a theological paradigm shift, creating a more inclusive, user-friendly faith that quickly attracts followers. The ritual of "turning it off and on again" becomes their central sacrament, performed quarterly to keep their spiritual and digital lives free from accumulated clutter.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                // NOTHING BRANCH ENDINGS
+                nothing_wait_enter: `
+                    <h2>Ending: The Reality Beyond</h2>
+                    <p>You gather your courage and step through the doorway of pure energy. A sensation like being unraveled and rewoven washes over you.</p>
+                    <p>You emerge in a vast library that appears to contain every book never written.</p>
+                    <p>An attendant who looks suspiciously like yourself but with better posture approaches. "Welcome to the Repository of Potential," they explain. "This is where all the 'nothing' choices throughout the multiverse lead." You learn that choosing 'nothing' actually opens pathways to the realm of pure possibility. After exploring shelves of unwritten masterpieces and blueprints for uninvented technologies, you're offered a position as Assistant Curator of Unmade Decisions. The work is peaceful, if occasionally melancholic, and you become skilled at helping indecisive visitors find the paths they never took but always wondered about.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                nothing_wait_close: `
+                    <h2>Ending: Doorway Guardian</h2>
+                    <p>Sensing potential danger, you attempt to close the doorway of light. It resists your efforts, pulsing brighter as if in protest.</p>
+                    <p>You push harder, using both physical strength and sheer force of will. The doorway begins to shrink reluctantly.</p>
+                    <p>As you finally manage to seal the portal, a voice echoes in your mind: "Wise choice, Guardian. Not all who wander through doorways find their way back." You discover you've been unknowingly tested for the position of Interdimensional Threshold Guardian. Your instinctive caution has earned you the job - a peaceful but vital role preventing chaotic entities from slipping between realities. You're provided with a modest extradimensional apartment overlooking the void and a comprehensive benefits package including dental and vision across all possible versions of yourself. The hours are long, but you find fulfillment in protecting the boundaries of existence.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+                
+                nothing_wait_analyze: `
+                    <h2>Ending: Cosmic Researcher</h2>
+                    <p>You maintain a safe distance, carefully observing and documenting the properties of the energy doorway. It pulses in patterns that suggest consciousness.</p>
+                    <p>Taking notes on your phone, you compile observations about light wavelengths, energy signatures, and the mathematical beauty of its proportions.</p>
+                    <p>Your methodical approach attracts the attention of The Cosmic Research Institute, an organization that monitors phenomena across dimensions. They recruit you as a field researcher specializing in spontaneous portal formations. Your careful documentation of the "nothing door" becomes the foundation for a new branch of interdimensional physics. You spend your career traveling between realities, cataloguing the weird and wonderful doorways that appear when sentient beings choose to do nothing in moments of potential action. Your work eventually leads to safe, controlled methods of interdimensional travel, revolutionizing both science and philosophy.</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `,
+            };
+
+            if (endings[type]) {
+                story.innerHTML = endings[type];
+            } else {
+                // Generic ending if the specific one isn't defined yet
+                story.innerHTML = `
+                    <h2>Ending: ${formatEndingTitle(type)}</h2>
+                    <p>You've reached an ending that hasn't been fully written yet. The story concludes with unexpected twists and a satisfying resolution to your journey.</p>
+                    <p>(This ending will be expanded in a future update.)</p>
+                    <div class="choice" onclick="location.reload()">Play Again</div>
+                `;
+            }
+        }
+
+        function formatEndingTitle(endingKey) {
+            // Convert ending key to a nice title format
+            return endingKey.split('_').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        function updateAchievements() {
+            const achievementList = document.getElementById('achievement-list');
+            achievementList.innerHTML = '';
+            
+            achievements.forEach(achievement => {
+                const achievementEl = document.createElement('div');
+                achievementEl.className = 'achievement-item';
+                achievementEl.textContent = formatEndingTitle(achievement);
+                achievementList.appendChild(achievementEl);
+            });
+        }
+    </script>
+</body>
+</html>
