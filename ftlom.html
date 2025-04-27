@@ -402,17 +402,18 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       position: relative;
+      padding-top: 10px;
     }
     
     .certificate-header h3 {
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       font-family: 'Dancing Script', cursive;
       color: var(--primary-color);
-      margin: 0;
+      margin: 0 0 0 80px; /* Added left margin to avoid overlap with seal */
       text-transform: uppercase;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       text-shadow: 1px 1px 1px rgba(123, 31, 162, 0.3);
       background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
       -webkit-background-clip: text;
@@ -422,9 +423,9 @@
     .seal {
       position: absolute;
       top: -15px;
-      left: 30px;
-      width: 100px;
-      height: 100px;
+      left: 20px;
+      width: 80px;
+      height: 80px;
       filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
       animation: pulse 2s infinite;
     }
@@ -478,20 +479,23 @@
     }
     
     .certificate-achievement, .certificate-recognition {
-      margin: 20px 0;
-      font-size: 1.3rem;
+      margin: 25px 0;
+      font-size: 1.2rem;
       line-height: 1.6;
       text-align: center;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
     
     .certificate-signature, .certificate-date {
       display: inline-block;
-      margin: 50px 50px 10px;
+      margin: 50px 30px 10px;
       position: relative;
     }
     
     .signature-line, .date-line {
-      width: 220px;
+      width: 170px;
       height: 2px;
       background: linear-gradient(to right, var(--primary-color), transparent);
       margin-bottom: 5px;
@@ -709,7 +713,7 @@
       </header>
 
       <section class="healing-section">
-        <h2>Wounds He's Healing From 🪄</h2>
+        <h2>Talismans for Wounds He's Healing From 🪄</h2>
         <div class="charms">
           <div class="charm">
             <div class="charm-symbol">✨</div>
