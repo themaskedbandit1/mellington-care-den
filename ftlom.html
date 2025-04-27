@@ -561,6 +561,27 @@
       transform: scale(1.05);
       box-shadow: 0 8px 20px rgba(123, 31, 162, 0.3);
     }
+
+    /* Back to Lobby Button */
+    .lobby-button {
+      display: inline-block;
+      padding: 12px 25px;
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 50px;
+      box-shadow: 0 4px 8px rgba(123, 31, 162, 0.3);
+      transition: all 0.3s ease;
+      margin: 40px auto;
+      font-size: 1.1rem;
+    }
+    
+    .lobby-button:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(123, 31, 162, 0.4);
+    }
     
     /* Utility Classes */
     .hidden {
@@ -813,6 +834,13 @@
       </section>
 
       <a class="quest-link" href="https://crosswordlabs.com/view/old-man-mellingtons-memory-test" target="_blank">Start the Quest! 🔍</a>
+      <!-- Back to Lobby Button -->
+      <div style="text-align: center; margin: 3rem 0;">
+        <a href="index.html" class="lobby-button">
+          <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i>
+          Back to Lobby
+        </a>
+      </div>
     </div>
   </div>
 
