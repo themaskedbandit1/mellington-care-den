@@ -337,12 +337,19 @@
             }
         }
     </style>
+    <!-- YouTube iframe API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
     <audio id="nightModeAudio" loop>
         <source src="https://ia601503.us.archive.org/14/items/isabellas-lullaby-slowed-reverb/isabella-lullaby-slowed-reverb.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+    
+    <!-- Hidden YouTube player for audio -->
+    <div id="youtubePlayerContainer" style="display:none;">
+        <div id="youtubePlayer"></div>
+    </div>
     
     <div class="warning-modal" id="warningModal">
         <div class="warning-modal-content">
@@ -476,6 +483,27 @@
     </footer>
     
     <script>
+        let youtubePlayer;
+        
+        // Initialize YouTube player
+        function onYouTubeIframeAPIReady() {
+            youtubePlayer = new YT.Player('youtubePlayer', {
+                height: '0',
+                width: '0',
+                videoId: 'MBffZQK10Js', // Isabella's Lullaby video ID
+                playerVars: {
+                    'playsinline': 1,
+                    'controls': 0,
+                    'disablekb': 1
+                },
+                events: {
+                    'onReady': function(event) {
+                        console.log('YouTube player is ready');
+                    }
+                }
+            });
+        }
+        
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
         const htmlElement = document.documentElement;
@@ -501,16 +529,27 @@
                 htmlElement.setAttribute('data-theme', 'dark');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
                 
-                // Play music in night mode
-                nightModeAudio.play().catch(function(error) {
-                    console.log('Audio play failed:', error);
-                });
-                musicIndicator.style.display = 'block';
+                // Play YouTube audio if player is ready
+                if (youtubePlayer && typeof youtubePlayer.playVideo === 'function') {
+                    youtubePlayer.playVideo();
+                    musicIndicator.style.display = 'block';
+                } else {
+                    // Fall back to local audio
+                    nightModeAudio.play().catch(function(error) {
+                        console.log('Audio play failed:', error);
+                    });
+                    musicIndicator.style.display = 'block';
+                }
             } else {
                 htmlElement.setAttribute('data-theme', 'light');
                 themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
                 
-                // Pause music in light mode
+                // Stop YouTube audio if player is ready
+                if (youtubePlayer && typeof youtubePlayer.pauseVideo === 'function') {
+                    youtubePlayer.pauseVideo();
+                }
+                
+                // Pause local audio
                 nightModeAudio.pause();
                 nightModeAudio.currentTime = 0;
                 musicIndicator.style.display = 'none';
