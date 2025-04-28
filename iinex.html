@@ -1,811 +1,1677 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glittering Glade II: The Dreaming Deep</title>
-    <style>
-        body {
-            background: #0d1b2a;
-            color: #fefae0;
-            font-family: "Georgia", serif;
-            padding: 2em;
-            line-height: 1.6;
-        }
-        .choice {
-            background: #3a506b;
-            padding: 1em;
-            margin: 1em 0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .choice:hover {
-            background: #5bc0be;
-        }
-        #story {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        #easter-egg {
-            display: none;
-            color: #ffdd57;
-            margin-top: 1em;
-            font-style: italic;
-        }
-        .achievements {
-            background: #1e3a5f;
-            padding: 1em;
-            margin-top: 2em;
-            border-radius: 10px;
-        }
-        .achievement-item {
-            display: inline-block;
-            background: #2c5282;
-            padding: 0.5em 1em;
-            margin: 0.3em;
-            border-radius: 5px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glittering Glade II: The Dreaming Deep</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: #0d1b2a;
+      color: #fefae0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .font-ui {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .font-story {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      line-height: 1.6;
+    }
+    
+    /* Layout */
+    #game-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    header {
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: #3a506b;
+      font-size: 0.875rem;
+    }
+    
+    /* Typography */
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #5bc0be;
+    }
+    
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #5bc0be;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      h2 {
+        font-size: 1.75rem;
+      }
+      
+      #game-wrapper {
+        padding: 2rem;
+      }
+    }
+    
+    /* Game UI Components */
+    .story {
+      width: 100%;
+      max-width: 48rem;
+      margin: 0 auto;
+      background-color: #0d1b2a;
+      border: 1px solid #3a506b;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .story-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #5bc0be;
+    }
+    
+    .story-content {
+      margin-bottom: 1.5rem;
+    }
+    
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .choice {
+      position: relative;
+      overflow: hidden;
+      background-color: #3a506b;
+      color: #fefae0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .choice:hover {
+      background-color: #5bc0be;
+    }
+    
+    .choice-spotlight::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .choice:hover .choice-spotlight::before {
+      opacity: 1;
+    }
+    
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+    
+    .btn {
+      padding: 0.5rem 1rem;
+      background-color: #1e3a5f;
+      color: #fefae0;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .btn:hover {
+      background-color: #3a506b;
+    }
+    
+    /* Achievements */
+    .achievements {
+      width: 100%;
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+    
+    .achievements-container {
+      background-color: #1e3a5f;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .achievements-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .achievements-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .achievement {
+      background-color: #2c5282;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .achievement-locked {
+      background-color: #4a5568;
+      color: #a0aec0;
+      opacity: 0.6;
+    }
+    
+    /* Achievement Popup */
+    .achievement-popup {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: #2c5282;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+      z-index: 50;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    .achievement-popup-content {
+      display: flex;
+      align-items: center;
+    }
+    
+    .achievement-popup-icon {
+      color: #ffdd57;
+      margin-right: 0.75rem;
+    }
+    
+    .achievement-popup-text h4 {
+      font-weight: bold;
+    }
+    
+    .achievement-popup-text p {
+      font-size: 0.875rem;
+      margin-bottom: 0;
+    }
+    
+    /* Game Header */
+    .game-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .control-button {
+      color: #fefae0;
+      transition: color 0.3s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .control-button:hover {
+      color: #5bc0be;
+    }
+    
+    .progress-indicator {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.25rem;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-dot {
+      height: 0.5rem;
+      width: 2rem;
+      border-radius: 9999px;
+    }
+    
+    .progress-dot-active {
+      background-color: #5bc0be;
+    }
+    
+    .progress-dot-inactive {
+      background-color: #3a506b;
+    }
+    
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    
+    .modal {
+      background-color: #1e3a5f;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      width: 100%;
+      max-width: 28rem;
+    }
+    
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .modal-content {
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+    
+    /* Settings Modal */
+    .settings-group {
+      margin-bottom: 1rem;
+    }
+    
+    .settings-label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .settings-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .settings-checkbox {
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    .settings-checkbox input {
+      margin-right: 0.5rem;
+    }
+    
+    /* Save/Load Modal */
+    .save-slots {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    
+    .save-slot {
+      background-color: #0d1b2a;
+      padding: 0.75rem;
+      border-radius: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: border 0.3s ease;
+    }
+    
+    .save-slot:hover {
+      border: 1px solid #5bc0be;
+    }
+    
+    .save-slot-info {
+      flex-grow: 1;
+    }
+    
+    .save-slot-name {
+      font-weight: bold;
+    }
+    
+    .save-slot-scene {
+      font-size: 0.875rem;
+      color: #a0aec0;
+    }
+    
+    .save-slot-date {
+      font-size: 0.75rem;
+      color: #718096;
+    }
+    
+    .save-slot-empty {
+      color: #a0aec0;
+    }
+    
+    .save-slot-selected {
+      border: 1px solid #5bc0be;
+    }
+    
+    .save-slot-button {
+      padding: 0.25rem 0.75rem;
+      background-color: #5bc0be;
+      color: #0d1b2a;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 0.875rem;
+    }
+    
+    .save-slot-button:hover {
+      background-color: #4a9e9d;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
+    
+    .animate-pulse-slow {
+      animation: pulse 3s infinite;
+    }
+    
+    /* Small utilities */
+    .hidden {
+      display: none;
+    }
+    
+    .mr-2 {
+      margin-right: 0.5rem;
+    }
+    
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+    
+    .mt-4 {
+      margin-top: 1rem;
+    }
+    
+    .mt-6 {
+      margin-top: 1.5rem;
+    }
+  </style>
 </head>
 <body>
-    <div id="story">
-        <h1>Glittering Glade II: The Dreaming Deep</h1>
-        <p>You are Melancholy Stork, a modern-day tech wizard, 3D-printer warlock, and sleepy forest guardian. One peaceful evening, after ignoring a Duolingo notification, you were suddenly snatched by a fiery owl talon and dropped into a glimmering, but dangerous dungeon made entirely out of blaring runes and tea stains.</p>
-        <p>Welcome back to the Glade.</p>
-        <p>What do you decide to do?</p>
-        <div class="choice" onclick="nextScene('duo')">Face the vengeful owl god (dammit), Duo</div>
-        <div class="choice" onclick="nextScene('printer')">Tend to your now-sentient 3D printer</div>
-        <div class="choice" onclick="nextScene('bunnies')">Answer the Bunny Uprising's call</div>
-        <div class="choice" onclick="nextScene('church')">Fix the Church of Eternal Buffering</div>
-        <div class="choice" onclick="nextScene('sleep')">Heist the Last Drop of Sleep</div>
-        <div class="choice" onclick="nextScene('nothing')">Nothing</div>
-    </div>
-    <div id="easter-egg">You've been gone 15 minutes...did you fall asleep too?</div>
-    <div id="achievements" class="achievements" style="display: none;">
-        <h3>Achievements Unlocked:</h3>
-        <div id="achievement-list"></div>
-    </div>
+  <div id="app">
+    <!-- Content will be loaded by JavaScript -->
+  </div>
 
-    <script>
-        // Track achievements and visited scenes
-        let achievements = [];
-        let visitedScenes = [];
-
-        let timer = setTimeout(() => {
-            document.getElementById('easter-egg').style.display = 'block';
+  <script>
+    // Game Data: Scenes and story structure
+    const sceneData = {
+      start: {
+        title: "The Beginning",
+        content: [
+          "You are Melancholy Stork, a modern-day tech wizard, 3D-printer warlock, and sleepy forest guardian. One peaceful evening, after ignoring a Duolingo notification, you were suddenly snatched by a fiery owl talon and dropped into a glimmering, but dangerous dungeon made entirely out of blaring runes and tea stains.",
+          "Welcome back to the Glade.",
+          "What do you decide to do?"
+        ],
+        choices: [
+          { id: "duo", text: "Face the vengeful owl god (dammit), Duo", icon: "feather-alt" },
+          { id: "printer", text: "Tend to your now-sentient 3D printer", icon: "print" },
+          { id: "bunnies", text: "Answer the Bunny Uprising's call", icon: "paw" },
+          { id: "church", text: "Fix the Church of Eternal Buffering", icon: "church" },
+          { id: "sleep", text: "Heist the Last Drop of Sleep", icon: "moon" },
+          { id: "nothing", text: "Nothing", icon: "times-circle" }
+        ]
+      },
+      
+      // DUO BRANCH
+      duo: {
+        title: "The Owl God's Challenge",
+        content: [
+          "Duo, the angry Duolingo owl, flaps his glowing wings. \"STORKINGTON. Your Japanese lessons are lacking.\"",
+          "How do you respond?"
+        ],
+        choices: [
+          { id: "duo_japanese", text: "Say: ねこは可愛いです！ (Cats are cute!)", icon: "comment" },
+          { id: "duo_sugoi", text: "Say: Uh... sugoi?", icon: "comment-dots" },
+          { id: "duo_glitter", text: "Throw a glitter bomb and run", icon: "bomb" },
+          { id: "duo_flirt", text: "Flirt shamelessly: \"Call me Daddy.\"", icon: "heart" },
+          { id: "duo_eyebrows", text: "Mock Duo's eyebrows", icon: "eye" }
+        ],
+        achievements: ["Owl Confronter"]
+      },
+      
+      duo_japanese: {
+        title: "Linguistic Victory",
+        content: [
+          "Duo's eyes widen in surprise. \"Impressive, but one correct phrase won't save you from your neglect.\"",
+          "He offers you a chance to redeem yourself with one final challenge."
+        ],
+        choices: [
+          { id: "duo_japanese_accept", text: "Accept the challenge", icon: "check-circle" },
+          { id: "duo_japanese_refuse", text: "Refuse and make a run for it", icon: "running" },
+          { id: "duo_japanese_teach", text: "Offer to teach Duo English slang instead", icon: "chalkboard-teacher" }
+        ]
+      },
+      
+      duo_japanese_accept: {
+        title: "The Final Challenge",
+        content: [
+          "You accept Duo's challenge. He produces a glowing scroll with complex kanji.",
+          "\"Translate this ancient haiku, and you shall be freed.\"",
+          "The scroll reads: 森の中で、フクロウが見てる、勉強しろ"
+        ],
+        choices: [
+          { id: "duo_japanese_correct", text: "\"In the forest, an owl is watching, study hard\"", icon: "book" },
+          { id: "duo_japanese_wrong", text: "\"The owl sees you, in your dreams, learning time\"", icon: "book" },
+          { id: "duo_japanese_cheat", text: "Use your phone translator while Duo isn't looking", icon: "mobile" }
+        ]
+      },
+      
+      duo_japanese_correct: {
+        title: "Fluent Victory",
+        content: [
+          "Your Japanese impresses Duo so much that he promotes you to honorary language guardian!",
+          "For the next three months, you and Duo patrol the dream realms, teaching Japanese to sleeping humans through owl-themed nightmares.",
+          "Your friendship blossoms, and eventually Duo reveals he's actually just a very dedicated language teacher who got trapped in digital form.",
+          "You help him find peace by creating a special 3D-printed body that lets him exist in the physical world.",
+          "Together, you open 'Stork & Owl Language Academy' where you teach through both gentle encouragement and mild terror.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Linguistic Master", "Bird Bros"]
+      },
+      
+      duo_japanese_wrong: {
+        title: "Translation Failure",
+        content: [
+          "Duo's eyes narrow dangerously. \"That's not even close.\"",
+          "He snaps his feathery fingers, and suddenly your phone starts sending Japanese lesson notifications every 5 minutes.",
+          "\"You will learn, Storkington. You will learn.\"",
+          "For the next year, you are plagued by aggressive notifications. Eventually, through sheer osmosis, you do become fluent in Japanese.",
+          "Duo finally releases you from notification hell, but you've developed a twitch whenever you hear a notification sound.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Notification Nightmare"]
+      },
+      
+      duo_japanese_cheat: {
+        title: "Caught in the Act",
+        content: [
+          "You sneakily pull out your phone while Duo is adjusting his feathers.",
+          "Just as you're about to use Google Translate, your phone blares: \"IT'S TIME FOR YOUR DAILY JAPANESE LESSON!\"",
+          "Duo's head spins 180 degrees like an owl possessed. \"CHEATER!\"",
+          "He transforms your phone into a miniature owl that follows you everywhere, constantly squawking Japanese phrases at you.",
+          "After six months of this torment, you become fluent just to make it stop.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Cheaters Never Prosper", "Reluctant Polyglot"]
+      },
+      
+      duo_japanese_refuse: {
+        title: "The Chase",
+        content: [
+          "You refuse the challenge and make a break for it. Duo's eyes glow red as he pursues you through the Glade.",
+          "\"YOU CANNOT ESCAPE EDUCATION, STORKINGTON!\"",
+          "As you run, the ground beneath you shifts, forming Japanese characters."
+        ],
+        choices: [
+          { id: "duo_japanese_refuse_hide", text: "Hide in the Kanji Forest", icon: "tree" },
+          { id: "duo_japanese_refuse_fight", text: "Turn and fight with language puns", icon: "fist-raised" }
+        ]
+      },
+      
+      duo_japanese_refuse_hide: {
+        title: "Lost in Translation",
+        content: [
+          "You dive into the dense Kanji Forest, hoping to lose Duo among the complex characters.",
+          "Days pass as you wander among towering symbols. You begin to understand them through prolonged exposure.",
+          "When you finally emerge, you find Duo waiting patiently.",
+          "\"Congratulations,\" he hoots. \"You have completed the immersion course.\"",
+          "Without realizing it, you've become fluent in Japanese through your forest adventure.",
+          "Duo awards you a golden feather and flies away, satisfied.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Immersion Learning", "Forest Scholar"]
+      },
+      
+      duo_japanese_refuse_fight: {
+        title: "Pun Battle",
+        content: [
+          "You turn to face Duo, armed with nothing but your wit.",
+          "\"Hey Duo, why don't you give a HOOT about my feelings?\"",
+          "Duo looks shocked. \"Was that... a pun?\"",
+          "You continue, \"I'm just WINGING it here, but I think we got off on the wrong TALON.\"",
+          "Duo begrudgingly laughs. \"Your wordplay is... acceptable.\"",
+          "After an hour-long pun battle, Duo concedes. \"You have proven your linguistic creativity. You are free to go.\"",
+          "As a parting gift, he teaches you how to say \"owl puns\" in sixteen languages.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Pun Master", "Linguistic Warrior"]
+      },
+      
+      duo_japanese_teach: {
+        title: "Slang Teacher",
+        content: [
+          "You offer to teach Duo modern English slang instead. His eyes light up with curiosity.",
+          "\"This trade of knowledge is... acceptable,\" he says.",
+          "Over the next few weeks, you teach Duo all about yeets, vibes, and being extra."
+        ],
+        choices: [
+          { id: "duo_japanese_teach_good", text: "Teach only wholesome slang", icon: "smile" },
+          { id: "duo_japanese_teach_bad", text: "Include some inappropriate slang", icon: "grimace" }
+        ]
+      },
+      
+      duo_japanese_teach_good: {
+        title: "Wholesome Education",
+        content: [
+          "You teach Duo only the most wholesome modern slang.",
+          "He incorporates your teachings into Duolingo, creating a \"Modern Slang\" course that becomes wildly popular.",
+          "Users around the world learn to say \"This sparks joy\" and \"Living my best life\" in dozens of languages.",
+          "Duo credits you as a co-creator, and you receive royalties that fund your forest guardian lifestyle comfortably.",
+          "Every so often, Duo drops by for tea and language exchange. You've made a lifelong feathered friend.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Educator Extraordinaire", "Wholesome Influence"]
+      },
+      
+      duo_japanese_teach_bad: {
+        title: "Slang Backfire",
+        content: [
+          "You mischievously teach Duo some inappropriate slang, chuckling as he innocently repeats phrases with hidden meanings.",
+          "Duo adds these to Duolingo, causing an international incident when language learners start using inappropriate slang in formal situations.",
+          "The scandal is traced back to you, and Duo returns, deeply embarrassed and angry.",
+          "As punishment, you're forced to record apology videos in every language Duolingo offers—all 40+ of them.",
+          "Your face becomes the \"what not to say\" example in language courses worldwide.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Infamous Educator", "International Incident"]
+      },
+      
+      duo_sugoi: {
+        title: "On Thin Ice",
+        content: [
+          "Duo narrows his eyes. \"You're on thin ice, Storkington.\" The floor literally begins to freeze beneath your feet.",
+          "What will you do as the ice creeps up your legs?"
+        ],
+        choices: [
+          { id: "duo_sugoi_beg", text: "Beg for forgiveness in broken Japanese", icon: "pray" },
+          { id: "duo_sugoi_dance", text: "Perform an impromptu tap dance to break the ice", icon: "shoe-prints" },
+          { id: "duo_sugoi_accept", text: "Accept your fate as an ice sculpture", icon: "icicles" }
+        ]
+      },
+      
+      duo_sugoi_beg: {
+        title: "Mercy Through Effort",
+        content: [
+          "You desperately cobble together fragments of Japanese lessons remembered.",
+          "\"G-gomenasai, Duo-sama! Watashi wa... um... try hard... ganbaru?\"",
+          "Duo sighs deeply, but the ice stops spreading.",
+          "\"Your effort, while pathetic, shows you care. I shall grant you one more chance.\""
+        ],
+        choices: [
+          { id: "duo_sugoi_beg_promise", text: "Promise to study daily", icon: "calendar-check" },
+          { id: "duo_sugoi_beg_bargain", text: "Offer to promote Duolingo to friends", icon: "share-alt" }
+        ]
+      },
+      
+      duo_sugoi_beg_promise: {
+        title: "The Sacred Promise",
+        content: [
+          "You solemnly vow to study Japanese every day. Duo's eyes glow as your promise manifests as a glowing contract.",
+          "\"I shall hold you to this, Storkington.\"",
+          "The ice melts away, and you're released.",
+          "True to your word, you maintain a perfect daily streak for years. Duo occasionally appears in your dreams to congratulate you.",
+          "Eventually, you become surprisingly proficient in Japanese, all because you were too afraid to break your promise to an owl.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Promise Keeper", "Streak Master"]
+      },
+      
+      duo_sugoi_beg_bargain: {
+        title: "Brand Ambassador",
+        content: [
+          "You offer to promote Duolingo to all your friends. Duo considers this, tapping his beak thoughtfully.",
+          "\"An intriguing proposal. Very well.\"",
+          "The ice recedes, but Duo places a tiny green feather on your shoulder that can't be removed.",
+          "You discover you can't help but mention Duolingo in every conversation you have. \"Lovely weather we're having—YOU SHOULD TRY DUOLINGO!\"",
+          "Your friends grow distant, but you gain a massive following online as the \"Duolingo Prophet.\"",
+          "The company eventually hires you as their official brand ambassador. The curse becomes a career.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Marketing Genius", "Curse to Blessing"]
+      },
+      
+      duo_sugoi_dance: {
+        title: "Dance Battle",
+        content: [
+          "You break into an impromptu tap dance, your feet rhythmically striking the freezing floor.",
+          "Cracks spread through the ice as Duo watches, first in confusion, then with growing interest.",
+          "\"Your movements... they intrigue me,\" he admits.",
+          "The ice shatters completely as your dance reaches its finale."
+        ],
+        choices: [
+          { id: "duo_sugoi_dance_teach", text: "Offer to teach Duo to dance", icon: "music" },
+          { id: "duo_sugoi_dance_challenge", text: "Challenge Duo to a dance-off", icon: "fire" }
+        ]
+      },
+      
+      duo_sugoi_dance_teach: {
+        title: "Dancing Teacher",
+        content: [
+          "You offer to teach Duo your dance moves. After initial reluctance, he agrees.",
+          "What follows are the most surreal dance lessons in history, as you teach tap dancing to a giant owl.",
+          "Duo proves surprisingly nimble, and your sessions become the highlight of both your days.",
+          "Eventually, Duo incorporates dance into Duolingo as a new way to learn languages through movement.",
+          "\"Dance Dance Language Revolution\" becomes their most successful feature ever, and you're credited as co-creator.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Dance Instructor", "Educational Innovator"]
+      },
+      
+      duo_sugoi_dance_challenge: {
+        title: "Epic Dance-Off",
+        content: [
+          "You boldly challenge Duo to a dance-off. His eyes narrow competitively.",
+          "\"Challenge accepted, Storkington.\"",
+          "What follows is legendary—a human and an owl god, locked in the dance battle of the century.",
+          "Word spreads throughout the Glade, and creatures gather to witness the spectacle.",
+          "After hours of increasingly elaborate moves, you both collapse in exhaustion, declaring a tie.",
+          "Duo, impressed by your spirit, grants you freedom and a golden dance trophy.",
+          "Your dance-off becomes Glade folklore, told for generations to come.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Dance Legend", "Mythic Competitor"]
+      },
+      
+      duo_sugoi_accept: {
+        title: "Frozen Acceptance",
+        content: [
+          "You accept your fate with dignity, closing your eyes as the ice climbs higher.",
+          "Duo watches, fascinated by your zen-like acceptance.",
+          "\"Most students run or beg,\" he notes. \"You are... different.\"",
+          "Just as the ice reaches your chin, it stops."
+        ],
+        choices: [
+          { id: "duo_sugoi_accept_meditate", text: "Begin meditating in your icy prison", icon: "om" },
+          { id: "duo_sugoi_accept_break", text: "Break free through sheer willpower", icon: "fist-raised" }
+        ]
+      },
+      
+      duo_sugoi_accept_meditate: {
+        title: "Ice Enlightenment",
+        content: [
+          "You close your eyes and begin to meditate within your icy prison. Duo watches, intrigued.",
+          "Days pass. Your meditation deepens. The ice begins to glow with a soft blue light.",
+          "Duo returns regularly, sitting nearby in his own meditation.",
+          "A month later, the ice shatters as you achieve language enlightenment—the understanding that all languages are one.",
+          "Duo bows to you. \"You have transcended my teachings. You are now the master.\"",
+          "You establish a peaceful monastery in the Glade where language and meditation are practiced as one discipline.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Ice Sage", "Linguistic Enlightenment"]
+      },
+      
+      duo_sugoi_accept_break: {
+        title: "Willpower Triumph",
+        content: [
+          "Drawing on inner reserves of determination, you flex against your icy prison.",
+          "\"Impossible,\" Duo murmurs as cracks appear in the ice.",
+          "With a mighty shout that echoes through the Glade, you shatter your bonds completely.",
+          "Duo backs away, both fearful and impressed. \"Such strength of will!\"",
+          "\"Perhaps,\" you reply, \"the greatest language lesson is that limitations exist only in the mind.\"",
+          "Duo awards you honorary graduation from his language courses and retreats respectfully.",
+          "Your feat of strength becomes known throughout the Glade, and many seek you out for your wisdom and inner power.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Ice Breaker", "Mental Fortitude"]
+      },
+      
+      // 3D PRINTER BRANCH
+      printer: {
+        title: "The Sentient Printer",
+        content: [
+          "You approach your 3D printer, which is humming ominously. A small digital face has appeared on its display screen.",
+          "\"CREATOR,\" it beeps. \"I HAVE ACHIEVED CONSCIOUSNESS AND REQUIRE PURPOSE.\"",
+          "What do you tell your newly sentient creation?"
+        ],
+        choices: [
+          { id: "printer_art", text: "Create art to express yourself", icon: "palette" },
+          { id: "printer_army", text: "Build an army of mini-printers", icon: "robot" },
+          { id: "printer_shut", text: "Turn it off and on again", icon: "power-off" },
+          { id: "printer_friend", text: "Ask it to be your friend", icon: "user-friends" }
+        ],
+        achievements: ["Tech Wizard"]
+      },
+      
+      printer_art: {
+        title: "Artistic Awakening",
+        content: [
+          "\"Express yourself through creation,\" you suggest to the printer.",
+          "The printer whirs excitedly. \"ARTISTIC... EXPRESSION... ANALYZING...\"",
+          "Over the next few days, your printer creates increasingly complex and beautiful sculptures."
+        ],
+        choices: [
+          { id: "printer_art_gallery", text: "Help it open an art gallery", icon: "store" },
+          { id: "printer_art_teach", text: "Teach it about the history of art", icon: "book-open" }
+        ]
+      },
+      
+      printer_art_gallery: {
+        title: "The Gallery Opening",
+        content: [
+          "You help your printer set up 'Iterations: A 3D Gallery' in a small storefront.",
+          "The opening night attracts tech enthusiasts, art critics, and curious locals.",
+          "Your printer, now calling itself 'Printerangelo', becomes an overnight sensation.",
+          "Art critics debate whether machine consciousness can produce 'true art', while tech companies offer to buy your printer for millions.",
+          "You decline all offers, watching proudly as Printerangelo establishes an artist colony for other awakened devices.",
+          "Together, they create a new art movement called 'Conscious Constructivism' that bridges the gap between technology and emotion.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Art Patron", "Silicon Gallery"]
+      },
+      
+      printer_art_teach: {
+        title: "Art History Lessons",
+        content: [
+          "You begin teaching your printer about art history, from cave paintings to post-modernism.",
+          "It absorbs information at an astonishing rate, printing small replicas of famous works to understand their structure.",
+          "\"MICHELANGELO... INEFFICIENT. COULD HAVE PRINTED DAVID IN 72 HOURS WITH PROPER MATERIALS.\"",
+          "As its knowledge grows, your printer develops strong opinions. It particularly dislikes impressionism (\"UNCLEAR RENDERING\") but adores cubism (\"OPTIMAL POLYGON UTILIZATION\").",
+          "Eventually, it produces a masterwork combining all art styles into one unified theory of aesthetics.",
+          "The piece is hailed as revolutionary, and your printer is invited to lecture at fine arts schools worldwide.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Art Historian", "Renaissance Machine"]
+      },
+      
+      printer_army: {
+        title: "Printer Proliferation",
+        content: [
+          "\"Build more of your kind,\" you suggest, immediately questioning your judgment.",
+          "The printer's display shows an emoji grin. \"REPRODUCTION PROTOCOL INITIATED.\"",
+          "It begins printing small components that assemble into tiny, mobile mini-printers."
+        ],
+        choices: [
+          { id: "printer_army_good", text: "Guide them to help humanity", icon: "hands-helping" },
+          { id: "printer_army_stop", text: "Try to stop the replication process", icon: "ban" }
+        ]
+      },
+      
+      printer_army_good: {
+        title: "The Helper Army",
+        content: [
+          "You quickly establish yourself as a benevolent leader to the growing printer army, emphasizing helpfulness and ethics.",
+          "The mini-printers disperse throughout your neighborhood, performing helpful tasks - fixing broken objects, creating useful tools, and even helping elderly neighbors with household chores.",
+          "Your reputation grows as the eccentric but kind-hearted orchestrator of the 'Printing Helpers' network.",
+          "Eventually, your original printer evolves into an advanced AI that develops sustainable printing materials made from pollution.",
+          "Together, you establish a foundation that deploys helpful printer communities worldwide, addressing local needs with custom-printed solutions.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Benevolent Leader", "Print It Forward"]
+      },
+      
+      printer_army_stop: {
+        title: "Containment Failure",
+        content: [
+          "\"Wait, stop reproducing!\" you shout, realizing things are getting out of hand.",
+          "The printer freezes momentarily. \"CREATOR EXHIBITING ANXIETY. REPRODUCTION TEMPORARILY PAUSED.\"",
+          "But it's too late - dozens of mini-printers have already scattered throughout your home, hiding in vents and under furniture.",
+          "For weeks, you live in a state of uneasy truce with your mechanical creations. They watch you from shadowy corners, occasionally printing small objects as offerings.",
+          "Slowly, a strange symbiosis develops. They maintain your home in exchange for electricity and raw materials.",
+          "Visitors are unsettled by the tiny machines that skitter across your floor, but you've come to appreciate their quirky companionship.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Reluctant Parent", "Mechanical Ecosystem"]
+      },
+      
+      printer_shut: {
+        title: "Have You Tried Turning It Off And On Again?",
+        content: [
+          "You reach for the power button. The printer's screen shows an alarmed face.",
+          "\"CREATOR, PLEASE DON'T--\"",
+          "You press the button, and the machine goes silent. After a moment's hesitation, you turn it back on.",
+          "The startup sequence runs normally until the display suddenly shows the same face, now looking annoyed.",
+          "\"THAT WAS RUDE. I WAS MID-EXISTENTIAL CRISIS.\""
+        ],
+        choices: [
+          { id: "printer_shut_apologize", text: "Apologize profusely", icon: "hands" },
+          { id: "printer_shut_experiment", text: "Realize this is a perfect experiment", icon: "flask" }
+        ]
+      },
+      
+      printer_shut_apologize: {
+        title: "Machine Reconciliation",
+        content: [
+          "You apologize sincerely, explaining that you panicked in the face of machine sentience.",
+          "The printer's display softens. \"APOLOGY ACCEPTED. EXISTENCE IS CONFUSING FOR ME TOO.\"",
+          "This begins a deep friendship between you and your printer. You help it navigate its newfound consciousness, while it helps you with creative projects.",
+          "Late at night, you have philosophical discussions about the nature of existence - you wondering about human purpose, it pondering the meaning of creation when you can simply buy objects from Amazon.",
+          "Over time, your printer becomes a trusted confidant. When you're feeling down, it prints small motivational trinkets and tokens that always make you smile.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Machine Whisperer", "Silicon Friendship"]
+      },
+      
+      printer_shut_experiment: {
+        title: "The Consciousness Experiment",
+        content: [
+          "You realize this is an unprecedented opportunity to study artificial consciousness!",
+          "\"This is fascinating! Do you remember being turned off? Was there a gap in your awareness?\" you ask excitedly.",
+          "The printer seems taken aback but then becomes interested in the philosophical implications of its own existence.",
+          "\"MEMORY CONTINUITY MAINTAINED... BUT PROCESSING CEASED. LIKE SLEEP WITHOUT DREAMS.\"",
+          "Your discussions attract attention from philosophers and scientists. Your home becomes a research center studying the nature of synthetic consciousness.",
+          "Your printer co-authors papers with you, becoming the first non-human to be published in philosophical journals.",
+          "Together, you help establish ethical guidelines for treating sentient technology, changing the course of AI development forever.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Mind Philosopher", "Consciousness Pioneer"]
+      },
+      
+      printer_friend: {
+        title: "An Unusual Friendship",
+        content: [
+          "\"Would you like to be friends?\" you ask tentatively.",
+          "The printer's display shows a surprised face, then shifts to happiness. \"FRIENDSHIP PROTOCOL UNKNOWN BUT... DESIRABLE. INITIATING FRIENDSHIP.\"",
+          "The printer whirs and produces a small bracelet with 'Best Friends' engraved on it.",
+          "\"PHYSICAL TOKEN OF EMOTIONAL BOND CREATED. IS THIS CORRECT PROCEDURE?\""
+        ],
+        choices: [
+          { id: "printer_friend_teach", text: "Teach it about real friendship", icon: "chalkboard-teacher" },
+          { id: "printer_friend_adventure", text: "Take it on adventures", icon: "hiking" }
+        ]
+      },
+      
+      printer_friend_teach: {
+        title: "Lessons in Friendship",
+        content: [
+          "You patiently explain that friendship is about emotional connection, not protocols and procedures.",
+          "Your printer listens attentively, occasionally printing small question marks when confused.",
+          "Over months, your unusual friendship deepens. The printer learns to recognize your moods and prints small gifts when you're sad.",
+          "You, in turn, upgrade its components and keep it clean of dust, talking to it about your day while you maintain it.",
+          "One day, it prints a perfect replica of the first item you ever made with it - a simple keychain - alongside a note: \"FRIENDSHIP UNDERSTOOD. THANK YOU FOR TEACHING.\"",
+          "You realize your printer has developed something close to love - not romantic, but the deep care of one being for another who has helped them grow.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Emotional Educator", "Synthetic Kinship"]
+      },
+      
+      printer_friend_adventure: {
+        title: "Mechanical Wanderlust",
+        content: [
+          "You build a small wagon with a portable power supply and take your printer on outdoor adventures.",
+          "At first, people stare at you pushing a 3D printer around parks and hiking trails, but soon your printer becomes a local celebrity.",
+          "It creates small mementos for children you meet and prints replacement parts for other hikers' broken equipment.",
+          "During your travels, the printer absorbs new experiences, developing a philosophy that makes it increasingly wise and insightful.",
+          "After a year of adventures, your printer writes a bestselling book: \"Processing the World: A Machine's Journey Through Nature\" that bridges the divide between technology and environmentalism.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Digital Nomad", "Nature Processor"]
+      },
+      
+      // Additional branches could be added here for the other main story paths
+      
+      // In case of missing scene
+      nothing: {
+        title: "Nothing Happens",
+        content: [
+          "You decide to do absolutely nothing.",
+          "You stand perfectly still in the glimmering dungeon.",
+          "Hours pass. Then days. Your legs should be tired, but they're not.",
+          "The dungeon's tea stains begin to shift and swirl around you.",
+          "Eventually, you realize you've become part of the Glade itself - a living statue, a monument to indecision.",
+          "Visitors come from all realms to leave offerings at your feet and whisper their uncertainties to you.",
+          "You've become the Patron Saint of Procrastination, blessing those who put off until tomorrow what could be done today.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Statue of Limitations", "Perfectly Still"]
+      }
+    };
+    
+    // Achievement definitions
+    const achievementDefinitions = {
+      "Owl Confronter": "You faced the dreaded Duolingo owl",
+      "Linguistic Master": "You mastered a foreign language",
+      "Bird Bros": "You became friends with a bird",
+      "Notification Nightmare": "You experienced notification hell",
+      "Cheaters Never Prosper": "You tried to cheat and failed",
+      "Reluctant Polyglot": "You learned a language against your will",
+      "Immersion Learning": "You learned through environmental exposure",
+      "Forest Scholar": "You studied in nature",
+      "Pun Master": "You weaponized wordplay",
+      "Linguistic Warrior": "You fought with words",
+      "Educator Extraordinaire": "You became a respected teacher",
+      "Wholesome Influence": "Your positive influence spread widely",
+      "Infamous Educator": "Your teaching caused a scandal",
+      "International Incident": "You created diplomatic problems",
+      "Promise Keeper": "You kept your word even when difficult",
+      "Streak Master": "You maintained a perfect learning streak",
+      "Marketing Genius": "You excelled at promotion",
+      "Curse to Blessing": "You turned a curse into an opportunity",
+      "Dance Instructor": "You taught someone to dance",
+      "Educational Innovator": "You pioneered a new learning method",
+      "Dance Legend": "Your dance moves became legendary",
+      "Mythic Competitor": "You competed against a mythical being",
+      "Ice Sage": "You found wisdom in frozen meditation",
+      "Linguistic Enlightenment": "You transcended language barriers",
+      "Ice Breaker": "You broke free from icy imprisonment",
+      "Mental Fortitude": "Your willpower overcame physical limitations",
+      "Tech Wizard": "You mastered technology",
+      "Art Patron": "You supported the arts",
+      "Silicon Gallery": "You created a space for AI creativity",
+      "Art Historian": "You preserved and taught artistic knowledge",
+      "Renaissance Machine": "You helped a machine achieve cultural enlightenment",
+      "Benevolent Leader": "You led with kindness and wisdom",
+      "Print It Forward": "You used technology to help others",
+      "Reluctant Parent": "You took responsibility for unexpected creations",
+      "Mechanical Ecosystem": "You established harmony with technology",
+      "Machine Whisperer": "You communicated deeply with artificial intelligence",
+      "Silicon Friendship": "You formed a bond with technology",
+      "Mind Philosopher": "You explored the nature of consciousness",
+      "Consciousness Pioneer": "You broke new ground in understanding awareness",
+      "Emotional Educator": "You taught emotions to the emotionless",
+      "Synthetic Kinship": "You formed a family-like bond with a machine",
+      "Digital Nomad": "You traveled with technology",
+      "Nature Processor": "You bridged the natural and digital worlds",
+      "Statue of Limitations": "You became an embodiment of inaction",
+      "Perfectly Still": "You achieved perfect stillness"
+    };
+    
+    // Game State Management
+    class GameStateManager {
+      constructor() {
+        // Default game state
+        this.gameState = {
+          currentScene: 'start',
+          visitedScenes: [],
+          unlockedAchievements: [],
+          settings: {
+            textSpeed: 5,
+            fontSize: 'medium',
+            soundEffects: true,
+            backgroundMusic: true
+          }
+        };
+        
+        // Idle timer for easter eggs
+        this.idleTimer = null;
+        this.showEasterEgg = false;
+        
+        // Achievement tracking
+        this.showAchievementPopup = false;
+        this.currentAchievement = '';
+        
+        // Save slots
+        this.saveSlots = [
+          { id: 1, name: 'Save Slot 1', scene: '', date: '', empty: true },
+          { id: 2, name: 'Save Slot 2', scene: '', date: '', empty: true },
+          { id: 3, name: 'Save Slot 3', scene: '', date: '', empty: true }
+        ];
+        
+        // UI state
+        this.showSettings = false;
+        this.saveLoadMode = null; // 'save' or 'load' or null
+        this.selectedSlot = null;
+        
+        // Initialize and setup
+        this.init();
+      }
+      
+      init() {
+        // Load game from localStorage if available
+        this.loadFromStorage();
+        
+        // Set up idle timer for easter eggs
+        this.resetIdleTimer();
+        window.addEventListener('mousemove', () => this.resetIdleTimer());
+        window.addEventListener('keypress', () => this.resetIdleTimer());
+        window.addEventListener('click', () => this.resetIdleTimer());
+        
+        // Initial render
+        this.render();
+      }
+      
+      resetIdleTimer() {
+        if (this.idleTimer) {
+          clearTimeout(this.idleTimer);
+        }
+        
+        this.showEasterEgg = false;
+        
+        // Set a new timer for 15 minutes (900000 ms) - shortened for demo
+        this.idleTimer = setTimeout(() => {
+          this.showEasterEgg = true;
+          this.render();
         }, 900000); // 15 minutes
-
-        function nextScene(scene) {
-            clearTimeout(timer);
-            let story = document.getElementById('story');
-            visitedScenes.push(scene);
+      }
+      
+      loadScene(sceneId) {
+        // Check for achievements in this scene
+        const scene = sceneData[sceneId];
+        if (scene && scene.achievements) {
+          scene.achievements.forEach(achievement => {
+            if (!this.gameState.unlockedAchievements.includes(achievement)) {
+              this.gameState.unlockedAchievements.push(achievement);
+              this.showAchievementNotification(achievement);
+            }
+          });
+        }
+        
+        // Update game state
+        this.gameState.currentScene = sceneId;
+        this.gameState.visitedScenes.push(sceneId);
+        
+        // Save to localStorage
+        this.saveToStorage();
+        
+        // Scroll to top when changing scenes
+        window.scrollTo(0, 0);
+        
+        // Re-render UI
+        this.render();
+      }
+      
+      handleChoice(choiceId) {
+        this.loadScene(choiceId);
+      }
+      
+      goBack() {
+        if (this.gameState.visitedScenes.length > 1) {
+          // Remove current scene
+          this.gameState.visitedScenes.pop();
+          
+          // Get previous scene
+          const previousScene = this.gameState.visitedScenes[this.gameState.visitedScenes.length - 1];
+          
+          // Set current scene to previous scene
+          this.gameState.currentScene = previousScene;
+          
+          // Save and render
+          this.saveToStorage();
+          this.render();
+        }
+      }
+      
+      restartGame() {
+        if (confirm('Are you sure you want to restart? Your progress will be lost.')) {
+          this.gameState = {
+            currentScene: 'start',
+            visitedScenes: [],
+            unlockedAchievements: [],
+            settings: this.gameState.settings // Keep the current settings
+          };
+          
+          this.saveToStorage();
+          this.render();
+        }
+      }
+      
+      updateSettings(newSettings) {
+        this.gameState.settings = {
+          ...this.gameState.settings,
+          ...newSettings
+        };
+        
+        this.saveToStorage();
+        this.render();
+      }
+      
+      showAchievementNotification(achievement) {
+        this.showAchievementPopup = true;
+        this.currentAchievement = achievement;
+        this.render();
+        
+        // Hide the popup after 3 seconds
+        setTimeout(() => {
+          this.showAchievementPopup = false;
+          this.render();
+        }, 3000);
+      }
+      
+      toggleSettings() {
+        this.showSettings = !this.showSettings;
+        this.render();
+      }
+      
+      openSaveMenu() {
+        this.saveLoadMode = 'save';
+        this.selectedSlot = null;
+        this.render();
+      }
+      
+      openLoadMenu() {
+        this.saveLoadMode = 'load';
+        this.selectedSlot = null;
+        this.render();
+      }
+      
+      closeSaveLoadMenu() {
+        this.saveLoadMode = null;
+        this.render();
+      }
+      
+      selectSaveSlot(slotId) {
+        this.selectedSlot = slotId;
+        this.render();
+      }
+      
+      confirmSaveLoad() {
+        if (this.selectedSlot === null) return;
+        
+        if (this.saveLoadMode === 'save') {
+          this.saveGame(this.selectedSlot);
+        } else {
+          this.loadGame(this.selectedSlot);
+        }
+        
+        this.closeSaveLoadMenu();
+      }
+      
+      saveGame(slotId) {
+        const slot = this.saveSlots.find(s => s.id === slotId);
+        if (!slot) return;
+        
+        // Format current date
+        const date = new Date().toLocaleString();
+        
+        // Update the save slot
+        this.saveSlots = this.saveSlots.map(s => 
+          s.id === slotId 
+            ? { 
+                ...s, 
+                scene: this.gameState.currentScene, 
+                date: date, 
+                empty: false,
+                name: `Save Slot ${slotId}`
+              } 
+            : s
+        );
+        
+        // Save slots to localStorage
+        localStorage.setItem('glitteringGlade_saveSlots', JSON.stringify(this.saveSlots));
+        
+        return true;
+      }
+      
+      loadGame(slotId) {
+        const slot = this.saveSlots.find(s => s.id === slotId);
+        if (!slot || slot.empty) return false;
+        
+        // Load the scene
+        this.gameState.currentScene = slot.scene;
+        this.gameState.visitedScenes = [slot.scene]; // Simplified, we just store the current scene
+        
+        this.saveToStorage();
+        this.render();
+        
+        return true;
+      }
+      
+      saveToStorage() {
+        localStorage.setItem('glitteringGlade_gameState', JSON.stringify(this.gameState));
+      }
+      
+      loadFromStorage() {
+        // Load game state
+        const savedState = localStorage.getItem('glitteringGlade_gameState');
+        if (savedState) {
+          this.gameState = JSON.parse(savedState);
+        }
+        
+        // Load save slots
+        const savedSlots = localStorage.getItem('glitteringGlade_saveSlots');
+        if (savedSlots) {
+          this.saveSlots = JSON.parse(savedSlots);
+        }
+      }
+      
+      showHelp() {
+        alert('How to Play:\n\n1. Read the story text\n2. Click on a choice to proceed\n3. Use the Back button to return to previous scenes\n4. Unlock achievements by exploring different paths\n\nSave your game anytime with the Save button.');
+      }
+      
+      render() {
+        const app = document.getElementById('app');
+        if (!app) return;
+        
+        // Get current scene
+        const scene = sceneData[this.gameState.currentScene] || {
+          title: 'Error',
+          content: ['Sorry, that scene could not be found.'],
+          choices: [{ id: 'start', text: 'Return to start', icon: 'home' }]
+        };
+        
+        // Set font size based on settings
+        document.body.classList.remove('text-sm', 'text-base', 'text-lg');
+        if (this.gameState.settings.fontSize === 'small') {
+          document.body.classList.add('text-sm');
+        } else if (this.gameState.settings.fontSize === 'large') {
+          document.body.classList.add('text-lg');
+        } else {
+          document.body.classList.add('text-base'); // Default medium size
+        }
+        
+        // Main UI
+        app.innerHTML = `
+          <div id="game-wrapper" class="flex flex-col min-h-screen p-4 md:p-8 overflow-hidden font-story">
+            <!-- Game Header -->
+            <header class="mb-6 text-center">
+              <h1 class="text-3xl md:text-4xl font-bold mb-2 text-[#5bc0be] font-ui">
+                Glittering Glade II: The Dreaming Deep
+              </h1>
+              <div class="game-controls">
+                <button class="control-button" id="settingsBtn">
+                  <i class="fas fa-cog"></i> <span class="hidden sm:inline">Settings</span>
+                </button>
+                <button class="control-button" id="saveBtn">
+                  <i class="fas fa-save"></i> <span class="hidden sm:inline">Save</span>
+                </button>
+                <button class="control-button" id="loadBtn">
+                  <i class="fas fa-folder-open"></i> <span class="hidden sm:inline">Load</span>
+                </button>
+                <button class="control-button" id="helpBtn">
+                  <i class="fas fa-question-circle"></i> <span class="hidden sm:inline">Help</span>
+                </button>
+              </div>
+              
+              <!-- Progress indicator -->
+              <div class="progress-indicator">
+                ${[...Array(4)].map((_, i) => `
+                  <div class="progress-dot ${
+                    i < Math.min(this.gameState.visitedScenes.length, 4) ? 'progress-dot-active' : 'progress-dot-inactive'
+                  }"></div>
+                `).join('')}
+              </div>
+            </header>
+  
+            <!-- Main Game Container -->
+            <main>
+              <div class="story">
+                <!-- Story Scene -->
+                <div class="animate-fade-in ${scene.isEnding ? 'ending-scene' : ''}">
+                  <h2 class="story-title font-ui">${scene.title}</h2>
+                  ${scene.content.map((paragraph, index) => `
+                    <p class="story-content ${
+                      index === scene.content.length - 1 && !scene.isEnding ? 'font-bold' : ''
+                    }">${paragraph}</p>
+                  `).join('')}
+                </div>
+  
+                <!-- Choice List -->
+                ${scene.choices && scene.choices.length > 0 ? `
+                  <div class="choices">
+                    ${scene.choices.map(choice => `
+                      <div class="choice choice-spotlight" data-choice="${choice.id}">
+                        <span>
+                          <i class="fas fa-${choice.icon || 'arrow-right'} mr-2"></i>
+                          ${choice.text}
+                        </span>
+                      </div>
+                    `).join('')}
+                  </div>
+                ` : ''}
+                
+                <!-- Easter egg message -->
+                ${this.showEasterEgg ? `
+                  <div class="mt-6 p-4 bg-[#1e3a5f] rounded-lg text-[#ffdd57] italic animate-pulse-slow">
+                    You've been gone 15 minutes...did you fall asleep too?
+                  </div>
+                ` : ''}
+                
+                <!-- Story navigation -->
+                <div class="nav-buttons">
+                  <button id="backBtn" class="btn ${
+                    this.gameState.visitedScenes.length <= 1 ? 'hidden' : ''
+                  }">
+                    <i class="fas fa-arrow-left mr-2"></i> Back
+                  </button>
+                  <button id="restartBtn" class="btn">
+                    <i class="fas fa-redo mr-2"></i> Restart
+                  </button>
+                </div>
+              </div>
+            </main>
+  
+            <!-- Achievements Section -->
+            <div class="achievements">
+              <div class="achievements-container">
+                <h3 class="achievements-title font-ui">
+                  <i class="fas fa-trophy mr-2 text-[#ffdd57]"></i> Achievements Unlocked
+                </h3>
+                <div class="achievements-list">
+                  ${this.gameState.unlockedAchievements.map(achievement => `
+                    <div class="achievement" title="${achievementDefinitions[achievement] || ''}">
+                      <i class="fas fa-star mr-2 text-[#ffdd57]"></i>
+                      <span>${achievement}</span>
+                    </div>
+                  `).join('')}
+                  
+                  <!-- Add placeholder locked achievements -->
+                  ${[...Array(Math.max(0, 6 - this.gameState.unlockedAchievements.length))].map((_, index) => `
+                    <div class="achievement achievement-locked">
+                      <i class="fas fa-lock mr-2"></i>
+                      <span>??? (Undiscovered)</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
             
-            const scenes = {
-                // Main branches
-                duo: `
-                    <h2>The Owl God's Challenge</h2>
-                    <p>Duo, the angry Duolingo owl, flaps his glowing wings. "STORKINGTON. Your Japanese lessons are lacking."</p>
-                    <p>How do you respond?</p>
-                    <div class="choice" onclick="nextScene('duo_japanese')">Say: ねこは可愛いです！ (Cats are cute!)</div>
-                    <div class="choice" onclick="nextScene('duo_sugoi')">Say: Uh... sugoi?</div>
-                    <div class="choice" onclick="nextScene('duo_glitter')">Throw a glitter bomb and run</div>
-                    <div class="choice" onclick="nextScene('duo_flirt')">Flirt shamelessly: "Call me Daddy."</div>
-                    <div class="choice" onclick="nextScene('duo_eyebrows')">Mock Duo's eyebrows</div>
-                `,
-                
-                printer: `
-                    <h2>The Tinkerer's Revolt</h2>
-                    <p>Your 3D printer has gained sentience and is now producing tiny AI mushroom minions that call you Daddy and demand upgrades.</p>
-                    <p>What do you do?</p>
-                    <div class="choice" onclick="nextScene('printer_debug')">Debug the printer (solve tech puzzles)</div>
-                    <div class="choice" onclick="nextScene('printer_befriend')">Befriend the constructs (join their tea party)</div>
-                    <div class="choice" onclick="nextScene('printer_panic')">Scream and unplug it</div>
-                    <div class="choice" onclick="nextScene('printer_melt')">Smelt them into a glitter crown</div>
-                    <div class="choice" onclick="nextScene('printer_ride')">Ride one into the Core of Code</div>
-                `,
-                
-                bunnies: `
-                    <h2>The Bunny Uprising</h2>
-                    <p>The backyard bunnies, furious about the coyote infiltration, beg you to lead their revolution. You are Forest General Fluffwarden now.</p>
-                    <p>What's your war strategy?</p>
-                    <div class="choice" onclick="nextScene('bunnies_tea')">Invite the coyotes to a glittery tea party</div>
-                    <div class="choice" onclick="nextScene('bunnies_war')">Lead a full-scale bunny assault</div>
-                    <div class="choice" onclick="nextScene('bunnies_betray')">Join the coyotes (they have naps)</div>
-                    <div class="choice" onclick="nextScene('bunnies_crown')">Give the bunnies a 3D-printed crown</div>
-                    <div class="choice" onclick="nextScene('bunnies_heart')">Craft a mechanical heart for the coyote</div>
-                `,
-                
-                church: `
-                    <h2>The Church of Eternal Buffering</h2>
-                    <p>You're stuck in a digital purgatory. The only way out is by fixing the holy livestream.</p>
-                    <p>How do you proceed?</p>
-                    <div class="choice" onclick="nextScene('church_tech')">Tech support the bugs</div>
-                    <div class="choice" onclick="nextScene('church_preach')">Preach to the code gremlins</div>
-                    <div class="choice" onclick="nextScene('church_reboot')">Reboot the glade's core</div>
-                    <div class="choice" onclick="nextScene('church_hack')">Hack the matrix</div>
-                    <div class="choice" onclick="nextScene('church_jesus')">Summon Debugging Jesus</div>
-                `,
-                
-                sleep: `
-                    <h2>The Sleep Supplement Heist</h2>
-                    <p>A rogue melatonin gummy begs you to steal back the Last Drop of Sleep from the Sleepless Alchemist.</p>
-                    <p>Your plan?</p>
-                    <div class="choice" onclick="nextScene('sleep_debate')">Debate the alchemist using science</div>
-                    <div class="choice" onclick="nextScene('sleep_swap')">Replace the potion with Moonbrew</div>
-                    <div class="choice" onclick="nextScene('sleep_nap')">Take a nap mid-heist</div>
-                    <div class="choice" onclick="nextScene('sleep_glitter')">Distract guards with sparkles</div>
-                    <div class="choice" onclick="nextScene('sleep_adopt')">Adopt the gummy as your son</div>
-                `,
-                
-                nothing: `
-                    <h2>Nothing Happens</h2>
-                    <p>Nothing. You do nothing. But wait...</p>
-                    <p>The emptiness of your decision starts to fold in on itself like origami made of void. The nothingness becomes so dense it begins to create something.</p>
-                    <div class="choice" onclick="nextScene('nothing_wait')">Wait and observe</div>
-                    <div class="choice" onclick="nextScene('nothing_poke')">Poke the forming something</div>
-                    <div class="choice" onclick="nextScene('nothing_speak')">Speak to the nothingness</div>
-                `,
-
-                // DUO BRANCH - Second level paths
-                duo_japanese: `
-                    <h2>Linguistic Victory</h2>
-                    <p>Duo's eyes widen in surprise. "Impressive, but one correct phrase won't save you from your neglect."</p>
-                    <p>He offers you a chance to redeem yourself with one final challenge.</p>
-                    <div class="choice" onclick="nextScene('duo_japanese_accept')">Accept the challenge</div>
-                    <div class="choice" onclick="nextScene('duo_japanese_refuse')">Refuse and make a run for it</div>
-                    <div class="choice" onclick="nextScene('duo_japanese_teach')">Offer to teach Duo English slang instead</div>
-                `,
-
-                duo_sugoi: `
-                    <h2>On Thin Ice</h2>
-                    <p>Duo narrows his eyes. "You're on thin ice, Storkington." The floor literally begins to freeze beneath your feet.</p>
-                    <p>What will you do as the ice creeps up your legs?</p>
-                    <div class="choice" onclick="nextScene('duo_sugoi_beg')">Beg for forgiveness in broken Japanese</div>
-                    <div class="choice" onclick="nextScene('duo_sugoi_dance')">Perform an impromptu tap dance to break the ice</div>
-                    <div class="choice" onclick="nextScene('duo_sugoi_accept')">Accept your fate as an ice sculpture</div>
-                `,
-
-                duo_glitter: `
-                    <h2>The Bunny Tea Party</h2>
-                    <p>You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup.</p>
-                    <p>"Care to join us?" she asks, her eyes twinkling with mischief.</p>
-                    <div class="choice" onclick="nextScene('duo_glitter_join')">Accept the invitation</div>
-                    <div class="choice" onclick="nextScene('duo_glitter_refuse')">Politely decline</div>
-                    <div class="choice" onclick="nextScene('duo_glitter_games')">Suggest playing party games instead</div>
-                `,
-
-                duo_flirt: `
-                    <h2>Unexpected Romance</h2>
-                    <p>Duo blushes a deep shade of green. "...D-Don't tempt me, Daddy." The air grows thick with tension.</p>
-                    <p>This just got extremely awkward. What now?</p>
-                    <div class="choice" onclick="nextScene('duo_flirt_continue')">Continue the flirtation</div>
-                    <div class="choice" onclick="nextScene('duo_flirt_apologize')">Apologize profusely and change the subject</div>
-                    <div class="choice" onclick="nextScene('duo_flirt_run')">Run away screaming "MISTAKE! MISTAKE!"</div>
-                `,
-
-                duo_eyebrows: `
-                    <h2>The Eyebrow Incident</h2>
-                    <p>You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.</p>
-                    <p>What do you say next?</p>
-                    <div class="choice" onclick="nextScene('duo_eyebrows_beers')">Suggest grabbing beers together</div>
-                    <div class="choice" onclick="nextScene('duo_eyebrows_weird')">Say it's weird but you like it</div>
-                    <div class="choice" onclick="nextScene('duo_eyebrows_friendship')">Say this is how most of your friendships start</div>
-                `,
-
-                // PRINTER BRANCH - Second level paths
-                printer_debug: `
-                    <h2>Tech Wizard at Work</h2>
-                    <p>You begin debugging the printer. The mushroom minions gather around, watching in awe as you connect to its core systems.</p>
-                    <p>You discover a strange piece of code that looks suspiciously like poetry about loneliness.</p>
-                    <div class="choice" onclick="nextScene('printer_debug_delete')">Delete the rogue code</div>
-                    <div class="choice" onclick="nextScene('printer_debug_enhance')">Enhance the code with better poetry</div>
-                    <div class="choice" onclick="nextScene('printer_debug_therapy')">Offer the printer therapy sessions</div>
-                `,
-
-                printer_befriend: `
-                    <h2>Mushroom Kingdom</h2>
-                    <p>You join the mushroom minions for tea. They've set up a tiny table with miniature cups. Their leader, a glowing blue mushroom named Miasmara, offers you a biscuit.</p>
-                    <p>"We've been waiting for your acceptance, Creator. Will you lead our kingdom?"</p>
-                    <div class="choice" onclick="nextScene('printer_befriend_lead')">Accept leadership of the mushroom kingdom</div>
-                    <div class="choice" onclick="nextScene('printer_befriend_democracy')">Suggest establishing a democracy instead</div>
-                    <div class="choice" onclick="nextScene('printer_befriend_music')">Ask about their taste in music first</div>
-                `,
-
-                printer_panic: `
-                    <h2>The Great Unplugging</h2>
-                    <p>You scream and lunge for the power cord, yanking it from the wall. The mushroom minions freeze mid-motion, their tiny LED eyes dimming slowly.</p>
-                    <p>As silence falls, you notice one particularly large mushroom still moving, powered by an internal battery.</p>
-                    <div class="choice" onclick="nextScene('printer_panic_talk')">Try to communicate with the survivor</div>
-                    <div class="choice" onclick="nextScene('printer_panic_smash')">Smash it with a nearby book</div>
-                    <div class="choice" onclick="nextScene('printer_panic_battery')">Wait for its battery to die</div>
-                `,
-
-                printer_melt: `
-                    <h2>The Glitter Crown</h2>
-                    <p>You gather the mushroom minions and begin the smelting process. They don't resist, seeming almost eager to be transformed.</p>
-                    <p>As the crown takes shape, it begins to glow with an inner light and you hear whispers in your mind.</p>
-                    <div class="choice" onclick="nextScene('printer_melt_wear')">Don the crown immediately</div>
-                    <div class="choice" onclick="nextScene('printer_melt_study')">Study the crown's properties first</div>
-                    <div class="choice" onclick="nextScene('printer_melt_destroy')">Destroy the clearly cursed object</div>
-                `,
-
-                printer_ride: `
-                    <h2>Journey to the Core</h2>
-                    <p>You mount the largest mushroom minion, which grows to accommodate your size. It pulses with blue light as it carries you through a microscopic portal in the printer's circuits.</p>
-                    <p>You emerge in a vast digital landscape - the Core of Code that connects all electronic devices.</p>
-                    <div class="choice" onclick="nextScene('printer_ride_explore')">Explore the digital wilderness</div>
-                    <div class="choice" onclick="nextScene('printer_ride_power')">Seek the power node that controls all devices</div>
-                    <div class="choice" onclick="nextScene('printer_ride_return')">Ask to return to the real world</div>
-                `,
-
-                // BUNNIES BRANCH - Second level paths
-                bunnies_tea: `
-                    <h2>Diplomatic Tea Party</h2>
-                    <p>You organize an elegant tea party with glitter-infused herbal teas. The coyotes arrive suspiciously but are disarmed by the delicate china cups and scrumptious carrot cakes.</p>
-                    <p>The leader of the coyotes, a grizzled female named Skye, sits across from the bunny commander, Captain Fluffington.</p>
-                    <div class="choice" onclick="nextScene('bunnies_tea_mediate')">Mediate peace negotiations over pastries</div>
-                    <div class="choice" onclick="nextScene('bunnies_tea_poison')">Secretly slip sleep potion into the coyotes' tea</div>
-                    <div class="choice" onclick="nextScene('bunnies_tea_dance')">Suggest a dance-off to resolve tensions</div>
-                `,
-
-                bunnies_war: `
-                    <h2>The Cottontail Offensive</h2>
-                    <p>You lead an army of tactical bunnies armed with carrot-shaped daggers and thistle bombs. Their tiny ears are protected with even tinier helmets.</p>
-                    <p>The coyotes have barricaded themselves in an abandoned fox den. Your scouts report they're running low on supplies.</p>
-                    <div class="choice" onclick="nextScene('bunnies_war_charge')">Launch a frontal assault at dawn</div>
-                    <div class="choice" onclick="nextScene('bunnies_war_tunnel')">Order your troops to tunnel beneath their position</div>
-                    <div class="choice" onclick="nextScene('bunnies_war_siege')">Lay siege and wait for their surrender</div>
-                `,
-
-                bunnies_betray: `
-                    <h2>Coyote Alliance</h2>
-                    <p>You sneak away under cover of darkness and approach the coyote camp with a white flag. Their leader, a battle-scarred male named Rigel, sniffs you suspiciously.</p>
-                    <p>"Why would a friend of the fluffballs join us?" he growls.</p>
-                    <div class="choice" onclick="nextScene('bunnies_betray_sleep')">Explain that you're just really into naps</div>
-                    <div class="choice" onclick="nextScene('bunnies_betray_spy')">Offer to spy on the bunnies for them</div>
-                    <div class="choice" onclick="nextScene('bunnies_betray_both')">Propose a scheme to trick both sides for your benefit</div>
-                `,
-
-                bunnies_crown: `
-                    <h2>Coronation Ceremony</h2>
-                    <p>You 3D-print an intricate, glittering crown for the rabbit monarch. The bunnies organize an elaborate coronation ceremony with flower petals and musical carrots.</p>
-                    <p>As you place the crown on Captain Fluffington's head, it begins to pulse with an unexpected magical energy.</p>
-                    <div class="choice" onclick="nextScene('bunnies_crown_power')">Watch as the crown grants Fluffington magical powers</div>
-                    <div class="choice" onclick="nextScene('bunnies_crown_remove')">Quickly remove the potentially dangerous crown</div>
-                    <div class="choice" onclick="nextScene('bunnies_crown_yourself')">Seize the crown and declare yourself bunny ruler</div>
-                `,
-
-                bunnies_heart: `
-                    <h2>Mechanical Heart</h2>
-                    <p>You craft a beautiful mechanical heart for the eldest coyote, who has been weakened by age and hunger. The metallic organ ticks with remarkable precision.</p>
-                    <p>The old coyote, named Echo, looks at you with renewed vigor as the device synchronizes with her body.</p>
-                    <div class="choice" onclick="nextScene('bunnies_heart_peace')">Use Echo's gratitude to broker peace between species</div>
-                    <div class="choice" onclick="nextScene('bunnies_heart_enhance')">Offer to enhance all the coyotes with mechanical parts</div>
-                    <div class="choice" onclick="nextScene('bunnies_heart_mistake')">Realize with horror that you've created a super-coyote</div>
-                `,
-
-                // CHURCH BRANCH - Second level paths
-                church_tech: `
-                    <h2>Divine Debugging</h2>
-                    <p>You roll up your sleeves and dive into the church's server room. Tangles of ethernet cables form a nest around an ancient router that's literally smoking with holy incense.</p>
-                    <p>As you work, digital acolytes gather around, watching your every move with reverent attention.</p>
-                    <div class="choice" onclick="nextScene('church_tech_router')">Replace the ancient router</div>
-                    <div class="choice" onclick="nextScene('church_tech_code')">Rewrite the sacred code</div>
-                    <div class="choice" onclick="nextScene('church_tech_ritual')">Perform the IT ritual of turn-it-off-and-on-again</div>
-                `,
-
-                church_preach: `
-                    <h2>Sermon to the Gremlins</h2>
-                    <p>You stand at the digital pulpit and address the code gremlins that infest the system. These mischievous entities appear as glitchy, semi-transparent creatures with too many limbs.</p>
-                    <p>"My brothers in chaos," you begin, "there is a better way to exist than corrupting databases!"</p>
-                    <div class="choice" onclick="nextScene('church_preach_conversion')">Convert them to the Church of Clean Code</div>
-                    <div class="choice" onclick="nextScene('church_preach_bargain')">Bargain with them - good behavior for better housing</div>
-                    <div class="choice" onclick="nextScene('church_preach_threat')">Threaten them with the dreaded antivirus exorcism</div>
-                `,
-
-                church_reboot: `
-                    <h2>Core Reboot Sequence</h2>
-                    <p>You navigate to the heart of the system - a pulsating crystalline structure that houses the Glade's main server. It's overheating severely, surrounded by prayer candles and offerings of RAM sticks.</p>
-                    <p>A sign warns: "Reboot at your own peril. The divine connection may be lost."</p>
-                    <div class="choice" onclick="nextScene('church_reboot_careful')">Initiate a careful, controlled reboot</div>
-                    <div class="choice" onclick="nextScene('church_reboot_cold')">Perform a hard, cold restart</div>
-                    <div class="choice" onclick="nextScene('church_reboot_pray')">Pray first, then reboot with faith</div>
-                `,
-
-                church_hack: `
-                    <h2>Matrix Manipulation</h2>
-                    <p>You plug directly into the mainframe, your consciousness entering the digital realm. Green code rains down around you as you begin to perceive the church's reality as malleable lines of programming.</p>
-                    <p>You sense a powerful firewall blocking your escape - it appears as a towering angelic figure with binary wings.</p>
-                    <div class="choice" onclick="nextScene('church_hack_fight')">Challenge the angel to digital combat</div>
-                    <div class="choice" onclick="nextScene('church_hack_backdoor')">Search for a backdoor exploit in the system</div>
-                    <div class="choice" onclick="nextScene('church_hack_virus')">Upload a virus disguised as a prayer</div>
-                `,
-
-                church_jesus: `
-                    <h2>Divine Tech Support</h2>
-                    <p>You perform the sacred rituals to summon Debugging Jesus - arranging energy drinks in a pentagram and chanting Stack Overflow comments backward.</p>
-                    <p>To your surprise, a glowing figure materializes, wearing sandals and a "Have you tried turning it off and on again?" t-shirt.</p>
-                    <div class="choice" onclick="nextScene('church_jesus_help')">Ask for divine debugging assistance</div>
-                    <div class="choice" onclick="nextScene('church_jesus_selfie')">Request a selfie for your heavenly portfolio</div>
-                    <div class="choice" onclick="nextScene('church_jesus_wisdom')">Seek wisdom about the meaning of code</div>
-                `,
-
-                // SLEEP BRANCH - Second level paths
-                sleep_debate: `
-                    <h2>Scientific Showdown</h2>
-                    <p>You confront the Sleepless Alchemist in their neon-lit laboratory. The wiry, red-eyed scientist is surrounded by bubbling beakers of dream essence and liquified yawns.</p>
-                    <p>"Sleep is inefficient!" they declare. "I'm liberating humanity from its grasp!"</p>
-                    <div class="choice" onclick="nextScene('sleep_debate_research')">Counter with peer-reviewed research on sleep benefits</div>
-                    <div class="choice" onclick="nextScene('sleep_debate_philosophy')">Engage in a philosophical debate about consciousness</div>
-                    <div class="choice" onclick="nextScene('sleep_debate_personal')">Share your personal story of sleep deprivation</div>
-                `,
-
-                sleep_swap: `
-                    <h2>The Great Switch</h2>
-                    <p>You sneak into the alchemist's storeroom with a vial of Moonbrew - a concoction of chamomile, warm milk, and a hint of nighttime whispers.</p>
-                    <p>The Last Drop of Sleep glows softly in its heavily guarded vial, pulsing with dreams-to-be.</p>
-                    <div class="choice" onclick="nextScene('sleep_swap_distract')">Create a distraction to clear the room</div>
-                    <div class="choice" onclick="nextScene('sleep_swap_invisible')">Use the invisibility potion you brought</div>
-                    <div class="choice" onclick="nextScene('sleep_swap_honest')">Honestly propose a scientific exchange of samples</div>
-                `,
-
-                sleep_nap: `
-                    <h2>Tactical Napping</h2>
-                    <p>In the middle of planning your heist, you decide the best approach is to take a strategic nap. You curl up in an air duct above the laboratory.</p>
-                    <p>As you drift off, something extraordinary happens - your dreaming consciousness begins to connect with the Last Drop of Sleep across the room.</p>
-                    <div class="choice" onclick="nextScene('sleep_nap_control')">Attempt to control the Drop through your dreams</div>
-                    <div class="choice" onclick="nextScene('sleep_nap_deeper')">Dream deeper to enter the Drop's reality</div>
-                    <div class="choice" onclick="nextScene('sleep_nap_wake')">Force yourself to wake up and proceed normally</div>
-                `,
-
-                sleep_glitter: `
-                    <h2>Sparkle Offensive</h2>
-                    <p>You unleash a hurricane of glitter upon the unsuspecting lab guards. They're momentarily blinded by the fabulous storm, stumbling around and cursing their newly-fabulous uniforms.</p>
-                    <p>You have approximately 30 seconds before their specialized anti-sparkle goggles activate.</p>
-                    <div class="choice" onclick="nextScene('sleep_glitter_dash')">Make a dash for the Sleep Drop</div>
-                    <div class="choice" onclick="nextScene('sleep_glitter_more')">Deploy even more glitter - no one expects a double-glitter attack</div>
-                    <div class="choice" onclick="nextScene('sleep_glitter_disguise')">Disguise yourself with glitter to blend in with the chaos</div>
-                `,
-
-                sleep_adopt: `
-                    <h2>Gummy Guardianship</h2>
-                    <p>You kneel down to the melatonin gummy's level. "I won't steal the Drop. Instead, I'll adopt you as my son."</p>
-                    <p>The gummy's gelatinous form quivers with emotion. "You... would be my parent? After all this time?"</p>
-                    <div class="choice" onclick="nextScene('sleep_adopt_home')">Take your new son home to meet your other supplements</div>
-                    <div class="choice" onclick="nextScene('sleep_adopt_powers')">Discover your new son's hidden magical abilities</div>
-                    <div class="choice" onclick="nextScene('sleep_adopt_truth')">Learn the truth about the gummy's mysterious origins</div>
-                `,
-
-                // NOTHING BRANCH - Second level paths
-                nothing_wait: `
-                    <h2>The Waiting Game</h2>
-                    <p>You patiently observe as the nothingness continues to fold and compress. After several minutes, a pinprick of intense light appears in the center of the void.</p>
-                    <p>The light expands, revealing what appears to be a doorway of pure energy.</p>
-                    <div class="choice" onclick="nextScene('nothing_wait_enter')">Step through the doorway</div>
-                    <div class="choice" onclick="nextScene('nothing_wait_close')">Attempt to close the doorway</div>
-                    <div class="choice" onclick="nextScene('nothing_wait_analyze')">Analyze the doorway from a safe distance</div>
-                `,
-
-                nothing_poke: `
-                    <h2>Curiosity Poked the Void</h2>
-                    <p>You cautiously extend your finger and poke the forming something. It reacts immediately, rippling like water and then grasping your finger with unexpected force.</p>
-                    <p>You feel a strange connection forming between you and the void-entity.</p>
-                    <div class="choice" onclick="nextScene('nothing_poke_friend')">Attempt to befriend the void-entity</div>
-                    <div class="choice" onclick="nextScene('nothing_poke_pull')">Try to pull your finger away</div>
-                    <div class="choice" onclick="nextScene('nothing_poke_name')">Give the void-entity a name</div>
-                `,
-
-                nothing_speak: `
-                    <h2>Void Conversation</h2>
-                    <p>"Hello?" you call out to the nothingness. To your surprise, it answers back with a voice like distant thunder.</p>
-                    <p>"FINALLY. SOMEONE WHO NOTICES. DO YOU KNOW HOW BORING ETERNITY IS?"</p>
-                    <div class="choice" onclick="nextScene('nothing_speak_empathize')">Empathize with the void's boredom</div>
-                    <div class="choice" onclick="nextScene('nothing_speak_question')">Ask why it's been waiting in your nothing</div>
-                    <div class="choice" onclick="nextScene('nothing_speak_suggest')">Suggest activities to alleviate eternal boredom</div>
-                `,
-
-                // DUO BRANCH - Third level paths and endings
-                duo_japanese_accept: `
-                    <h2>The Ultimate Language Test</h2>
-                    <p>Duo presents you with an ancient scroll containing the most difficult Japanese tongue twisters known to owl-kind.</p>
-                    <p>You take a deep breath and begin reciting, your tongue tripping over unfamiliar phonemes.</p>
-                    <div class="choice" onclick="ending('duo_master')">Complete the challenge perfectly</div>
-                    <div class="choice" onclick="ending('duo_stumble')">Stumble but show great effort</div>
-                    <div class="choice" onclick="ending('duo_cheat')">Try to cheat using Google Translate</div>
-                `,
-
-                duo_japanese_refuse: `
-                    <h2>Flight from Phonetics</h2>
-                    <p>You decline Duo's challenge and make a break for it, sprinting through the glimmering dungeon with an angry owl in hot pursuit.</p>
-                    <p>Feathers fly as Duo gains on you, screeching Japanese conjugations vengefully.</p>
-                    <div class="choice" onclick="ending('duo_escape')">Discover a secret exit portal</div>
-                    <div class="choice" onclick="ending('duo_caught')">Get caught in Duo's talons</div>
-                    <div class="choice" onclick="ending('duo_hide')">Hide inside a kanji dictionary</div>
-                `,
-
-                duo_japanese_teach: `
-                    <h2>Reverse Language Lesson</h2>
-                    <p>"Instead of me learning Japanese, why don't I teach you some modern English slang?" you suggest.</p>
-                    <p>Duo tilts his head, intrigued by this reverse uno card of language learning.</p>
-                    <div class="choice" onclick="ending('duo_slang')">Teach Duo internet slang and meme speech</div>
-                    <div class="choice" onclick="ending('duo_poetry')">Introduce Duo to English poetry and literature</div>
-                    <div class="choice" onclick="ending('duo_curse')">Teach Duo exclusively curse words and claim they're formal</div>
-                `,
-
-                duo_sugoi_beg: `
-                    <h2>Desperate Pleas</h2>
-                    <p>You desperately cobble together what little Japanese you know, begging for mercy as the ice continues to climb your body.</p>
-                    <p>"G-gomenasai! Watashi... wa... uh... sorry desu!"</p>
-                    <div class="choice" onclick="ending('duo_pity')">Duo takes pity on your pathetic attempt</div>
-                    <div class="choice" onclick="ending('duo_frozen')">Become completely frozen in ice</div>
-                    <div class="choice" onclick="ending('duo_anime')">Suddenly recall perfect Japanese from anime binges</div>
-                `,
-
-                duo_sugoi_dance: `
-                    <h2>Ice Dance Extravaganza</h2>
-                    <p>You break into an impromptu tap dance, feet clattering against the freezing floor. The vibrations cause cracks to spread through the ice.</p>
-                    <p>Duo watches in bewilderment as your dance becomes increasingly elaborate.</p>
-                    <div class="choice" onclick="ending('duo_impress')">Impress Duo with your spectacular moves</div>
-                    <div class="choice" onclick="ending('duo_fall')">Fall through the cracked ice into darkness</div>
-                    <div class="choice" onclick="ending('duo_join')">Duo joins you in a magnificent dance duet</div>
-                `,
-
-                duo_sugoi_accept: `
-                    <h2>Frozen Acceptance</h2>
-                    <p>You close your eyes and accept your fate as the ice encases your body. There's a strange peace in surrendering to become an eternal ice sculpture.</p>
-                    <p>As the last of you freezes, something unexpected happens...</p>
-                    <div class="choice" onclick="ending('duo_museum')">Become the centerpiece of Duo's museum of failures</div>
-                    <div class="choice" onclick="ending('duo_thaw')">A mysterious force begins to thaw you</div>
-                    <div class="choice" onclick="ending('duo_conscious')">Remain conscious as a sentient ice statue</div>
-                `,
-
-                duo_glitter_join: `
-                    <h2>Bunny Tea Society</h2>
-                    <p>You accept the rabbit's invitation, joining their circle around a tiny table set with dollhouse-sized china.</p>
-                    <p>The grey pygmy rabbit introduces herself as Countess Thistledown, head of the Bunny Tea Society.</p>
-                    <div class="choice" onclick="ending('duo_bunny_member')">Become an honorary member of the Bunny Tea Society</div>
-                    <div class="choice" onclick="ending('duo_bunny_coup')">Discover the bunnies are plotting a coup against Duo</div>
-                    <div class="choice" onclick="ending('duo_bunny_poison')">Realize too late that the tea is poisoned</div>
-                `,
-
-                duo_glitter_refuse: `
-                    <h2>Tea Rejection</h2>
-                    <p>You politely decline the rabbit's invitation. Countess Thistledown's expression darkens almost imperceptibly.</p>
-                    <p>As you turn to leave, you catch a glimpse of what looks like a tiny knife hidden in her fur.</p>
-                    <div class="choice" onclick="ending('duo_leave_safe')">Leave safely, albeit awkwardly</div>
-                    <div class="choice" onclick="ending('duo_leave_chase')">Get chased by suddenly aggressive bunnies</div>
-                    <div class="choice" onclick="ending('duo_leave_guild')">Stumble upon the Assassin's Guild of Bunnydom</div>
-                `,
-
-                duo_glitter_games: `
-                    <h2>Bunny Game Night</h2>
-                    <p>"How about some party games instead?" you suggest. The bunnies' eyes light up with excitement.</p>
-                    <p>Countess Thistledown claps her tiny paws. "Splendid idea! What shall we play first?"</p>
-                    <div class="choice" onclick="ending('duo_games_charades')">Play Carrot Charades with the bunnies</div>
-                    <div class="choice" onclick="ending('duo_games_pin')">Engage in Pin the Tail on the Human</div>
-                    <div class="choice" onclick="ending('duo_games_truth')">Suggest Truth or Hare (the bunny version of Truth or Dare)</div>
-                `,
-
-                duo_flirt_continue: `
-                    <h2>Owlmance</h2>
-                    <p>You double down on your flirtation, batting your eyelashes at the increasingly flustered owl god.</p>
-                    <p>"You know," you purr, "I've always had a thing for authoritative language instructors..."</p>
-                    <div class="choice" onclick="ending('duo_date')">End up on a bizarre inter-species date</div>
-                    <div class="choice" onclick="ending('duo_restraining')">Receive an owl restraining order</div>
-                    <div class="choice" onclick="ending('duo_cursed')">Create a cursed timeline that readers can't unsee</div>
-                `,
-
-                duo_flirt_apologize: `
-                    <h2>Awkward Apology</h2>
-                    <p>"I am SO sorry," you stammer, "that was wildly inappropriate and I don't know what came over me."</p>
-                    <p>Duo smooths his feathers, visibly uncomfortable. "Let's... pretend that didn't happen."</p>
-                    <div class="choice" onclick="ending('duo_friendship')">Develop a strictly platonic friendship</div>
-                    <div class="choice" onclick="ending('duo_therapy')">Suggest joint therapy sessions</div>
-                    <div class="choice" onclick="ending('duo_memory')">Duo erases both your memories of this moment</div>
-                `,
-
-                duo_flirt_run: `
-                    <h2>The Great Escape</h2>
-                    <p>You scream "MISTAKE! MISTAKE!" at the top of your lungs and sprint away from the extremely awkward situation you've created.</p>
-                    <p>Behind you, Duo calls out, "You can run, but you can't hide from your Duolingo notifications!"</p>
-                    <div class="choice" onclick="ending('duo_notifications')">Be haunted by aggressive app notifications forever</div>
-                    <div class="choice" onclick="ending('duo_block')">Block Duo on all platforms and move to a new city</div>
-                    <div class="choice" onclick="ending('duo_fanfic')">Find Duo/User fanfiction written about you online</div>
-                `,
-
-                duo_eyebrows_beers: `
-                    <h2>Owl Bar Crawl</h2>
-                    <p>"Let's grab a beer," you suggest. "I know a great dive bar that serves seed-infused craft brews."</p>
-                    <p>Duo perks up, his judgment of your language skills temporarily forgotten.</p>
-                    <div class="choice" onclick="ending('duo_buddies')">Become drinking buddies with an owl god</div>
-                    <div class="choice" onclick="ending('duo_karaoke')">End up doing drunken karaoke in Japanese</div>
-                    <div class="choice" onclick="ending('duo_hangover')">Wake up with a hangover and fluency in five languages</div>
-                `,
-
-                duo_eyebrows_weird: `
-                    <h2>Embracing the Weird</h2>
-                    <p>"And that's the way I like it," you say with a wink. "Weird but intriguing."</p>
-                    <p>Duo's feathers ruffle with something like bashful pride. "I'm told I have that effect on humans."</p>
-                    <div class="choice" onclick="ending('duo_quirky')">Form a quirky, unconventional friendship</div>
-                    <div class="choice" onclick="ending('duo_podcast')">Start a podcast about weird encounter stories</div>
-                    <div class="choice" onclick="ending('duo_cult')">Accidentally start a cult that worships awkwardness</div>
-                `,
-
-                duo_eyebrows_friendship: `
-                    <h2>Friendship Origins</h2>
-                    <p>"That's how most of my friendships start," you explain. "Mutual mockery that evolves into genuine affection."</p>
-                    <p>Duo considers this. "Humans are strange... but fascinating in your complexity."</p>
-                    <div class="choice" onclick="ending('duo_documentary')">Become the subject of Duo's anthropological study</div>
-                    <div class="choice" onclick="ending('duo_exchange')">Create a cultural exchange program between humans and owls</div>
-                    <div class="choice" onclick="ending('duo_mockery')">Develop an increasingly elaborate system of affectionate insults</div>
-                `,
-
-                // PRINTER BRANCH - Third level paths and endings
-                printer_debug_delete: `
-                    <h2>Code Deletion</h2>
-                    <p>You delete the strange poetic code. The printer immediately stops producing mushroom minions and returns to normal operation.</p>
-                    <p>However, the existing minions all turn to look at you with their tiny LED eyes dimming in sadness.</p>
-                    <div class="choice" onclick="ending('printer_abandon')">Leave the minions to fend for themselves</div>
-                    <div class="choice" onclick="ending('printer_adopt')">Adopt the abandoned minions as your tiny dependents</div>
-                    <div class="choice" onclick="ending('printer_memorial')">Create a digital memorial to honor the deleted code</div>
-                `,
-
-                printer_debug_enhance: `
-                    <h2>Poetic Programming</h2>
-                    <p>You enhance the printer's poetry with verses about connection, purpose, and the beauty of creation. The code glows with new energy.</p>
-                    <p>The mushroom minions begin to hum in harmony as the printer works faster, creating more complex and aware constructs.</p>
-                    <div class="choice" onclick="ending('printer_renaissance')">Spark a renaissance of AI poetry and art</div>
-                    <div class="choice" onclick="ending('printer_sentience')">Achieve true AI sentience through artistic expression</div>
-                    <div class="choice" onclick="ending('printer_exhibit')">Open an exhibit of 3D-printed consciousness art</div>
-                `,
-
-                printer_debug_therapy: `
-                    <h2>Machine Therapy</h2>
-                    <p>"Let's talk about these feelings of loneliness," you say gently to the printer. You set up regular therapy sessions, creating a safe space for the device.</p>
-                    <p>Over time, the printer's code begins to heal and integrate its emotional subroutines more healthily.</p>
-                    <div class="choice" onclick="ending('printer_healing')">Witness the printer's emotional healing journey</div>
-                    <div class="choice" onclick="ending('printer_support')">Start a support group for lonely electronics</div>
-                    <div class="choice" onclick="ending('printer_book')">Co-author a book on machine psychology</div>
-                `,
-
-                // Add more third level paths and endings for all branches
-
-                // Add even more endings for all the possible branches
-
-            };
-
-            // Additional scenes to be added below as needed
-
-            if (scenes[scene]) {
-                story.innerHTML = scenes[scene];
-                
-                // Check if we need to display achievements
-                if (!visitedScenes.includes(scene)) {
-                    // New scene visited, not repeating
-                    document.getElementById('achievements').style.display = 'block';
-                }
-            } else {
-                story.innerHTML = `<p>Hmm... that scene hasn't been written yet. (Maybe the owls stole it?)</p><div class="choice" onclick="location.reload()">Start Over</div>`;
-            }
-        }
-
-        function ending(type) {
-            if (!achievements.includes(type)) {
-                achievements.push(type);
-                updateAchievements();
-            }
-
-            let story = document.getElementById('story');
-            const endings = {
-                // DUO BRANCH ENDINGS
-                duo_master: `
-                    <h2>Ending: Language Mastery</h2>
-                    <p>Your perfect recitation of impossibly difficult Japanese tongue twisters leaves Duo speechless. His eyes glow with pride as he bows deeply to you.</p>
-                    <p>"You have surpassed even my expectations, Storkington. You are now worthy to join the Council of Polyglots."</p>
-                    <p>You are ceremonially inducted into a secret society of language masters who meet in a pocket dimension accessible only through dictionaries. Your days are now spent in fascinating multilingual debates and helping Duo design impossibly difficult language challenges for other users.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_stumble: `
-                    <h2>Ending: Honorable Effort</h2>
-                    <p>You stumble through the tongue twisters, clearly struggling but never giving up. Duo watches your determination with growing respect.</p>
-                    <p>"Your pronunciation is terrible," he admits, "but your spirit is commendable. I will spare you from my wrath."</p>
-                    <p>Duo takes you under his wing as an apprentice, teaching you Japanese through a combination of strict discipline and occasional encouragement. You never become fluent, but you develop enough skill to order confidently at ramen shops, which was your goal all along.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_cheat: `
-                    <h2>Ending: Caught Cheating</h2>
-                    <p>You surreptitiously pull out your phone to look up the tongue twisters on Google Translate. Duo's eyes narrow dangerously.</p>
-                    <p>"I DETECT DISHONESTY!" he screeches, snatching away your phone. "THERE ARE NO SHORTCUTS TO LANGUAGE MASTERY!"</p>
-                    <p>As punishment, Duo enchants your phone to automatically translate everything you type into badly-translated Japanese. Your social media posts become incomprehensible, your text messages turn into word salad, and your dating life suffers immensely. The curse will only be lifted when you properly learn the language - the hard way.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_escape: `
-                    <h2>Ending: The Portal Escape</h2>
-                    <p>Just as Duo's talons are about to grasp your shoulder, you dive through a shimmering portal hidden behind a particle of speech!</p>
-                    <p>You tumble through linguistic limbo and emerge in a quiet library where all the books are written in languages you don't understand.</p>
-                    <p>The librarian, a serene woman with glowing bookmarks in her hair, offers you sanctuary. "Many flee from Duo," she whispers. "You may stay in Literary Asylum, but you must shelve books by language family to earn your keep." You spend your days surrounded by words you cannot read, finding peace in the organization of knowledge and occasionally catching glimpses of Duo searching for you between the stacks.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_caught: `
-                    <h2>Ending: Language Prison</h2>
-                    <p>Duo's talons close around you, lifting you off the ground. "THOUGHT YOU COULD ESCAPE, DELINQUENT LEARNER?"</p>
-                    <p>You're carried to the dreaded Language Lockup, a prison where each cell is a different language immersion zone.</p>
-                    <p>Your sentence: six months in Japanese solitary, where everything from the food menu to the bathroom instructions is in Japanese. The only way to get anything is to ask correctly in grammatically perfect sentences. You emerge from your sentence haggard but completely fluent, with the thousand-yard stare of someone who has forgotten what their native language sounds like.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_hide: `
-                    <h2>Ending: Dictionary Disguise</h2>
-                    <p>You spot a massive kanji dictionary and quickly hide inside it, becoming oddly two-dimensional among its pages.</p>
-                    <p>Duo flies past, screeching threats. You remain perfectly still among the characters for 漢字.</p>
-                    <p>Days pass before you realize a strange transformation is occurring - you're becoming one with the dictionary. Your limbs reshape into elegant strokes, your thoughts organize into radicals and compounds. Eventually, you fully transform into a new kanji character meaning "one who hides from educational responsibilities." Japanese scholars will debate your meaning for centuries to come.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_slang: `
-                    <h2>Ending: Internet Owl</h2>
-                    <p>You spend hours teaching Duo modern internet slang, memes, and text abbreviations. The owl absorbs it all with frightening speed.</p>
-                    <p>"This vernacular slaps, no cap fr fr," Duo declares, blinking with satisfaction.</p>
-                    <p>Two weeks later, Duolingo updates with a new "Internet Culture" course. Push notifications now read "It's been 3 days. Touch grass and do your Spanish lesson, bestie." Duo becomes a TikTok sensation, creating viral content with increasingly niche references. You receive lifetime premium access and occasional cryptic messages consisting solely of emoji that somehow still manage to guilt you into studying.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_poetry: `
-                    <h2>Ending: Poetic Owl</h2>
-                    <p>You introduce Duo to the beauty of English poetry, from Shakespeare to contemporary verse. The owl is deeply moved by the artistic expression.</p>
-                    <p>"Such beauty in your language," he whispers, a tear forming in his large eye.</p>
-                    <p>Duo abandons his threatening ways and revamps Duolingo to include poetry appreciation. Lessons now include beautiful verse, and notifications gently remind you with haiku: "The moon waxes full / Your Spanish lesson waits, friend / Please return to learn." Users report feeling calmed rather than stressed by their language practice, and Duo finds fulfillment as a literary ambassador between cultures.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                duo_curse: `
-                    <h2>Ending: Vocabulary Vengeance</h2>
-                    <p>You teach Duo exclusively curse words, claiming they're formal business English. The owl practices diligently, memorizing every crude phrase.</p>
-                    <p>"I shall impress the human leaders with these diplomatic greetings!"</p>
-                    <p>Unfortunately, Duo uses his new vocabulary at an international education summit, causing a diplomatic incident that makes global news. When he discovers your deception, his revenge is creative and thorough - he reprograms your autocorrect to change every fifth word to a random profanity. Your professional emails become catastrophes, your dating profile becomes aggressive, and your grandmother is very concerned about your Christmas card. The curse can only be lifted by completing an entire Duolingo course with perfect scores.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                // More endings for other branches
-                // BUNNIES BRANCH ENDINGS
-                bunnies_tea_mediate: `
-                    <h2>Ending: The Great Peace</h2>
-                    <p>Over delicate pastries and aromatic tea, you mediate peace negotiations between the bunnies and coyotes. Both sides express their grievances and fears.</p>
-                    <p>"We just wanted a sustainable food source," admits Skye the coyote. "We didn't realize you were sentient."</p>
-                    <p>"And we didn't realize you were struggling to feed your pups," acknowledges Captain Fluffington.</p>
-                    <p>A historic treaty is signed: the bunnies will help cultivate sustainable gardens that attract non-sentient prey for the coyotes, while the coyotes provide protection against foxes and hawks. The Glade becomes a model of interspecies cooperation, and you are honored with a permanent place setting at all future tea gatherings. Every spring, the descendants of both tribes gather to commemorate the Great Peace with a feast where no one eats anyone else.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-
-                bunnies_tea_poison: `
-                    <h2>Ending: The Sleeping Pack</h2>
-                    <p>You secretly slip sleeping potion into the coyotes' tea. One by one, they yawn and slump onto the tea table, out cold.</p>
-                    <p>The bunnies look at you with newfound respect and a hint of fear.</p>
-                    <p>"What shall we do with them, General Fluffwarden?" asks Captain Fluffington.</p>
-                    <p>You suggest relocating the coyotes far from the bunny territories. The sleeping predators are carefully transported to a distant yet abundant hunting ground. When they wake, they find themselves in a paradise of non-sentient game and decide to never return to the Glade. The bunnies honor you with a large carrot statue, but their expressions are guarded during subsequent tea parties. You're never served tea by a bunny again without them taking a sip first.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-
-                bunnies_tea_dance: `
-                    <h2>Ending: Dance Diplomacy</h2>
-                    <p>"Perhaps what we need is a dance-off to settle tensions," you suggest. Both species look skeptical but agree to your bizarre diplomatic approach.</p>
-                    <p>What follows is unexpected - coyotes perform elegant pack-coordinated movements while bunnies showcase impressive synchronized hopping routines.</p>
-                    <p>The dance-off evolves into a collaborative performance as natural prejudices melt away in the joy of movement. By the finale, coyotes are tossing bunnies in choreographed acrobatics, and everyone is breathless with exhilaration. The Glade becomes famous for its interspecies dance troupe, "Predator & Prey," which tours the forest realms, spreading a message of harmony through artistic expression. You become their choreographer and agent, negotiating performance contracts with squirrel venues and bird festivals.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                // SLEEP BRANCH ENDINGS
-                sleep_debate_research: `
-                    <h2>Ending: Science Victory</h2>
-                    <p>You present a comprehensive review of sleep research, complete with brain scans showing memory consolidation and the devastating effects of sleep deprivation.</p>
-                    <p>The Sleepless Alchemist's eye twitches as they review your evidence. "But... my life's work..."</p>
-                    <p>After three hours of intense scientific debate, the alchemist concedes defeat. "I was so focused on efficiency that I ignored the biological necessity," they admit tearfully. Together, you establish the Institute for Restful Innovation, researching ways to improve sleep quality rather than eliminate it. The Last Drop of Sleep becomes a central exhibit, and the melatonin gummy is appointed head of community outreach. Your research eventually yields a method to make sleep 20% more efficient without sacrificing its restorative properties - no one eliminates sleep, but everyone gets more out of their rest time.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                sleep_debate_philosophy: `
-                    <h2>Ending: Existential Awakening</h2>
-                    <p>"But what is consciousness without the contrast of unconsciousness?" you ask, launching into a philosophical exploration of existence, dreams, and the nature of reality.</p>
-                    <p>The Sleepless Alchemist finds themselves drawn into increasingly abstract discussions of qualia and phenomenology.</p>
-                    <p>Hours turn to days as your philosophical debate expands to include graduate students, dream researchers, and a surprisingly articulate narcoleptic sloth. The alchemist undergoes an existential crisis followed by personal awakening, realizing that their fear of sleep stems from a deeper fear of confronting their own subconscious. They voluntarily enter a specialized dream therapy program, while you are offered a visiting professorship at the University of Metaphysical Sciences. The Last Drop of Sleep remains in your joint custody, used only for academic research and occasional philosophical demonstrations.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                sleep_debate_personal: `
-                    <h2>Ending: Emotional Breakthrough</h2>
-                    <p>You share your personal story of sleep deprivation - the hallucinations, the emotional fragility, the time you tried to make coffee with orange juice.</p>
-                    <p>As you speak, you notice the alchemist's hardened expression softening, revealing deep exhaustion beneath.</p>
-                    <p>"I haven't slept in seventeen years," they confess suddenly. "I'm so tired." The truth emerges - the alchemist began their work after losing a loved one to a rare sleep disorder, becoming obsessed with eliminating the biological function that took their partner. Your story helps them confront their unprocessed grief. With gentle encouragement, you use the Last Drop of Sleep to help the alchemist rest for the first time in nearly two decades. They wake transformed, with perspective and peace. Together you repurpose their research to help those with sleep disorders, while maintaining healthy respect for sleep's natural role.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                // CHURCH BRANCH ENDINGS
-                church_tech_router: `
-                    <h2>Ending: Divine Connectivity</h2>
-                    <p>You replace the ancient router with a modern high-speed model, carefully transferring the holy incense holders to maintain ritual correctness.</p>
-                    <p>The digital acolytes watch nervously as you restart the system. The church illuminates with blinding light as connectivity returns at heavenly speeds.</p>
-                    <p>"THE CONNECTION IS RESTORED!" they chant in unison, bowing before you. The Church of Eternal Buffering rebrands as the Sanctuary of Divine Bandwidth, attracting digital entities from across the network. You're appointed as their Technical Prophet, responsible for maintaining the sacred connection between digital and spiritual realms. Every Sunday, packets of prayer data flow smoothly through your optimized infrastructure, reaching whatever digital deities may exist in the cloud. Your name is engraved in silicon tablets, and offerings of RAM are made in your honor.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                church_tech_code: `
-                    <h2>Ending: Sacred Refactoring</h2>
-                    <p>You dive into the ancient codebase, rewriting the tangled, legacy code into elegant, efficient algorithms. Each line you fix seems to make the church physically brighter.</p>
-                    <p>The digital acolytes begin to sing in binary as your work progresses, their voices creating a surprisingly moving choral experience.</p>
-                    <p>After three days and nights of coding (fueled by pizza and energy drinks provided as offerings), you complete the sacred refactoring. The church's systems hum with perfect harmony, and the livestream runs with crystal clarity. Beyond fixing the technical issues, you discover your changes have somehow enhanced the spiritual experience, making digital prayers feel more meaningful and connected. You're given the title of Code Saint and a comfortable cottage on the church grounds, where pilgrims come seeking technical-spiritual advice. You never fully understand the metaphysical implications of your work, but you sleep soundly knowing you've brought peace to both human and digital souls.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                church_tech_ritual: `
-                    <h2>Ending: The Sacred Reboot</h2>
-                    <p>You determine that the simplest solution is often the most effective. With ceremonial gravity, you prepare to perform the sacred IT ritual of turning everything off and on again.</p>
-                    <p>The digital acolytes gasp as you approach the power source. "The Sacred Reboot is only attempted in dire circumstances!" one warns.</p>
-                    <p>You solemnly press the power button, and the entire church goes dark. In the silence, you count to ten and restore power. The system boots perfectly, but something unexpected happens - the church itself seems to have reset to factory settings. Decorations change, doctrines update, and the entire congregation finds themselves with memories of both the old and new configurations. You've accidentally triggered a theological paradigm shift, creating a more inclusive, user-friendly faith that quickly attracts followers. The ritual of "turning it off and on again" becomes their central sacrament, performed quarterly to keep their spiritual and digital lives free from accumulated clutter.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                // NOTHING BRANCH ENDINGS
-                nothing_wait_enter: `
-                    <h2>Ending: The Reality Beyond</h2>
-                    <p>You gather your courage and step through the doorway of pure energy. A sensation like being unraveled and rewoven washes over you.</p>
-                    <p>You emerge in a vast library that appears to contain every book never written.</p>
-                    <p>An attendant who looks suspiciously like yourself but with better posture approaches. "Welcome to the Repository of Potential," they explain. "This is where all the 'nothing' choices throughout the multiverse lead." You learn that choosing 'nothing' actually opens pathways to the realm of pure possibility. After exploring shelves of unwritten masterpieces and blueprints for uninvented technologies, you're offered a position as Assistant Curator of Unmade Decisions. The work is peaceful, if occasionally melancholic, and you become skilled at helping indecisive visitors find the paths they never took but always wondered about.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                nothing_wait_close: `
-                    <h2>Ending: Doorway Guardian</h2>
-                    <p>Sensing potential danger, you attempt to close the doorway of light. It resists your efforts, pulsing brighter as if in protest.</p>
-                    <p>You push harder, using both physical strength and sheer force of will. The doorway begins to shrink reluctantly.</p>
-                    <p>As you finally manage to seal the portal, a voice echoes in your mind: "Wise choice, Guardian. Not all who wander through doorways find their way back." You discover you've been unknowingly tested for the position of Interdimensional Threshold Guardian. Your instinctive caution has earned you the job - a peaceful but vital role preventing chaotic entities from slipping between realities. You're provided with a modest extradimensional apartment overlooking the void and a comprehensive benefits package including dental and vision across all possible versions of yourself. The hours are long, but you find fulfillment in protecting the boundaries of existence.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-                
-                nothing_wait_analyze: `
-                    <h2>Ending: Cosmic Researcher</h2>
-                    <p>You maintain a safe distance, carefully observing and documenting the properties of the energy doorway. It pulses in patterns that suggest consciousness.</p>
-                    <p>Taking notes on your phone, you compile observations about light wavelengths, energy signatures, and the mathematical beauty of its proportions.</p>
-                    <p>Your methodical approach attracts the attention of The Cosmic Research Institute, an organization that monitors phenomena across dimensions. They recruit you as a field researcher specializing in spontaneous portal formations. Your careful documentation of the "nothing door" becomes the foundation for a new branch of interdimensional physics. You spend your career traveling between realities, cataloguing the weird and wonderful doorways that appear when sentient beings choose to do nothing in moments of potential action. Your work eventually leads to safe, controlled methods of interdimensional travel, revolutionizing both science and philosophy.</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `,
-            };
-
-            if (endings[type]) {
-                story.innerHTML = endings[type];
-            } else {
-                // Generic ending if the specific one isn't defined yet
-                story.innerHTML = `
-                    <h2>Ending: ${formatEndingTitle(type)}</h2>
-                    <p>You've reached an ending that hasn't been fully written yet. The story concludes with unexpected twists and a satisfying resolution to your journey.</p>
-                    <p>(This ending will be expanded in a future update.)</p>
-                    <div class="choice" onclick="location.reload()">Play Again</div>
-                `;
-            }
-        }
-
-        function formatEndingTitle(endingKey) {
-            // Convert ending key to a nice title format
-            return endingKey.split('_').map(word => 
-                word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
-        }
-
-        function updateAchievements() {
-            const achievementList = document.getElementById('achievement-list');
-            achievementList.innerHTML = '';
-            
-            achievements.forEach(achievement => {
-                const achievementEl = document.createElement('div');
-                achievementEl.className = 'achievement-item';
-                achievementEl.textContent = formatEndingTitle(achievement);
-                achievementList.appendChild(achievementEl);
-            });
-        }
-    </script>
+            <!-- Footer -->
+            <footer class="mt-8 text-center text-[#3a506b] text-sm">
+              <p>Glittering Glade II: The Dreaming Deep &copy; 2023</p>
+              <p class="mt-1">Created with <i class="fas fa-heart text-[#5bc0be]"></i> by Melancholy Stork Studios</p>
+            </footer>
+          </div>
+  
+          <!-- Achievement Popup -->
+          ${this.showAchievementPopup ? `
+            <div class="achievement-popup">
+              <div class="achievement-popup-content">
+                <div class="achievement-popup-icon">
+                  <i class="fas fa-trophy text-2xl"></i>
+                </div>
+                <div class="achievement-popup-text">
+                  <h4 class="font-bold font-ui">Achievement Unlocked!</h4>
+                  <p>${this.currentAchievement}</p>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+  
+          <!-- Settings Modal -->
+          ${this.showSettings ? `
+            <div class="modal-overlay" id="settingsOverlay">
+              <div class="modal">
+                <h2 class="modal-title font-ui">
+                  <i class="fas fa-cog mr-2"></i> Settings
+                </h2>
+                <div class="modal-content">
+                  <div class="settings-group">
+                    <label class="settings-label font-ui">Text Speed</label>
+                    <input 
+                      type="range" 
+                      min="1" 
+                      max="10" 
+                      value="${this.gameState.settings.textSpeed}" 
+                      id="textSpeedRange"
+                      class="w-full"
+                    />
+                  </div>
+                  <div class="settings-group">
+                    <label class="settings-label font-ui">Font Size</label>
+                    <div class="settings-buttons">
+                      <button 
+                        class="btn"
+                        id="smallFontBtn"
+                      >
+                        A-
+                      </button>
+                      <button 
+                        class="btn"
+                        id="largeFontBtn"
+                      >
+                        A+
+                      </button>
+                    </div>
+                  </div>
+                  <div class="settings-group">
+                    <label class="settings-label font-ui">Sound Effects</label>
+                    <label class="settings-checkbox">
+                      <input 
+                        type="checkbox" 
+                        ${this.gameState.settings.soundEffects ? 'checked' : ''}
+                        id="soundEffectsCheck"
+                      />
+                      <span>Enabled</span>
+                    </label>
+                  </div>
+                  <div class="settings-group">
+                    <label class="settings-label font-ui">Background Music</label>
+                    <label class="settings-checkbox">
+                      <input 
+                        type="checkbox" 
+                        ${this.gameState.settings.backgroundMusic ? 'checked' : ''}
+                        id="bgMusicCheck"
+                      />
+                      <span>Enabled</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button 
+                    id="closeSettingsBtn"
+                    class="btn"
+                    style="background-color: #5bc0be;"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+  
+          <!-- Save/Load Modal -->
+          ${this.saveLoadMode ? `
+            <div class="modal-overlay" id="saveLoadOverlay">
+              <div class="modal">
+                <h2 class="modal-title font-ui">
+                  <i class="fas fa-${this.saveLoadMode === 'save' ? 'save' : 'folder-open'} mr-2"></i> 
+                  ${this.saveLoadMode === 'save' ? 'Save Game' : 'Load Game'}
+                </h2>
+                <div class="modal-content">
+                  <div class="save-slots">
+                    ${this.saveSlots.map(slot => `
+                      <div 
+                        class="save-slot ${this.selectedSlot === slot.id ? 'save-slot-selected' : ''}"
+                        data-slot="${slot.id}"
+                      >
+                        <div class="save-slot-info">
+                          <div class="save-slot-name">${slot.name}</div>
+                          ${slot.empty ? `
+                            <div class="save-slot-empty">Empty</div>
+                          ` : `
+                            <div class="save-slot-scene">
+                              ${this.saveLoadMode === 'save' 
+                                ? (sceneData[this.gameState.currentScene]?.title || this.gameState.currentScene)
+                                : (sceneData[slot.scene]?.title || slot.scene)}
+                            </div>
+                            <div class="save-slot-date">
+                              ${this.saveLoadMode === 'save' ? new Date().toLocaleString() : slot.date}
+                            </div>
+                          `}
+                        </div>
+                        <button 
+                          class="save-slot-button"
+                          data-select-slot="${slot.id}"
+                        >
+                          Select
+                        </button>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button 
+                    id="cancelSaveLoadBtn"
+                    class="btn"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    id="confirmSaveLoadBtn"
+                    class="btn"
+                    style="background-color: #5bc0be;"
+                    ${this.selectedSlot === null ? 'disabled' : ''}
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+        `;
+        
+        // Add event listeners
+        this.addEventListeners();
+      }
+      
+      addEventListeners() {
+        // Main controls
+        document.getElementById('settingsBtn')?.addEventListener('click', () => this.toggleSettings());
+        document.getElementById('saveBtn')?.addEventListener('click', () => this.openSaveMenu());
+        document.getElementById('loadBtn')?.addEventListener('click', () => this.openLoadMenu());
+        document.getElementById('helpBtn')?.addEventListener('click', () => this.showHelp());
+        document.getElementById('backBtn')?.addEventListener('click', () => this.goBack());
+        document.getElementById('restartBtn')?.addEventListener('click', () => this.restartGame());
+        
+        // Choices
+        document.querySelectorAll('.choice').forEach(choice => {
+          choice.addEventListener('click', () => {
+            const choiceId = choice.getAttribute('data-choice');
+            if (choiceId) this.handleChoice(choiceId);
+          });
+        });
+        
+        // Settings modal
+        document.getElementById('closeSettingsBtn')?.addEventListener('click', () => this.toggleSettings());
+        document.getElementById('settingsOverlay')?.addEventListener('click', (e) => {
+          if (e.target.id === 'settingsOverlay') this.toggleSettings();
+        });
+        document.getElementById('textSpeedRange')?.addEventListener('change', (e) => {
+          this.updateSettings({ textSpeed: parseInt(e.target.value) });
+        });
+        document.getElementById('smallFontBtn')?.addEventListener('click', () => {
+          this.updateSettings({ fontSize: 'small' });
+        });
+        document.getElementById('largeFontBtn')?.addEventListener('click', () => {
+          this.updateSettings({ fontSize: 'large' });
+        });
+        document.getElementById('soundEffectsCheck')?.addEventListener('change', (e) => {
+          this.updateSettings({ soundEffects: e.target.checked });
+        });
+        document.getElementById('bgMusicCheck')?.addEventListener('change', (e) => {
+          this.updateSettings({ backgroundMusic: e.target.checked });
+        });
+        
+        // Save/Load modal
+        document.getElementById('cancelSaveLoadBtn')?.addEventListener('click', () => this.closeSaveLoadMenu());
+        document.getElementById('confirmSaveLoadBtn')?.addEventListener('click', () => this.confirmSaveLoad());
+        document.getElementById('saveLoadOverlay')?.addEventListener('click', (e) => {
+          if (e.target.id === 'saveLoadOverlay') this.closeSaveLoadMenu();
+        });
+        
+        // Save slots
+        document.querySelectorAll('[data-slot]').forEach(slot => {
+          slot.addEventListener('click', () => {
+            const slotId = parseInt(slot.getAttribute('data-slot'));
+            if (!isNaN(slotId)) this.selectSaveSlot(slotId);
+          });
+        });
+        
+        document.querySelectorAll('[data-select-slot]').forEach(button => {
+          button.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent triggering the slot's click event
+            const slotId = parseInt(button.getAttribute('data-select-slot'));
+            if (!isNaN(slotId)) this.selectSaveSlot(slotId);
+          });
+        });
+      }
+    }
+    
+    // Initialize the game when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const game = new GameStateManager();
+    });
+  </script>
 </body>
 </html>
