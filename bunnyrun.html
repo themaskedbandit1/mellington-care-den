@@ -1,32 +1,631 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BunnyRun 🐇</title>
-  <link rel="stylesheet" href="bunnyrun.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bunny Runner</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f7f7f7;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+    
+    #game-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    #game-canvas {
+      border: 2px solid #333;
+      background-color: #fff;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    #start-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    #game-over-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    h1, h2 {
+      color: #333;
+      text-align: center;
+    }
+    
+    .instructions {
+      margin-top: 20px;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    @media (max-width: 600px) {
+      #game-canvas {
+        width: 100%;
+        height: auto;
+      }
+      
+      .instructions {
+        font-size: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="game-container">
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
-    <div id="levelDisplay">Level: 1</div>
-    <div id="scoreDisplay">Score: 0</div>
+    <div class="game-stats">
+      <div id="score">Score: 0</div>
+      <div id="high-score">High Score: 0</div>
+    </div>
+    
+    <canvas id="game-canvas" width="800" height="300"></canvas>
+    
+    <div id="start-screen">
+      <h1>Bunny Runner</h1>
+      <p class="instructions">Press SPACE or UP key to jump over cacti and avoid birds!</p>
+      <button id="start-button">Start Game</button>
+    </div>
+    
+    <div id="game-over-screen">
+      <h2>Game Over!</h2>
+      <div id="final-score">Score: 0</div>
+      <button id="restart-button">Play Again</button>
+    </div>
   </div>
 
-  <!-- Intro screen -->
-  <div id="introScreen">
-    <h1>Kidnap the Bunny!</h1>
-    <p>Use WASD to move. Jump over holes and duck under trees.</p>
-    <p>The stork is reading the newspaper, not paying attention...</p>
-    <button id="startBtn">START GAME</button>
-  </div>
-
-  <div id="levelScreen" style="display:none; text-align:center; margin-top: 20px;">
-    <div id="levelStats"></div>
-    <button id="nextLevelBtn">Next Level</button>
-    <button id="restartLevelBtn">Restart Level</button>
-  </div>
-
-  <script src="bunnyrun.js"></script>
+  <script>
+    // Game Canvas and Context
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Game elements
+    const startScreen = document.getElementById('start-screen');
+    const gameOverScreen = document.getElementById('game-over-screen');
+    const startButton = document.getElementById('start-button');
+    const restartButton = document.getElementById('restart-button');
+    const scoreDisplay = document.getElementById('score');
+    const finalScoreDisplay = document.getElementById('final-score');
+    const highScoreDisplay = document.getElementById('high-score');
+    
+    // Game configuration
+    const config = {
+      gravity: 0.8,
+      jumpStrength: -15,
+      speed: 5,
+      maxSpeed: 15,
+      acceleration: 0.001,
+      groundLevel: canvas.height - 50,
+      minObstacleDistance: 300,
+      maxObstacleDistance: 600
+    };
+    
+    // Game state
+    let gameState = {
+      isRunning: false,
+      speed: config.speed,
+      score: 0,
+      highScore: localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0,
+      obstacleSpawnTimer: 0,
+      nextObstacleDistance: getRandomDistance()
+    };
+    
+    // Load high score from local storage
+    highScoreDisplay.textContent = `High Score: ${gameState.highScore}`;
+    
+    // Bunny object
+    const bunny = {
+      x: 50,
+      y: config.groundLevel,
+      width: 40,
+      height: 50,
+      velocityY: 0,
+      isJumping: false,
+      jumpCount: 0,
+      maxJumps: 1,
+      frames: 2,
+      currentFrame: 0,
+      frameUpdateTime: 10,
+      frameTimer: 0,
+      
+      update() {
+        // Jumping physics
+        if (this.isJumping) {
+          this.velocityY += config.gravity;
+          this.y += this.velocityY;
+          
+          // Check if landed
+          if (this.y >= config.groundLevel) {
+            this.y = config.groundLevel;
+            this.velocityY = 0;
+            this.isJumping = false;
+            this.jumpCount = 0;
+          }
+        }
+        
+        // Animation frames
+        this.frameTimer++;
+        if (this.frameTimer >= this.frameUpdateTime) {
+          this.currentFrame = (this.currentFrame + 1) % this.frames;
+          this.frameTimer = 0;
+        }
+      },
+      
+      jump() {
+        if (this.jumpCount < this.maxJumps) {
+          this.velocityY = config.jumpStrength;
+          this.isJumping = true;
+          this.jumpCount++;
+        }
+      },
+      
+      draw() {
+        // Draw bunny
+        ctx.fillStyle = '#CE93D8'; // Light purple for bunny body
+        
+        // Body
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y - 15, 20, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Head
+        ctx.beginPath();
+        ctx.ellipse(this.x + 10, this.y - 30, 12, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Ears (animating based on frame)
+        const earOffset = this.currentFrame * 2;
+        
+        // Left ear
+        ctx.beginPath();
+        ctx.ellipse(this.x + 5, this.y - 45 + earOffset, 4, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Right ear
+        ctx.beginPath();
+        ctx.ellipse(this.x + 15, this.y - 45 - earOffset, 4, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Eyes
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(this.x + 14, this.y - 32, 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Feet
+        if (!this.isJumping) {
+          const footOffset = this.currentFrame * 5;
+          
+          // Left foot
+          ctx.fillStyle = '#CE93D8';
+          ctx.fillRect(this.x - 10, this.y - 5, 10, 5);
+          
+          // Right foot (animated)
+          ctx.fillRect(this.x + 10 - footOffset, this.y - 5, 10, 5);
+        }
+      },
+      
+      getBounds() {
+        // Collision box smaller than visual representation
+        return {
+          x: this.x - 15,
+          y: this.y - 30,
+          width: 30,
+          height: 30
+        };
+      }
+    };
+    
+    // Obstacles array
+    let obstacles = [];
+    
+    // Obstacle types
+    const obstacleTypes = {
+      cactus: {
+        width: 20,
+        height: 40,
+        speedMultiplier: 1,
+        draw(x, y) {
+          // Draw cactus
+          ctx.fillStyle = '#4CAF50';
+          ctx.fillRect(x - this.width / 2, y - this.height, this.width, this.height);
+          
+          // Cactus arms
+          ctx.fillRect(x - this.width / 2 - 10, y - this.height + 15, 10, 8);
+          ctx.fillRect(x + this.width / 2, y - this.height + 25, 10, 8);
+        }
+      },
+      tallCactus: {
+        width: 20,
+        height: 60,
+        speedMultiplier: 1,
+        draw(x, y) {
+          // Draw tall cactus
+          ctx.fillStyle = '#4CAF50';
+          ctx.fillRect(x - this.width / 2, y - this.height, this.width, this.height);
+          
+          // Cactus arms
+          ctx.fillRect(x - this.width / 2 - 10, y - this.height + 20, 10, 8);
+          ctx.fillRect(x + this.width / 2, y - this.height + 40, 10, 8);
+        }
+      },
+      bird: {
+        width: 40,
+        height: 20,
+        speedMultiplier: 1.2,
+        y: config.groundLevel - 50, // Flying height
+        frames: 2,
+        currentFrame: 0,
+        frameTimer: 0,
+        draw(x, y) {
+          // Update animation frame
+          this.frameTimer++;
+          if (this.frameTimer >= 15) {
+            this.currentFrame = (this.currentFrame + 1) % this.frames;
+            this.frameTimer = 0;
+          }
+          
+          // Draw bird
+          ctx.fillStyle = '#795548';
+          
+          // Bird body
+          ctx.beginPath();
+          ctx.ellipse(x, y - 10, 15, 10, 0, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Bird head
+          ctx.beginPath();
+          ctx.arc(x + 15, y - 15, 8, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Beak
+          ctx.fillStyle = 'orange';
+          ctx.beginPath();
+          ctx.moveTo(x + 23, y - 15);
+          ctx.lineTo(x + 30, y - 13);
+          ctx.lineTo(x + 23, y - 11);
+          ctx.fill();
+          
+          // Wings - animated
+          ctx.fillStyle = '#795548';
+          if (this.currentFrame === 0) {
+            // Wings up
+            ctx.beginPath();
+            ctx.moveTo(x, y - 10);
+            ctx.lineTo(x - 5, y - 25);
+            ctx.lineTo(x + 10, y - 20);
+            ctx.fill();
+          } else {
+            // Wings down
+            ctx.beginPath();
+            ctx.moveTo(x, y - 10);
+            ctx.lineTo(x - 5, y);
+            ctx.lineTo(x + 10, y - 5);
+            ctx.fill();
+          }
+        }
+      }
+    };
+    
+    // Ground and clouds
+    const ground = {
+      y: config.groundLevel,
+      draw() {
+        ctx.fillStyle = '#D7CCC8';
+        ctx.fillRect(0, this.y, canvas.width, canvas.height - this.y);
+        
+        // Ground texture
+        ctx.strokeStyle = '#BDBDBD';
+        ctx.beginPath();
+        ctx.moveTo(0, this.y + 5);
+        ctx.lineTo(canvas.width, this.y + 5);
+        ctx.stroke();
+        
+        // Small rocks
+        ctx.fillStyle = '#9E9E9E';
+        for (let i = 0; i < 20; i++) {
+          const x = (i * 100 + gameState.score * 0.5) % canvas.width;
+          ctx.beginPath();
+          ctx.arc(x, this.y - 2, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    };
+    
+    const clouds = [];
+    
+    // Initialize some clouds
+    for (let i = 0; i < 4; i++) {
+      clouds.push({
+        x: Math.random() * canvas.width,
+        y: 50 + Math.random() * 80,
+        width: 60 + Math.random() * 40,
+        speed: 0.5 + Math.random() * 0.5
+      });
+    }
+    
+    // Utility functions
+    function getRandomDistance() {
+      return config.minObstacleDistance + 
+             Math.random() * (config.maxObstacleDistance - config.minObstacleDistance);
+    }
+    
+    function spawnObstacle() {
+      let type;
+      const rand = Math.random();
+      
+      // Difficulty scaling - introduce birds after score 500
+      if (gameState.score > 500 && rand < 0.3) {
+        type = obstacleTypes.bird;
+      } else if (rand < 0.5) {
+        type = obstacleTypes.cactus;
+      } else {
+        type = obstacleTypes.tallCactus;
+      }
+      
+      obstacles.push({
+        x: canvas.width + 50,
+        y: type === obstacleTypes.bird ? type.y : config.groundLevel,
+        type: type,
+        passed: false
+      });
+    }
+    
+    function checkCollision(a, b) {
+      const boundsA = a.getBounds ? a.getBounds() : a;
+      const boundsB = b.getBounds ? b.getBounds() : b;
+      
+      return !(
+        boundsA.x + boundsA.width < boundsB.x ||
+        boundsA.x > boundsB.x + boundsB.width ||
+        boundsA.y + boundsA.height < boundsB.y ||
+        boundsA.y > boundsB.y + boundsB.height
+      );
+    }
+    
+    function updateHighScore() {
+      if (gameState.score > gameState.highScore) {
+        gameState.highScore = gameState.score;
+        localStorage.setItem('highScore', gameState.highScore);
+        highScoreDisplay.textContent = `High Score: ${gameState.highScore}`;
+      }
+    }
+    
+    // Game functions
+    function startGame() {
+      gameState.isRunning = true;
+      gameState.score = 0;
+      gameState.speed = config.speed;
+      obstacles = [];
+      gameState.obstacleSpawnTimer = 0;
+      gameState.nextObstacleDistance = getRandomDistance();
+      
+      startScreen.style.display = 'none';
+      gameOverScreen.style.display = 'none';
+      
+      // Start game loop
+      requestAnimationFrame(gameLoop);
+    }
+    
+    function gameOver() {
+      gameState.isRunning = false;
+      updateHighScore();
+      
+      finalScoreDisplay.textContent = `Score: ${Math.floor(gameState.score)}`;
+      gameOverScreen.style.display = 'flex';
+    }
+    
+    function updateGame() {
+      if (!gameState.isRunning) return;
+      
+      // Update score
+      gameState.score += 0.1;
+      scoreDisplay.textContent = `Score: ${Math.floor(gameState.score)}`;
+      
+      // Increase speed as score increases
+      gameState.speed = Math.min(
+        config.maxSpeed, 
+        config.speed + gameState.score * config.acceleration
+      );
+      
+      // Update bunny
+      bunny.update();
+      
+      // Spawn obstacles
+      gameState.obstacleSpawnTimer += gameState.speed;
+      if (gameState.obstacleSpawnTimer >= gameState.nextObstacleDistance) {
+        spawnObstacle();
+        gameState.obstacleSpawnTimer = 0;
+        gameState.nextObstacleDistance = getRandomDistance();
+      }
+      
+      // Update obstacles
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obstacle = obstacles[i];
+        obstacle.x -= gameState.speed * obstacle.type.speedMultiplier;
+        
+        // Check if obstacle is passed for scoring
+        if (!obstacle.passed && obstacle.x < bunny.x) {
+          obstacle.passed = true;
+          gameState.score += 10; // Bonus for passing obstacle
+        }
+        
+        // Remove obstacles that are off-screen
+        if (obstacle.x < -100) {
+          obstacles.splice(i, 1);
+        }
+        
+        // Check collision
+        const obstacleHitbox = {
+          x: obstacle.x - obstacle.type.width / 2,
+          y: obstacle.y - obstacle.type.height,
+          width: obstacle.type.width,
+          height: obstacle.type.height
+        };
+        
+        if (checkCollision(bunny, obstacleHitbox)) {
+          gameOver();
+        }
+      }
+      
+      // Update clouds
+      for (const cloud of clouds) {
+        cloud.x -= cloud.speed;
+        
+        // Wrap clouds around
+        if (cloud.x + cloud.width < 0) {
+          cloud.x = canvas.width + cloud.width;
+          cloud.y = 50 + Math.random() * 80;
+        }
+      }
+    }
+    
+    function drawGame() {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw sky
+      ctx.fillStyle = '#E3F2FD';
+      ctx.fillRect(0, 0, canvas.width, ground.y);
+      
+      // Draw clouds
+      ctx.fillStyle = 'white';
+      for (const cloud of clouds) {
+        ctx.beginPath();
+        ctx.arc(cloud.x, cloud.y, cloud.width / 3, 0, Math.PI * 2);
+        ctx.arc(cloud.x + cloud.width / 3, cloud.y - cloud.width / 6, cloud.width / 4, 0, Math.PI * 2);
+        ctx.arc(cloud.x + cloud.width / 1.5, cloud.y, cloud.width / 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // Draw ground
+      ground.draw();
+      
+      // Draw obstacles
+      for (const obstacle of obstacles) {
+        obstacle.type.draw(obstacle.x, obstacle.y);
+      }
+      
+      // Draw bunny
+      bunny.draw();
+      
+      // Draw score
+      ctx.fillStyle = 'black';
+      ctx.font = '20px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText(`${Math.floor(gameState.score)}`, canvas.width - 20, 30);
+    }
+    
+    function gameLoop(timestamp) {
+      updateGame();
+      drawGame();
+      
+      if (gameState.isRunning) {
+        requestAnimationFrame(gameLoop);
+      }
+    }
+    
+    // Event listeners
+    startButton.addEventListener('click', startGame);
+    restartButton.addEventListener('click', startGame);
+    
+    window.addEventListener('keydown', (e) => {
+      if ((e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') && gameState.isRunning) {
+        e.preventDefault(); // Prevent page scrolling
+        bunny.jump();
+      } else if ((e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') && !gameState.isRunning) {
+        e.preventDefault();
+        startGame();
+      }
+    });
+    
+    // Mobile touch controls
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (gameState.isRunning) {
+        bunny.jump();
+      } else {
+        startGame();
+      }
+    });
+    
+    // Make canvas responsive
+    function resizeCanvas() {
+      const container = document.getElementById('game-container');
+      const containerWidth = container.clientWidth;
+      
+      if (containerWidth < 800) {
+        const ratio = canvas.height / canvas.width;
+        canvas.width = containerWidth - 20; // Padding
+        canvas.height = canvas.width * ratio;
+        config.groundLevel = canvas.height - 50;
+        bunny.y = config.groundLevel;
+      }
+    }
+    
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas(); // Initial resize
+    
+    // Draw initial screen
+    drawGame();
+  </script>
 </body>
 </html>
