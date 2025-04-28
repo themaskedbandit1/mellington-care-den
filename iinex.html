@@ -808,6 +808,329 @@
         achievements: ["Ice Breaker", "Mental Fortitude"]
       },
       
+      // GLITTER BOMB BRANCH
+      duo_glitter: {
+        title: "The Bunny Tea Party",
+        content: [
+          "You blind Duo with glitter and escape... only to find yourself in a wholesome bunny tea party. A small grey pygmy rabbit holds up a teacup.",
+          "\"Care to join us?\" she asks, her eyes twinkling with mischief."
+        ],
+        choices: [
+          { id: "duo_glitter_join", text: "Accept the invitation", icon: "coffee" },
+          { id: "duo_glitter_refuse", text: "Politely decline", icon: "hand" },
+          { id: "duo_glitter_games", text: "Suggest playing party games instead", icon: "dice" }
+        ]
+      },
+      
+      duo_glitter_join: {
+        title: "Tea With Rabbits",
+        content: [
+          "You join the rabbits for tea. Their tiny cups are filled with a sweet-smelling herbal brew.",
+          "\"It's carrot and ginger,\" explains your host, Mabel. \"Our specialty.\"",
+          "As you sip, you discover the rabbits are actually resistance fighters against Duo's language tyranny."
+        ],
+        choices: [
+          { id: "duo_glitter_join_spy", text: "Offer to spy on Duo for them", icon: "user-secret" },
+          { id: "duo_glitter_join_diplomat", text: "Offer to be a diplomat between species", icon: "handshake" }
+        ]
+      },
+      
+      duo_glitter_join_spy: {
+        title: "The Double Agent",
+        content: [
+          "You volunteer to spy on Duo for the rabbit resistance. They outfit you with a tiny carrot-shaped recording device.",
+          "Over the next few months, you play both sides—studying Japanese with Duo while gathering intelligence on his operations.",
+          "Eventually, you bring Duo and the rabbit rebels together for peace talks, revealing your dual role.",
+          "After initial shock, both parties appreciate your commitment to harmony.",
+          "A historic treaty is signed, allowing free movement through the Glade and optional language learning.",
+          "You're appointed Ambassador of Glade Relations, with an office made from a hollowed-out mushroom.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Master Spy", "Peacemaker"]
+      },
+      
+      duo_glitter_join_diplomat: {
+        title: "Peace Negotiations",
+        content: [
+          "You offer to serve as a diplomat between the rabbits and Duo. Mabel looks skeptical but agrees.",
+          "Arranging a meeting is difficult, but eventually all parties gather at Neutral Ground—a meadow of blue flowers.",
+          "Tensions run high, but your diplomatic skills shine as you help both sides understand each other.",
+          "Duo agrees to make language learning optional, and the rabbits promise to stop sabotaging his teaching materials.",
+          "A new era of peace begins in the Glade, with you as its chief architect.",
+          "Your diplomatic handbook, \"From Owls to Bunnies: Building Bridges,\" becomes required reading in Glade schools.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Born Diplomat", "Harmony Builder"]
+      },
+      
+      duo_glitter_refuse: {
+        title: "Rabbit Pursuit",
+        content: [
+          "You politely decline the tea invitation. The rabbits exchange glances.",
+          "\"That's unfortunate,\" says Mabel, her voice suddenly cold. \"Very unfortunate indeed.\"",
+          "The bunnies begin to multiply and surround you. Their cute appearance now seems menacing."
+        ],
+        choices: [
+          { id: "duo_glitter_refuse_run", text: "Make a break for it", icon: "running" },
+          { id: "duo_glitter_refuse_fight", text: "Stand your ground", icon: "shield-alt" }
+        ]
+      },
+      
+      duo_glitter_refuse_run: {
+        title: "The Great Escape",
+        content: [
+          "You bolt through a gap in the rabbit circle, running faster than you've ever run before.",
+          "Behind you, a hundred bunnies hop in perfect unison, gaining with each bounce.",
+          "Just as they're about to catch you, you dive into a burrow—and find yourself sliding down an elaborate tunnel system.",
+          "You emerge in what appears to be the rabbits' command center, filled with carrot-shaped computers and surveillance equipment.",
+          "\"Well,\" says Mabel, who somehow arrived before you. \"Since you've found our headquarters, you have two choices—join us or...\" She trails off ominously.",
+          "You quickly agree to join their cause, becoming the Chief Human Operative in the rabbit revolution.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Reluctant Revolutionary", "Burrow Runner"]
+      },
+      
+      duo_glitter_refuse_fight: {
+        title: "Standoff",
+        content: [
+          "You stand your ground as the rabbits close in. \"I don't want any trouble,\" you declare firmly.",
+          "Mabel looks impressed. \"Few have the courage to face the Bunny Brigade. You've earned our respect.\"",
+          "The hostile atmosphere dissolves as the rabbits step back and salute you.",
+          "\"We've been looking for a leader with your courage,\" Mabel explains. \"The Glade is facing dark times.\"",
+          "She offers you command of their forces against a mysterious shadow that's been consuming the Glade.",
+          "You accept, leading the rabbits to victory in the Battle of Whisker Ridge.",
+          "Songs are sung of your bravery for generations to come, and a giant carrot statue is erected in your honor.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Courage Under Fire", "Rabbit General"]
+      },
+      
+      duo_glitter_games: {
+        title: "Party Games",
+        content: [
+          "You suggest playing party games instead of having tea. The rabbits twitch their noses in excitement.",
+          "\"What did you have in mind?\" Mabel asks, eyes bright with interest."
+        ],
+        choices: [
+          { id: "duo_glitter_games_riddles", text: "Propose a riddle contest", icon: "question-circle" },
+          { id: "duo_glitter_games_hide", text: "Suggest hide and seek", icon: "eye-slash" }
+        ]
+      },
+      
+      duo_glitter_games_riddles: {
+        title: "Battle of Wits",
+        content: [
+          "You propose a riddle contest. The rabbits hop with excitement, revealing that riddles are their specialty.",
+          "The battle of wits goes on for hours, with both sides posing increasingly complex puzzles.",
+          "Your final riddle—\"What gets wetter as it dries?\"—stumps even Mabel.",
+          "\"A towel!\" you reveal triumphantly.",
+          "The rabbits declare you a worthy mind and grant you honorary rabbit status.",
+          "They reveal their true purpose—they are the Keepers of Glade Knowledge, collecting and protecting riddles and puzzles throughout the realm.",
+          "You're invited to join their order, cataloging brainteasers for future generations.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Riddle Master", "Honorary Rabbit"]
+      },
+      
+      duo_glitter_games_hide: {
+        title: "Legendary Hide and Seek",
+        content: [
+          "You suggest hide and seek. The rabbits exchange mischievous glances.",
+          "\"An excellent choice,\" Mabel says. \"But be warned—we're very good at hiding.\"",
+          "What follows is the most intense game of hide and seek ever played.",
+          "The rabbits use their knowledge of secret tunnels, while you use your human height advantage.",
+          "After three days (!), the game finally ends when you discover Mabel hiding inside a hollow carrot statue.",
+          "Impressed by your persistence, the rabbits reveal they've been testing you.",
+          "You're appointed as the Guardian of Lost Things, a prestigious role helping Glade creatures find their misplaced possessions.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Seeker Supreme", "Guardian of Lost Things"]
+      },
+      
+      // FLIRT BRANCH
+      duo_flirt: {
+        title: "Romantic Tension",
+        content: [
+          "\"Call me Daddy,\" you say with a wink. There is a long, awkward silence.",
+          "Duo's feathers ruffle in what might be embarrassment... or something else.",
+          "\"This is... unexpected,\" he finally replies, voice slightly higher than before.",
+          "The tension in the air is thick enough to cut with a knife."
+        ],
+        choices: [
+          { id: "duo_flirt_continue", text: "Continue the flirtation", icon: "kiss-wink-heart" },
+          { id: "duo_flirt_apologize", text: "Apologize profusely and change the subject", icon: "undo" },
+          { id: "duo_flirt_run", text: "Run away screaming \"MISTAKE! MISTAKE!\"", icon: "exclamation-triangle" }
+        ]
+      },
+      
+      duo_flirt_continue: {
+        title: "Bold Move",
+        content: [
+          "You double down on your flirtation. \"Your feathers look so soft today. Been using a new conditioner?\"",
+          "Duo's eyes widen further. Then, to your surprise, he smooths his feathers and responds in kind.",
+          "\"Perhaps I have. I'm glad someone finally noticed my effort.\"",
+          "What follows is a bizarre but oddly charming courtship dance. Neither of you quite means it, but the game takes on a life of its own.",
+          "Over time, an unlikely friendship forms. You never actually date—the cross-species logistics are too complex—but you become legendary platonic flirts.",
+          "Your over-the-top compliments and dramatic declarations become famous throughout the Glade.",
+          "Creatures travel from far and wide to witness what they call \"The Greatest Almost-Romance Ever Told.\"",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Smooth Talker", "Legendary Flirt"]
+      },
+      
+      duo_flirt_apologize: {
+        title: "Awkward Apology",
+        content: [
+          "You clear your throat. \"I am SO sorry. I don't know what came over me. Can we please pretend that never happened?\"",
+          "Duo adjusts his feathers primly. \"That would be... for the best.\"",
+          "The awkwardness hangs in the air like heavy fog. You both avoid eye contact."
+        ],
+        choices: [
+          { id: "duo_flirt_apologize_business", text: "Strictly professional from now on", icon: "briefcase" },
+          { id: "duo_flirt_apologize_friend", text: "Suggest being just friends", icon: "user-friends" }
+        ]
+      },
+      
+      duo_flirt_apologize_business: {
+        title: "Professional Boundaries",
+        content: [
+          "\"Let's keep things strictly professional,\" you suggest, straightening your posture.",
+          "Duo nods curtly. \"Agreed. Let us never speak of this again.\"",
+          "From that point forward, your interactions with Duo become comically formal. You address each other as \"Mr. Storkington\" and \"Mr. Owl\" in excessively polite tones.",
+          "The forced professionalism actually becomes a running joke that eases the tension, and you develop an unusual working relationship.",
+          "Eventually, you co-author a bestselling business book, \"Maintaining Professional Boundaries When Your Language Teacher Is A Judgmental Owl.\"",
+          "Corporate executives pay thousands to attend your seminars on workplace etiquette.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Corporate Success", "Boundary Setter"]
+      },
+      
+      duo_flirt_apologize_friend: {
+        title: "Just Friends",
+        content: [
+          "\"Can we just be friends?\" you ask hopefully.",
+          "Duo considers this, then nods. \"Friendship. Yes. This is acceptable.\"",
+          "The next few meetings are painfully awkward, but gradually, a genuine friendship forms.",
+          "You discuss your lives, hopes, and dreams. Duo reveals he once wanted to be a ballet dancer before the language teaching gig.",
+          "You help him pursue this passion, crafting special owl-sized ballet slippers with your 3D printer.",
+          "In return, he teaches you Japanese with patience and understanding rather than threats.",
+          "Your odd friendship becomes a model for interspecies harmony throughout the Glade.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["True Friend", "Supportive Ally"]
+      },
+      
+      duo_flirt_run: {
+        title: "Panic Retreat",
+        content: [
+          "You turn and sprint away, screaming \"MISTAKE! MISTAKE!\" at the top of your lungs.",
+          "Behind you, you hear Duo's wings flapping. \"GET BACK HERE AND FACE THE CONSEQUENCES OF YOUR ACTIONS!\"",
+          "You dive behind a massive mushroom, breathing hard."
+        ],
+        choices: [
+          { id: "duo_flirt_run_hide", text: "Hide from Duo forever", icon: "mask" },
+          { id: "duo_flirt_run_return", text: "Return and face the music", icon: "arrow-left" }
+        ]
+      },
+      
+      duo_flirt_run_hide: {
+        title: "Life in Hiding",
+        content: [
+          "You decide to hide from Duo forever, creating an elaborate system of disguises and secret hideouts.",
+          "You become known as the Phantom of the Glade, a mysterious figure glimpsed only briefly before vanishing into the shadows.",
+          "Your stealth skills develop to supernatural levels—you can melt into darkness, walk silently on dry leaves, and disguise yourself as mundane objects.",
+          "Years pass, and your legend grows. Duo searches for you, but never quite manages to track you down.",
+          "Eventually, you write an anonymous bestselling memoir: \"How To Disappear Completely: The Art of Eternal Hiding After An Awkward Flirtation.\"",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Master of Disguise", "Phantom Legend"]
+      },
+      
+      duo_flirt_run_return: {
+        title: "Facing the Consequences",
+        content: [
+          "Taking a deep breath, you return to face Duo.",
+          "\"I apologize for my inappropriate comment AND for running away,\" you say with dignity.",
+          "Duo regards you silently, then bursts into owl laughter.",
+          "\"In all my centuries of terrorizing language students, no one has EVER responded that way,\" he hoots.",
+          "Your honest return earns his respect. The awkwardness transforms into a mutual appreciation for the absurdity of the situation.",
+          "Duo offers you a unique role as his PR manager, helping to soften his intimidating image to language learners.",
+          "Your first campaign, \"Duo: The Owl Who Just Wants You To Succeed,\" is a massive hit.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Dignity Restorer", "Image Consultant"]
+      },
+      
+      // EYEBROWS BRANCH
+      duo_eyebrows: {
+        title: "The Eyebrow Incident",
+        content: [
+          "You mock Duo's eyebrows. He mocks your life choices. You bond. It's weird now.",
+          "What do you say next?"
+        ],
+        choices: [
+          { id: "duo_eyebrows_beers", text: "Suggest grabbing beers together", icon: "beer" },
+          { id: "duo_eyebrows_weird", text: "Say it's weird but you like it", icon: "smile-wink" },
+          { id: "duo_eyebrows_friendship", text: "Say this is how most of your friendships start", icon: "users" }
+        ]
+      },
+      
+      duo_eyebrows_beers: {
+        title: "Owl Bar Crawl",
+        content: [
+          "\"Want to grab a beer?\" you suggest. To your surprise, Duo nods enthusiastically.",
+          "You find yourselves at The Roosting Branch, a peculiar bar where owls and other night creatures gather.",
+          "Several drinks later, you and Duo are belting out karaoke together—a bilingual rendition of \"Total Eclipse of the Heart.\"",
+          "By closing time, you've formed an unlikely friendship based on mutual roasting and karaoke skills.",
+          "Duo introduces you to his owl friends, and you become a regular at their weekly gatherings.",
+          "Eventually, you co-author a bestselling book: \"Language Learning Through Insult Comedy,\" revolutionizing education.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Drinking Buddy", "Karaoke King"]
+      },
+      
+      duo_eyebrows_weird: {
+        title: "Embracing the Weird",
+        content: [
+          "\"This is weird, but I kind of like it,\" you admit.",
+          "Duo nods. \"Most interesting relationships are built on a foundation of weird.\"",
+          "You and Duo develop a friendship based on brutally honest exchanges that would shock most social circles.",
+          "Your dynamic becomes a case study in 'Unconventional Bonding Methods' at the Glade Psychology Institute.",
+          "Together, you start a successful advice column called \"Hard Truths From An Owl And A Stork,\" known for its refreshingly blunt guidance.",
+          "Your friendship lasts for decades, built on a solid foundation of mutual mockery and genuine respect.",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Honesty Champion", "Weirdness Embracer"]
+      },
+      
+      duo_eyebrows_friendship: {
+        title: "Friendship Origin Story",
+        content: [
+          "\"This is actually how most of my friendships start,\" you confess.",
+          "Duo laughs genuinely. \"Mine too! No one understands the bonding power of mutual derision.\"",
+          "This shared perspective marks the beginning of a legendary friendship.",
+          "You become inseparable, known throughout the Glade as the odd couple who communicate almost exclusively through creative insults.",
+          "Your friendship is so effective that it becomes a recognized diplomatic strategy—\"Storkington-Duo Tension Resolution\"—used to forge peace between warring factions.",
+          "In your old age, you co-write memoirs titled \"From Eyebrows to Friendship: An Unlikely Journey.\"",
+          "THE END"
+        ],
+        isEnding: true,
+        achievements: ["Friendship Expert", "Diplomatic Pioneer"]
+      },
+      
       // 3D PRINTER BRANCH
       printer: {
         title: "The Sentient Printer",
@@ -998,13 +1321,18 @@
         achievements: ["Digital Nomad", "Nature Processor"]
       },
       
-      // Additional branches could be added here for the other main story paths
-      
       // In case of missing scene
       nothing: {
         title: "Nothing Happens",
         content: [
-          "Nothing. You do nothing. What did you expect?"
+          "You decide to do absolutely nothing.",
+          "You stand perfectly still in the glimmering dungeon.",
+          "Hours pass. Then days. Your legs should be tired, but they're not.",
+          "The dungeon's tea stains begin to shift and swirl around you.",
+          "Eventually, you realize you've become part of the Glade itself - a living statue, a monument to indecision.",
+          "Visitors come from all realms to leave offerings at your feet and whisper their uncertainties to you.",
+          "You've become the Patron Saint of Procrastination, blessing those who put off until tomorrow what could be done today.",
+          "THE END"
         ],
         isEnding: true,
         achievements: ["Statue of Limitations", "Perfectly Still"]
@@ -1057,7 +1385,35 @@
       "Digital Nomad": "You traveled with technology",
       "Nature Processor": "You bridged the natural and digital worlds",
       "Statue of Limitations": "You became an embodiment of inaction",
-      "Perfectly Still": "You achieved perfect stillness"
+      "Perfectly Still": "You achieved perfect stillness",
+      "Master Spy": "You excelled at espionage",
+      "Peacemaker": "You brought opposing sides together",
+      "Born Diplomat": "You showed natural talent for negotiation",
+      "Harmony Builder": "You created peace where there was conflict",
+      "Reluctant Revolutionary": "You joined a cause against your initial wishes",
+      "Burrow Runner": "You navigated complex underground systems",
+      "Courage Under Fire": "You showed bravery in a dangerous situation",
+      "Rabbit General": "You led forces of bunnies to victory",
+      "Riddle Master": "You excelled at solving and creating puzzles",
+      "Honorary Rabbit": "You were accepted by rabbit-kind",
+      "Seeker Supreme": "You found what others couldn't",
+      "Guardian of Lost Things": "You helped reunite items with their owners",
+      "Smooth Talker": "You showed impressive flirtation skills",
+      "Legendary Flirt": "Your romantic charisma became famous",
+      "Corporate Success": "You succeeded in business",
+      "Boundary Setter": "You established healthy limits",
+      "True Friend": "You formed a genuine bond of friendship",
+      "Supportive Ally": "You helped someone pursue their dreams",
+      "Master of Disguise": "You excelled at hiding your identity",
+      "Phantom Legend": "Your mysterious persona became famous",
+      "Dignity Restorer": "You recovered gracefully from embarrassment",
+      "Image Consultant": "You helped improve someone's public perception",
+      "Drinking Buddy": "You formed a friendship over shared beverages",
+      "Karaoke King": "Your singing performance was memorable",
+      "Honesty Champion": "You embraced brutal truth-telling",
+      "Weirdness Embracer": "You celebrated the unusual and strange",
+      "Friendship Expert": "You mastered the art of forming bonds",
+      "Diplomatic Pioneer": "You developed new methods of negotiation"
     };
     
     // Game State Management
