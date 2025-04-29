@@ -285,6 +285,7 @@
         <button id="song3" class="music-button">Smooth Operator</button>
         <button id="song4" class="music-button">What You Won't Do for Love</button>
         <button id="song5" class="music-button">My Ordinary Life</button>
+        <button id="song6" class="music-button">Know Your Worth</button>
         <button id="stop-music" class="music-button">Stop Music</button>
       </div>
       <div class="music-controls">
@@ -1144,6 +1145,10 @@
           id: 'H_6JU6vJMS0',
           title: 'My Ordinary Life'
         },
+        song6: {
+          id: 'M-j159LFwGw',
+          title: 'Know Your Worth'
+        },
         // Night mode songs
         'night-song1': {
           id: '3h0ilgEHWOA',
@@ -1187,6 +1192,7 @@
         document.getElementById('song3').addEventListener('click', () => this.playSong('song3'));
         document.getElementById('song4').addEventListener('click', () => this.playSong('song4'));
         document.getElementById('song5').addEventListener('click', () => this.playSong('song5'));
+        document.getElementById('song6').addEventListener('click', () => this.playSong('song6'));
         document.getElementById('stop-music').addEventListener('click', () => this.stopMusic());
         
         // Add event listeners for night mode music buttons
