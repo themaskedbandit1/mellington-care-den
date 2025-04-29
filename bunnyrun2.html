@@ -1,920 +1,841 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Stork Chase Adventure</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #222;
-            font-family: 'Courier New', monospace;
-        }
-        #game-container {
-            position: relative;
-            width: 800px;
-            height: 400px;
-            margin: 20px auto;
-            background-color: #000;
-            overflow: hidden;
-        }
-        #game-canvas {
-            background-color: #87CEEB;
-        }
-        #ui {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            font-size: 20px;
-        }
-        #instructions {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            color: white;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 24px;
-            background-color: rgba(0,0,0,0.7);
-            padding: 20px;
-        }
-        #level-end {
-            display: none;
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            color: white;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 24px;
-            background-color: rgba(0,0,0,0.7);
-            padding: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bunny Runner</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f7f7f7;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+    
+    #game-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    #game-canvas {
+      border: 2px solid #333;
+      background-color: #fff;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    #start-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    #game-over-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+    
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    h1, h2 {
+      color: #333;
+      text-align: center;
+    }
+    
+    .instructions {
+      margin-top: 20px;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    /* Music player styles */
+    .music-container {
+      margin-top: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+    }
+    
+    .music-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .music-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .music-button {
+      padding: 8px 15px;
+      background-color: #9C27B0;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .music-button:hover {
+      background-color: #7B1FA2;
+    }
+    
+    .music-button.active {
+      background-color: #6A1B9A;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    
+    .music-controls {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      gap: 10px;
+    }
+    
+    .volume-control {
+      display: flex;
+      align-items: center;
+    }
+    
+    #volume-slider {
+      width: 80px;
+      margin-left: 5px;
+    }
+    
+    @media (max-width: 600px) {
+      #game-canvas {
+        width: 100%;
+        height: auto;
+      }
+      
+      .instructions {
+        font-size: 12px;
+      }
+      
+      .music-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="game-container">
-        <canvas id="game-canvas" width="800" height="400"></canvas>
-        <div id="ui">
-            <div id="hearts">❤️❤️❤️</div>
-            <div>Bunnies: <span id="bunny-count">0</span></div>
-            <div>Carrots: <span id="carrot-count">0</span></div>
-            <div>Time: <span id="time">0</span>s</div>
-        </div>
-        <div id="instructions">
-            <h2>Stork Chase Adventure</h2>
-            <p>Use WASD to move</p>
-            <p>Steal the bunny from the yard!</p>
-            <p>Press SPACE to start</p>
-        </div>
-        <div id="level-end">
-            <h2>Level Complete!</h2>
-            <p>Time: <span id="end-time">0</span>s</p>
-            <p>Bunnies collected: <span id="end-bunnies">0</span></p>
-            <p>Carrots collected: <span id="end-carrots">0</span></p>
-            <button id="next-level">Next Level</button>
-            <button id="restart-level">Restart Level</button>
-        </div>
+  <div id="game-container">
+    <div class="game-stats">
+      <div id="score">Score: 0</div>
+      <div id="high-score">High Score: 0</div>
     </div>
-    <audio id="bg-music" loop>
-        <source src="https://www.youtube.com/embed/Pn61zKFkf2A" type="audio/mpeg">
-    </audio>
-    <script>
-        // Game variables
-        const canvas = document.getElementById('game-canvas');
-        const ctx = canvas.getContext('2d');
-        const ui = document.getElementById('ui');
-        const hearts = document.getElementById('hearts');
-        const bunnyCount = document.getElementById('bunny-count');
-        const carrotCount = document.getElementById('carrot-count');
-        const timeDisplay = document.getElementById('time');
-        const instructions = document.getElementById('instructions');
-        const levelEnd = document.getElementById('level-end');
-        const endTime = document.getElementById('end-time');
-        const endBunnies = document.getElementById('end-bunnies');
-        const endCarrots = document.getElementById('end-carrots');
-        const nextLevelBtn = document.getElementById('next-level');
-        const restartLevelBtn = document.getElementById('restart-level');
-        const bgMusic = document.getElementById('bg-music');
+    
+    <canvas id="game-canvas" width="800" height="300"></canvas>
+    
+    <div class="music-container">
+      <div class="music-title">Choose Your Music</div>
+      <div class="music-buttons">
+        <button id="song1" class="music-button">Take On Me</button>
+        <button id="song2" class="music-button">Let's Groove</button>
+        <button id="song3" class="music-button">Smooth Operator</button>
+        <button id="song4" class="music-button">What You Won't Do for Love</button>
+        <button id="song5" class="music-button">My Ordinary Life</button>
+        <button id="stop-music" class="music-button">Stop Music</button>
+      </div>
+      <div class="music-controls">
+        <div class="volume-control">
+          <label for="volume-slider">Volume:</label>
+          <input type="range" id="volume-slider" min="0" max="100" value="50">
+        </div>
+      </div>
+    </div>
+    
+    <div id="start-screen">
+      <h1>Bunny Runner</h1>
+      <p class="instructions">Press SPACE or UP key to jump over cacti and avoid birds!</p>
+      <button id="start-button">Start Game</button>
+    </div>
+    
+    <div id="game-over-screen">
+      <h2>Game Over!</h2>
+      <div id="final-score">Score: 0</div>
+      <button id="restart-button">Play Again</button>
+    </div>
+  </div>
 
-        // Game state
-        let gameState = 'intro'; // intro, running, levelEnd
-        let level = 1;
-        let health = 3;
-        let bunniesCollected = 0;
-        let carrotsCollected = 0;
-        let startTime = 0;
-        let currentTime = 0;
-
-        // Player
-        const player = {
-            x: 100,
-            y: 300,
-            width: 40,
-            height: 60,
-            speed: 2,
-            velocityY: 0,
-            jumping: false,
-            direction: 'right',
-            carryingBunny: false
+  <script>
+    // Game Canvas and Context
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Game elements
+    const startScreen = document.getElementById('start-screen');
+    const gameOverScreen = document.getElementById('game-over-screen');
+    const startButton = document.getElementById('start-button');
+    const restartButton = document.getElementById('restart-button');
+    const scoreDisplay = document.getElementById('score');
+    const finalScoreDisplay = document.getElementById('final-score');
+    const highScoreDisplay = document.getElementById('high-score');
+    
+    // Game configuration
+    const config = {
+      gravity: 0.8,
+      jumpStrength: -15,
+      speed: 5,
+      maxSpeed: 15,
+      acceleration: 0.001,
+      groundLevel: canvas.height - 50,
+      minObstacleDistance: 300,
+      maxObstacleDistance: 600
+    };
+    
+    // Game state
+    let gameState = {
+      isRunning: false,
+      speed: config.speed,
+      score: 0,
+      highScore: localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0,
+      obstacleSpawnTimer: 0,
+      nextObstacleDistance: getRandomDistance()
+    };
+    
+    // Load high score from local storage
+    highScoreDisplay.textContent = `High Score: ${gameState.highScore}`;
+    
+    // Bunny object
+    const bunny = {
+      x: 50,
+      y: config.groundLevel,
+      width: 40,
+      height: 50,
+      velocityY: 0,
+      isJumping: false,
+      jumpCount: 0,
+      maxJumps: 1,
+      frames: 2,
+      currentFrame: 0,
+      frameUpdateTime: 10,
+      frameTimer: 0,
+      
+      update() {
+        // Jumping physics
+        if (this.isJumping) {
+          this.velocityY += config.gravity;
+          this.y += this.velocityY;
+          
+          // Check if landed
+          if (this.y >= config.groundLevel) {
+            this.y = config.groundLevel;
+            this.velocityY = 0;
+            this.isJumping = false;
+            this.jumpCount = 0;
+          }
+        }
+        
+        // Animation frames
+        this.frameTimer++;
+        if (this.frameTimer >= this.frameUpdateTime) {
+          this.currentFrame = (this.currentFrame + 1) % this.frames;
+          this.frameTimer = 0;
+        }
+      },
+      
+      jump() {
+        if (this.jumpCount < this.maxJumps) {
+          this.velocityY = config.jumpStrength;
+          this.isJumping = true;
+          this.jumpCount++;
+        }
+      },
+      
+      draw() {
+        // Draw bunny
+        ctx.fillStyle = '#CE93D8'; // Light purple for bunny body
+        
+        // Body
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y - 15, 20, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Head
+        ctx.beginPath();
+        ctx.ellipse(this.x + 10, this.y - 30, 12, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Ears (animating based on frame)
+        const earOffset = this.currentFrame * 2;
+        
+        // Left ear
+        ctx.beginPath();
+        ctx.ellipse(this.x + 5, this.y - 45 + earOffset, 4, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Right ear
+        ctx.beginPath();
+        ctx.ellipse(this.x + 15, this.y - 45 - earOffset, 4, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Eyes
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(this.x + 14, this.y - 32, 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Feet
+        if (!this.isJumping) {
+          const footOffset = this.currentFrame * 5;
+          
+          // Left foot
+          ctx.fillStyle = '#CE93D8';
+          ctx.fillRect(this.x - 10, this.y - 5, 10, 5);
+          
+          // Right foot (animated)
+          ctx.fillRect(this.x + 10 - footOffset, this.y - 5, 10, 5);
+        }
+      },
+      
+      getBounds() {
+        // Collision box smaller than visual representation
+        return {
+          x: this.x - 15,
+          y: this.y - 30,
+          width: 30,
+          height: 30
         };
-
-        // Stork
-        const stork = {
-            x: 700,
-            y: 300,
-            width: 60,
-            height: 80,
-            speed: 1,
-            state: 'reading', // reading, chasing, flying, pooping
-            stateTimer: 0,
-            poops: []
+      }
+    };
+    
+    // Obstacles array
+    let obstacles = [];
+    
+    // Obstacle types
+    const obstacleTypes = {
+      cactus: {
+        width: 20,
+        height: 40,
+        speedMultiplier: 1,
+        draw(x, y) {
+          // Draw cactus
+          ctx.fillStyle = '#4CAF50';
+          ctx.fillRect(x - this.width / 2, y - this.height, this.width, this.height);
+          
+          // Cactus arms
+          ctx.fillRect(x - this.width / 2 - 10, y - this.height + 15, 10, 8);
+          ctx.fillRect(x + this.width / 2, y - this.height + 25, 10, 8);
+        }
+      },
+      tallCactus: {
+        width: 20,
+        height: 60,
+        speedMultiplier: 1,
+        draw(x, y) {
+          // Draw tall cactus
+          ctx.fillStyle = '#4CAF50';
+          ctx.fillRect(x - this.width / 2, y - this.height, this.width, this.height);
+          
+          // Cactus arms
+          ctx.fillRect(x - this.width / 2 - 10, y - this.height + 20, 10, 8);
+          ctx.fillRect(x + this.width / 2, y - this.height + 40, 10, 8);
+        }
+      },
+      bird: {
+        width: 40,
+        height: 20,
+        speedMultiplier: 1.2,
+        y: config.groundLevel - 50, // Flying height
+        frames: 2,
+        currentFrame: 0,
+        frameTimer: 0,
+        draw(x, y) {
+          // Update animation frame
+          this.frameTimer++;
+          if (this.frameTimer >= 15) {
+            this.currentFrame = (this.currentFrame + 1) % this.frames;
+            this.frameTimer = 0;
+          }
+          
+          // Draw bird
+          ctx.fillStyle = '#795548';
+          
+          // Bird body
+          ctx.beginPath();
+          ctx.ellipse(x, y - 10, 15, 10, 0, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Bird head
+          ctx.beginPath();
+          ctx.arc(x + 15, y - 15, 8, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Beak
+          ctx.fillStyle = 'orange';
+          ctx.beginPath();
+          ctx.moveTo(x + 23, y - 15);
+          ctx.lineTo(x + 30, y - 13);
+          ctx.lineTo(x + 23, y - 11);
+          ctx.fill();
+          
+          // Wings - animated
+          ctx.fillStyle = '#795548';
+          if (this.currentFrame === 0) {
+            // Wings up
+            ctx.beginPath();
+            ctx.moveTo(x, y - 10);
+            ctx.lineTo(x - 5, y - 25);
+            ctx.lineTo(x + 10, y - 20);
+            ctx.fill();
+          } else {
+            // Wings down
+            ctx.beginPath();
+            ctx.moveTo(x, y - 10);
+            ctx.lineTo(x - 5, y);
+            ctx.lineTo(x + 10, y - 5);
+            ctx.fill();
+          }
+        }
+      }
+    };
+    
+    // Ground and clouds
+    const ground = {
+      y: config.groundLevel,
+      draw() {
+        ctx.fillStyle = '#D7CCC8';
+        ctx.fillRect(0, this.y, canvas.width, canvas.height - this.y);
+        
+        // Ground texture
+        ctx.strokeStyle = '#BDBDBD';
+        ctx.beginPath();
+        ctx.moveTo(0, this.y + 5);
+        ctx.lineTo(canvas.width, this.y + 5);
+        ctx.stroke();
+        
+        // Small rocks
+        ctx.fillStyle = '#9E9E9E';
+        for (let i = 0; i < 20; i++) {
+          const x = (i * 100 + gameState.score * 0.5) % canvas.width;
+          ctx.beginPath();
+          ctx.arc(x, this.y - 2, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    };
+    
+    const clouds = [];
+    
+    // Initialize some clouds
+    for (let i = 0; i < 4; i++) {
+      clouds.push({
+        x: Math.random() * canvas.width,
+        y: 50 + Math.random() * 80,
+        width: 60 + Math.random() * 40,
+        speed: 0.5 + Math.random() * 0.5
+      });
+    }
+    
+    // Utility functions
+    function getRandomDistance() {
+      return config.minObstacleDistance + 
+             Math.random() * (config.maxObstacleDistance - config.minObstacleDistance);
+    }
+    
+    function spawnObstacle() {
+      let type;
+      const rand = Math.random();
+      
+      // Difficulty scaling - introduce birds after score 500
+      if (gameState.score > 500 && rand < 0.3) {
+        type = obstacleTypes.bird;
+      } else if (rand < 0.5) {
+        type = obstacleTypes.cactus;
+      } else {
+        type = obstacleTypes.tallCactus;
+      }
+      
+      obstacles.push({
+        x: canvas.width + 50,
+        y: type === obstacleTypes.bird ? type.y : config.groundLevel,
+        type: type,
+        passed: false
+      });
+    }
+    
+    function checkCollision(a, b) {
+      const boundsA = a.getBounds ? a.getBounds() : a;
+      const boundsB = b.getBounds ? b.getBounds() : b;
+      
+      return !(
+        boundsA.x + boundsA.width < boundsB.x ||
+        boundsA.x > boundsB.x + boundsB.width ||
+        boundsA.y + boundsA.height < boundsB.y ||
+        boundsA.y > boundsB.y + boundsB.height
+      );
+    }
+    
+    function updateHighScore() {
+      if (gameState.score > gameState.highScore) {
+        gameState.highScore = gameState.score;
+        localStorage.setItem('highScore', gameState.highScore);
+        highScoreDisplay.textContent = `High Score: ${gameState.highScore}`;
+      }
+    }
+    
+    // Game functions
+    function startGame() {
+      gameState.isRunning = true;
+      gameState.score = 0;
+      gameState.speed = config.speed;
+      obstacles = [];
+      gameState.obstacleSpawnTimer = 0;
+      gameState.nextObstacleDistance = getRandomDistance();
+      
+      startScreen.style.display = 'none';
+      gameOverScreen.style.display = 'none';
+      
+      // Start game loop
+      requestAnimationFrame(gameLoop);
+    }
+    
+    function gameOver() {
+      gameState.isRunning = false;
+      updateHighScore();
+      
+      finalScoreDisplay.textContent = `Score: ${Math.floor(gameState.score)}`;
+      gameOverScreen.style.display = 'flex';
+    }
+    
+    function updateGame() {
+      if (!gameState.isRunning) return;
+      
+      // Update score
+      gameState.score += 0.1;
+      scoreDisplay.textContent = `Score: ${Math.floor(gameState.score)}`;
+      
+      // Increase speed as score increases
+      gameState.speed = Math.min(
+        config.maxSpeed, 
+        config.speed + gameState.score * config.acceleration
+      );
+      
+      // Update bunny
+      bunny.update();
+      
+      // Spawn obstacles
+      gameState.obstacleSpawnTimer += gameState.speed;
+      if (gameState.obstacleSpawnTimer >= gameState.nextObstacleDistance) {
+        spawnObstacle();
+        gameState.obstacleSpawnTimer = 0;
+        gameState.nextObstacleDistance = getRandomDistance();
+      }
+      
+      // Update obstacles
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obstacle = obstacles[i];
+        obstacle.x -= gameState.speed * obstacle.type.speedMultiplier;
+        
+        // Check if obstacle is passed for scoring
+        if (!obstacle.passed && obstacle.x < bunny.x) {
+          obstacle.passed = true;
+          gameState.score += 10; // Bonus for passing obstacle
+        }
+        
+        // Remove obstacles that are off-screen
+        if (obstacle.x < -100) {
+          obstacles.splice(i, 1);
+        }
+        
+        // Check collision
+        const obstacleHitbox = {
+          x: obstacle.x - obstacle.type.width / 2,
+          y: obstacle.y - obstacle.type.height,
+          width: obstacle.type.width,
+          height: obstacle.type.height
         };
+        
+        if (checkCollision(bunny, obstacleHitbox)) {
+          gameOver();
+        }
+      }
+      
+      // Update clouds
+      for (const cloud of clouds) {
+        cloud.x -= cloud.speed;
+        
+        // Wrap clouds around
+        if (cloud.x + cloud.width < 0) {
+          cloud.x = canvas.width + cloud.width;
+          cloud.y = 50 + Math.random() * 80;
+        }
+      }
+    }
+    
+    function drawGame() {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw sky
+      ctx.fillStyle = '#E3F2FD';
+      ctx.fillRect(0, 0, canvas.width, ground.y);
+      
+      // Draw clouds
+      ctx.fillStyle = 'white';
+      for (const cloud of clouds) {
+        ctx.beginPath();
+        ctx.arc(cloud.x, cloud.y, cloud.width / 3, 0, Math.PI * 2);
+        ctx.arc(cloud.x + cloud.width / 3, cloud.y - cloud.width / 6, cloud.width / 4, 0, Math.PI * 2);
+        ctx.arc(cloud.x + cloud.width / 1.5, cloud.y, cloud.width / 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // Draw ground
+      ground.draw();
+      
+      // Draw obstacles
+      for (const obstacle of obstacles) {
+        obstacle.type.draw(obstacle.x, obstacle.y);
+      }
+      
+      // Draw bunny
+      bunny.draw();
+      
+      // Draw score
+      ctx.fillStyle = 'black';
+      ctx.font = '20px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText(`${Math.floor(gameState.score)}`, canvas.width - 20, 30);
+    }
+    
+    function gameLoop(timestamp) {
+      updateGame();
+      drawGame();
+      
+      if (gameState.isRunning) {
+        requestAnimationFrame(gameLoop);
+      }
+    }
+    
+    // Music player
+    const musicPlayer = {
+      currentSong: null,
+      audioElement: null,
+      songs: {
+        song1: {
+          id: 'n-Xp75yJ6xc',
+          title: 'Take On Me'
+        },
+        song2: {
+          id: 'Sg-h4jpXsPI',
+          title: 'Let\'s Groove'
+        },
+        song3: {
+          id: 'UNk6LTZYokk',
+          title: 'Smooth Operator'
+        },
+        song4: {
+          id: 'n9DmdAwUbxc',
+          title: 'What You Won\'t Do for Love'
+        },
+        song5: {
+          id: 'H_6JU6vJMS0',
+          title: 'My Ordinary Life'
+        }
+      },
+      
+      init() {
+        // Create YouTube API script
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Game objects
-        let bunnies = [];
-        let carrots = [];
-        let obstacles = [];
-        let powerups = [];
-        let holes = [];
-        let trees = [];
-
-        // Controls
-        const keys = {
-            w: false,
-            a: false,
-            s: false,
-            d: false
+        // YouTube API will call onYouTubeIframeAPIReady when ready
+        window.onYouTubeIframeAPIReady = () => {
+          this.setupEventListeners();
         };
-
-        // Event listeners
-        document.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'w') keys.w = true;
-            if (e.key.toLowerCase() === 'a') keys.a = true;
-            if (e.key.toLowerCase() === 's') keys.s = true;
-            if (e.key.toLowerCase() === 'd') keys.d = true;
-            if (e.key === ' ' && gameState === 'intro') startGame();
+      },
+      
+      setupEventListeners() {
+        // Add event listeners for music buttons
+        document.getElementById('song1').addEventListener('click', () => this.playSong('song1'));
+        document.getElementById('song2').addEventListener('click', () => this.playSong('song2'));
+        document.getElementById('song3').addEventListener('click', () => this.playSong('song3'));
+        document.getElementById('song4').addEventListener('click', () => this.playSong('song4'));
+        document.getElementById('song5').addEventListener('click', () => this.playSong('song5'));
+        document.getElementById('stop-music').addEventListener('click', () => this.stopMusic());
+        
+        // Volume control
+        const volumeSlider = document.getElementById('volume-slider');
+        volumeSlider.addEventListener('input', () => {
+          if (this.player) {
+            this.player.setVolume(volumeSlider.value);
+          }
         });
-
-        document.addEventListener('keyup', (e) => {
-            if (e.key.toLowerCase() === 'w') keys.w = false;
-            if (e.key.toLowerCase() === 'a') keys.a = false;
-            if (e.key.toLowerCase() === 's') keys.s = false;
-            if (e.key.toLowerCase() === 'd') keys.d = false;
+      },
+      
+      playSong(songKey) {
+        const song = this.songs[songKey];
+        
+        // Reset active class on all buttons
+        document.querySelectorAll('.music-button').forEach(btn => {
+          btn.classList.remove('active');
         });
-
-        nextLevelBtn.addEventListener('click', nextLevel);
-        restartLevelBtn.addEventListener('click', restartLevel);
-
-        // Initialize game
-        function initLevel() {
-            // Clear previous level objects
-            bunnies = [];
-            carrots = [];
-            obstacles = [];
-            powerups = [];
-            holes = [];
-            trees = [];
-            stork.poops = [];
-            
-            // Set up level based on level number
-            if (level === 1) {
-                // Intro level - backyard scene
-                gameState = 'intro';
-                player.x = 100;
-                player.y = 300;
-                player.carryingBunny = false;
-                stork.x = 600;
-                stork.y = 300;
-                stork.state = 'reading';
-                stork.speed = 0;
-                
-                // Add a bunny to kidnap
-                bunnies.push({ x: 500, y: 320, width: 30, height: 30, color: 'brown' });
-            } else {
-                // Running levels
-                gameState = 'running';
-                player.x = 50;
-                player.y = 300;
-                player.carryingBunny = false;
-                player.speed = 2 + (level * 0.5);
-                stork.x = -100;
-                stork.y = 300;
-                stork.state = 'chasing';
-                stork.speed = 1 + (level * 0.3);
-                stork.stateTimer = 0;
-                
-                // Add level elements
-                for (let i = 0; i < 5 + (level * 2); i++) {
-                    bunnies.push({
-                        x: 200 + Math.random() * 2000,
-                        y: 300,
-                        width: 30,
-                        height: 30,
-                        color: Math.random() > 0.5 ? 'brown' : 'grey'
-                    });
-                    
-                    carrots.push({
-                        x: 300 + Math.random() * 2000,
-                        y: 310,
-                        width: 20,
-                        height: 20
-                    });
-                    
-                    if (i % 2 === 0) {
-                        holes.push({
-                            x: 400 + Math.random() * 2000,
-                            y: 330,
-                            width: 60,
-                            height: 40
-                        });
-                    }
-                    
-                    if (i % 3 === 0) {
-                        trees.push({
-                            x: 500 + Math.random() * 2000,
-                            y: 280,
-                            width: 40,
-                            height: 120,
-                            trunkHeight: 40
-                        });
-                    }
-                }
-                
-                // Add powerups starting from level 3
-                if (level >= 3) {
-                    for (let i = 0; i < 2 + (level - 2); i++) {
-                        powerups.push({
-                            x: 600 + Math.random() * 2000,
-                            y: 310,
-                            width: 30,
-                            height: 30,
-                            type: Math.random() > 0.5 ? 'shirt' : 'bottle'
-                        });
-                    }
-                }
-            }
-            
-            startTime = Date.now();
-            currentTime = 0;
+        
+        // Set active class on selected button
+        document.getElementById(songKey).classList.add('active');
+        
+        // If player exists and we're changing songs, destroy old player
+        if (this.player) {
+          this.player.destroy();
         }
-
-        function startGame() {
-            gameState = 'running';
-            instructions.style.display = 'none';
-            bgMusic.play();
-            startTime = Date.now();
-            requestAnimationFrame(gameLoop);
+        
+        // Hide player visually but keep audio playing
+        const playerDiv = document.createElement('div');
+        playerDiv.id = 'youtube-player';
+        playerDiv.style.position = 'absolute';
+        playerDiv.style.left = '-9999px';
+        playerDiv.style.top = '-9999px';
+        document.body.appendChild(playerDiv);
+        
+        // Create new YouTube player
+        this.player = new YT.Player('youtube-player', {
+          height: '0',
+          width: '0',
+          videoId: song.id,
+          playerVars: {
+            'autoplay': 1,
+            'controls': 0,
+            'showinfo': 0,
+            'rel': 0,
+            'iv_load_policy': 3
+          },
+          events: {
+            'onReady': (event) => {
+              // Set volume from slider
+              const volumeSlider = document.getElementById('volume-slider');
+              event.target.setVolume(volumeSlider.value);
+              event.target.playVideo();
+            }
+          }
+        });
+        
+        this.currentSong = songKey;
+      },
+      
+      stopMusic() {
+        if (this.player) {
+          this.player.stopVideo();
+          this.player.destroy();
+          this.player = null;
         }
+        
+        // Clear active class on all buttons
+        document.querySelectorAll('.music-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        this.currentSong = null;
+      }
+    };
+    
+    // Initialize music player
+    musicPlayer.init();
 
-        function nextLevel() {
-            level++;
-            levelEnd.style.display = 'none';
-            initLevel();
-            requestAnimationFrame(gameLoop);
-        }
-
-        function restartLevel() {
-            levelEnd.style.display = 'none';
-            initLevel();
-            requestAnimationFrame(gameLoop);
-        }
-
-        function gameLoop() {
-            update();
-            render();
-            
-            if (gameState !== 'levelEnd') {
-                requestAnimationFrame(gameLoop);
-            }
-        }
-
-        function update() {
-            // Update time
-            currentTime = Math.floor((Date.now() - startTime) / 1000);
-            timeDisplay.textContent = currentTime;
-            
-            // Player movement
-            if (keys.a) {
-                player.x -= player.speed;
-                player.direction = 'left';
-            }
-            if (keys.d) {
-                player.x += player.speed;
-                player.direction = 'right';
-            }
-            
-            // Jumping
-            if (keys.w && !player.jumping) {
-                player.velocityY = -12;
-                player.jumping = true;
-            }
-            
-            // Apply gravity
-            player.velocityY += 0.8;
-            player.y += player.velocityY;
-            
-            // Ground collision
-            if (player.y > 300) {
-                player.y = 300;
-                player.velocityY = 0;
-                player.jumping = false;
-            }
-            
-            // Update stork behavior based on game state
-            if (gameState === 'intro') {
-                // Intro scene - stork reads newspaper
-                if (player.carryingBunny) {
-                    // Player has bunny - stork notices and starts chasing
-                    stork.state = 'chasing';
-                    stork.speed = 2;
-                }
-            } else {
-                // Running levels
-                stork.stateTimer += 1/60; // Assuming 60fps
-                
-                if (stork.state === 'chasing') {
-                    stork.x += stork.speed;
-                    
-                    if (stork.stateTimer >= 8) {
-                        stork.state = 'flying';
-                        stork.stateTimer = 0;
-                        stork.y = 150; // Fly up
-                    }
-                } else if (stork.state === 'flying') {
-                    stork.x += stork.speed * 1.5;
-                    
-                    if (stork.stateTimer >= 1) {
-                        stork.state = 'pooping';
-                        stork.stateTimer = 0;
-                        // Create poop
-                        stork.poops.push({
-                            x: stork.x,
-                            y: stork.y + 40,
-                            width: 20,
-                            height: 20,
-                            velocityY: 0
-                        });
-                    }
-                } else if (stork.state === 'pooping') {
-                    stork.x += stork.speed * 1.5;
-                    
-                    // Update poops
-                    for (let i = 0; i < stork.poops.length; i++) {
-                        stork.poops[i].velocityY += 0.5;
-                        stork.poops[i].y += stork.poops[i].velocityY;
-                        
-                        // Remove poops that hit the ground
-                        if (stork.poops[i].y > 320) {
-                            stork.poops.splice(i, 1);
-                            i--;
-                        }
-                    }
-                    
-                    if (stork.stateTimer >= 3) {
-                        stork.state = 'chasing';
-                        stork.stateTimer = 0;
-                        stork.y = 300; // Land
-                    }
-                }
-            }
-            
-            // Check collisions with bunnies
-            for (let i = 0; i < bunnies.length; i++) {
-                if (checkCollision(player, bunnies[i])) {
-                    if (gameState === 'intro') {
-                        player.carryingBunny = true;
-                        bunnies.splice(i, 1);
-                        // Show "RUN!" message
-                        instructions.innerHTML = '<h2>RUN!</h2><p>The stork is chasing you!</p>';
-                    } else {
-                        bunniesCollected++;
-                        bunnyCount.textContent = bunniesCollected;
-                        bunnies.splice(i, 1);
-                        i--;
-                    }
-                }
-            }
-            
-            // Check collisions with carrots
-            for (let i = 0; i < carrots.length; i++) {
-                if (checkCollision(player, carrots[i])) {
-                    carrotsCollected++;
-                    carrotCount.textContent = carrotsCollected;
-                    carrots.splice(i, 1);
-                    i--;
-                }
-            }
-            
-            // Check collisions with powerups
-            for (let i = 0; i < powerups.length; i++) {
-                if (checkCollision(player, powerups[i])) {
-                    // Apply speed boost
-                    player.speed += 1;
-                    setTimeout(() => {
-                        player.speed -= 1;
-                    }, 5000);
-                    powerups.splice(i, 1);
-                    i--;
-                }
-            }
-            
-            // Check collisions with poops
-            for (let i = 0; i < stork.poops.length; i++) {
-                if (checkCollision(player, stork.poops[i])) {
-                    health--;
-                    updateHearts();
-                    stork.poops.splice(i, 1);
-                    i--;
-                    
-                    if (health <= 0) {
-                        gameOver();
-                    }
-                }
-            }
-            
-            // Check collisions with holes
-            for (let i = 0; i < holes.length; i++) {
-                if (checkCollision(player, holes[i]) && player.y + player.height > holes[i].y) {
-                    health--;
-                    updateHearts();
-                    // Bounce player out of hole
-                    player.y = holes[i].y - player.height;
-                    player.velocityY = -5;
-                    
-                    if (health <= 0) {
-                        gameOver();
-                    }
-                }
-            }
-            
-            // Check collisions with trees (need to duck)
-            for (let i = 0; i < trees.length; i++) {
-                if (checkCollision(player, trees[i]) && !keys.s) {
-                    health--;
-                    updateHearts();
-                    
-                    if (health <= 0) {
-                        gameOver();
-                    }
-                }
-            }
-            
-            // Check level completion (for running levels)
-            if (gameState === 'running' && bunnies.length === 0 && carrots.length === 0) {
-                levelComplete();
-            }
-        }
-
-        function render() {
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw background
-            drawBackground();
-            
-            // Draw game objects based on level
-            if (gameState === 'intro') {
-                // Draw backyard scene
-                drawBackyard();
-                
-                // Draw stork reading newspaper
-                drawStork(stork.x, stork.y, 'reading');
-                
-                // Draw bunny
-                if (bunnies.length > 0) {
-                    drawBunny(bunnies[0].x, bunnies[0].y, bunnies[0].color);
-                }
-            } else {
-                // Draw running level
-                
-                // Draw holes
-                for (const hole of holes) {
-                    drawHole(hole.x, hole.y, hole.width, hole.height);
-                }
-                
-                // Draw trees
-                for (const tree of trees) {
-                    drawTree(tree.x, tree.y, tree.width, tree.height, tree.trunkHeight);
-                }
-                
-                // Draw bunnies
-                for (const bunny of bunnies) {
-                    drawBunny(bunny.x, bunny.y, bunny.color);
-                }
-                
-                // Draw carrots
-                for (const carrot of carrots) {
-                    drawCarrot(carrot.x, carrot.y, carrot.width, carrot.height);
-                }
-                
-                // Draw powerups
-                for (const powerup of powerups) {
-                    drawPowerup(powerup.x, powerup.y, powerup.type);
-                }
-                
-                // Draw stork based on state
-                if (stork.state === 'chasing') {
-                    drawStork(stork.x, stork.y, 'running');
-                } else if (stork.state === 'flying' || stork.state === 'pooping') {
-                    drawStork(stork.x, stork.y, 'flying');
-                }
-                
-                // Draw poops
-                for (const poop of stork.poops) {
-                    drawPoop(poop.x, poop.y, poop.width, poop.height);
-                }
-            }
-            
-            // Draw player
-            drawPlayer(player.x, player.y, player.direction, player.jumping, keys.s);
-            
-            // If player is carrying bunny in intro, draw bunny in arms
-            if (gameState === 'intro' && player.carryingBunny) {
-                drawBunny(player.x + (player.direction === 'right' ? 20 : -10), player.y - 10, 'brown');
-            }
-        }
-
-        // Drawing functions (replace with actual sprite rendering)
-        function drawBackground() {
-            // Simple gradient background for forest
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#87CEEB'); // Sky blue
-            gradient.addColorStop(0.7, '#228B22'); // Forest green
-            gradient.addColorStop(1, '#8B4513'); // Ground brown
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw some simple trees in background
-            ctx.fillStyle = '#013220'; // Dark green
-            for (let i = 0; i < 10; i++) {
-                const x = (i * 150) % (canvas.width + 300) - 150;
-                ctx.beginPath();
-                ctx.moveTo(x + 30, 300);
-                ctx.lineTo(x, 150);
-                ctx.lineTo(x + 60, 150);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Trunk
-                ctx.fillStyle = '#8B4513';
-                ctx.fillRect(x + 25, 300, 10, 30);
-                ctx.fillStyle = '#013220';
-            }
-        }
-
-        function drawBackyard() {
-            // Simple yard with fence
-            ctx.fillStyle = '#90EE90'; // Light green grass
-            ctx.fillRect(0, 300, canvas.width, 100);
-            
-            // Fence
-            ctx.fillStyle = '#8B4513';
-            for (let i = 0; i < canvas.width; i += 30) {
-                ctx.fillRect(i, 280, 5, 20);
-            }
-            
-            // House in background
-            ctx.fillStyle = '#FF6347'; // Tomato color
-            ctx.fillRect(400, 200, 150, 100);
-            
-            // Roof
-            ctx.fillStyle = '#8B0000';
-            ctx.beginPath();
-            ctx.moveTo(390, 200);
-            ctx.lineTo(475, 150);
-            ctx.lineTo(560, 200);
-            ctx.closePath();
-            ctx.fill();
-        }
-
-        function drawPlayer(x, y, direction, jumping, ducking) {
-            ctx.save();
-            if (direction === 'left') {
-                ctx.translate(x + 40, 0);
-                ctx.scale(-1, 1);
-                x = 0;
-            }
-            
-            // Body
-            ctx.fillStyle = '#FF69B4'; // Pink
-            const height = ducking ? 40 : 60;
-            ctx.fillRect(x, y - height, 40, height);
-            
-            // Head
-            ctx.fillStyle = '#FFD700'; // Gold (hair)
-            ctx.beginPath();
-            ctx.arc(x + 20, y - height - 15, 20, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Face
-            ctx.fillStyle = '#FFE4B5'; // Moccasin (skin)
-            ctx.beginPath();
-            ctx.arc(x + 20, y - height - 15, 15, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Eyes
-            ctx.fillStyle = '#000';
-            ctx.beginPath();
-            ctx.arc(x + 15, y - height - 20, 3, 0, Math.PI * 2);
-            ctx.arc(x + 25, y - height - 20, 3, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Mouth
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(x + 20, y - height - 10, 5, 0, Math.PI);
-            ctx.stroke();
-            
-            ctx.restore();
-        }
-
-        function drawStork(x, y, state) {
-            ctx.save();
-            
-            if (state === 'reading') {
-                // Body
-                ctx.fillStyle = '#FFF';
-                ctx.beginPath();
-                ctx.ellipse(x, y, 30, 20, 0, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Head
-                ctx.fillStyle = '#FFF';
-                ctx.beginPath();
-                ctx.arc(x + 30, y - 20, 15, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Beak
-                ctx.fillStyle = '#FFA500';
-                ctx.beginPath();
-                ctx.moveTo(x + 45, y - 20);
-                ctx.lineTo(x + 60, y - 15);
-                ctx.lineTo(x + 45, y - 10);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Eyes
-                ctx.fillStyle = '#000';
-                ctx.beginPath();
-                ctx.arc(x + 35, y - 25, 3, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Newspaper
-                ctx.fillStyle = '#FFF';
-                ctx.fillRect(x - 10, y - 40, 40, 30);
-                ctx.strokeStyle = '#000';
-                ctx.strokeRect(x - 10, y - 40, 40, 30);
-                
-                // Newspaper text
-                ctx.fillStyle = '#000';
-                ctx.font = '8px Arial';
-                ctx.fillText('NEWS', x, y - 25);
-            } else if (state === 'running') {
-                // Running animation
-                ctx.fillStyle = '#FFF';
-                ctx.beginPath();
-                ctx.ellipse(x, y, 30, 20, 0, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Legs
-                ctx.strokeStyle = '#FFA500';
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.moveTo(x - 10, y + 20);
-                ctx.lineTo(x - 15, y + 40);
-                ctx.moveTo(x + 10, y + 20);
-                ctx.lineTo(x + 15, y + 40);
-                ctx.stroke();
-                
-                // Head
-                ctx.fillStyle = '#FFF';
-                ctx.beginPath();
-                ctx.arc(x + 30, y - 10, 15, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Beak
-                ctx.fillStyle = '#FFA500';
-                ctx.beginPath();
-                ctx.moveTo(x + 45, y - 10);
-                ctx.lineTo(x + 60, y - 5);
-                ctx.lineTo(x + 45, y);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Angry eyes
-                ctx.fillStyle = '#000';
-                ctx.beginPath();
-                ctx.moveTo(x + 25, y - 15);
-                ctx.lineTo(x + 30, y - 12);
-                ctx.lineTo(x + 25, y - 9);
-                ctx.fill();
-                
-                ctx.beginPath();
-                ctx.moveTo(x + 35, y - 15);
-                ctx.lineTo(x + 40, y - 12);
-                ctx.lineTo(x + 35, y - 9);
-                ctx.fill();
-            } else if (state === 'flying') {
-                // Flying animation
-                ctx.fillStyle = '#FFF';
-                ctx.beginPath();
-                ctx.ellipse(x, y, 30, 15, 0, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Wings
-                ctx.fillStyle = '#FFF';
-                ctx.beginPath();
-                ctx.ellipse(x - 20, y, 40, 15, Math.PI/4, 0, Math.PI * 2);
-                ctx.ellipse(x + 20, y, 40, 15, -Math.PI/4, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Head
-                ctx.fillStyle = '#FFF';
-                ctx.beginPath();
-                ctx.arc(x + 30, y - 10, 15, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Beak
-                ctx.fillStyle = '#FFA500';
-                ctx.beginPath();
-                ctx.moveTo(x + 45, y - 10);
-                ctx.lineTo(x + 60, y - 5);
-                ctx.lineTo(x + 45, y);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Angry eyes
-                ctx.fillStyle = '#000';
-                ctx.beginPath();
-                ctx.moveTo(x + 25, y - 15);
-                ctx.lineTo(x + 30, y - 12);
-                ctx.lineTo(x + 25, y - 9);
-                ctx.fill();
-                
-                ctx.beginPath();
-                ctx.moveTo(x + 35, y - 15);
-                ctx.lineTo(x + 40, y - 12);
-                ctx.lineTo(x + 35, y - 9);
-                ctx.fill();
-            }
-            
-            ctx.restore();
-        }
-
-        function drawBunny(x, y, color) {
-            ctx.fillStyle = color === 'brown' ? '#A0522D' : '#808080';
-            
-            // Body
-            ctx.beginPath();
-            ctx.ellipse(x, y, 15, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Head
-            ctx.beginPath();
-            ctx.arc(x, y - 15, 10, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Ears
-            ctx.beginPath();
-            ctx.moveTo(x - 5, y - 25);
-            ctx.lineTo(x - 8, y - 40);
-            ctx.lineTo(x - 2, y - 25);
-            ctx.closePath();
-            ctx.fill();
-            
-            ctx.beginPath();
-            ctx.moveTo(x + 5, y - 25);
-            ctx.lineTo(x + 8, y - 40);
-            ctx.lineTo(x + 2, y - 25);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Eyes
-            ctx.fillStyle = '#000';
-            ctx.beginPath();
-            ctx.arc(x - 5, y - 18, 2, 0, Math.PI * 2);
-            ctx.arc(x + 5, y - 18, 2, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Nose
-            ctx.beginPath();
-            ctx.arc(x, y - 15, 1.5, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        function drawCarrot(x, y, width, height) {
-            ctx.fillStyle = '#FFA500'; // Orange
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + width, y - height/2);
-            ctx.lineTo(x + width, y + height/2);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Green top
-            ctx.fillStyle = '#32CD32';
-            ctx.beginPath();
-            ctx.moveTo(x + width, y - height/2);
-            ctx.lineTo(x + width + 5, y - height);
-            ctx.lineTo(x + width + 10, y - height/3);
-            ctx.lineTo(x + width, y + height/2);
-            ctx.closePath();
-            ctx.fill();
-        }
-
-        function drawPoop(x, y, width, height) {
-            ctx.fillStyle = '#8B4513'; // Brown
-            ctx.beginPath();
-            ctx.ellipse(x, y, width/2, height/2, 0, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        function drawHole(x, y, width, height) {
-            ctx.fillStyle = '#000';
-            ctx.fillRect(x, y, width, height);
-        }
-
-        function drawTree(x, y, width, height, trunkHeight) {
-            // Trunk
-            ctx.fillStyle = '#8B4513';
-            ctx.fillRect(x, y, width, trunkHeight);
-            
-            // Leaves
-            ctx.fillStyle = '#013220';
-            ctx.beginPath();
-            ctx.moveTo(x - width, y);
-            ctx.lineTo(x + width*2, y);
-            ctx.lineTo(x + width/2, y - height);
-            ctx.closePath();
-            ctx.fill();
-        }
-
-        function drawPowerup(x, y, type) {
-            ctx.fillStyle = '#9370DB'; // Purple
-            
-            if (type === 'shirt') {
-                // T-shirt shape
-                ctx.fillRect(x, y, 30, 20);
-                ctx.fillRect(x - 5, y + 5, 10, 15);
-                ctx.fillRect(x + 25, y + 5, 10, 15);
-            } else if (type === 'bottle') {
-                // Bottle shape
-                ctx.fillRect(x + 10, y, 10, 30);
-                ctx.beginPath();
-                ctx.ellipse(x + 15, y, 10, 5, 0, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            
-            // Glitter effect
-            ctx.fillStyle = '#FFF';
-            for (let i = 0; i < 3; i++) {
-                ctx.beginPath();
-                ctx.arc(x + 5 + Math.random() * 20, y + 5 + Math.random() * 20, 1 + Math.random() * 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function checkCollision(obj1, obj2) {
-            return obj1.x < obj2.x + obj2.width &&
-                   obj1.x + obj1.width > obj2.x &&
-                   obj1.y < obj2.y + obj2.height &&
-                   obj1.y + obj1.height > obj2.y;
-        }
-
-        function updateHearts() {
-            hearts.textContent = '';
-            for (let i = 0; i < health; i++) {
-                hearts.textContent += '❤️';
-            }
-        }
-
-        function levelComplete() {
-            gameState = 'levelEnd';
-            endTime.textContent = currentTime;
-            endBunnies.textContent = bunniesCollected;
-            endCarrots.textContent = carrotsCollected;
-            levelEnd.style.display = 'block';
-        }
-
-        function gameOver() {
-            levelEnd.innerHTML = '<h2>Game Over</h2>' + 
-                                 `<p>You collected ${bunniesCollected} bunnies and ${carrotsCollected} carrots!</p>` +
-                                 '<button id="restart-level">Try Again</button>';
-            levelEnd.style.display = 'block';
-            document.getElementById('restart-level').addEventListener('click', restartLevel);
-        }
-
-        // Start the game
-        initLevel();
-    </script>
+    // Event listeners
+    startButton.addEventListener('click', startGame);
+    restartButton.addEventListener('click', startGame);
+    
+    window.addEventListener('keydown', (e) => {
+      if ((e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') && gameState.isRunning) {
+        e.preventDefault(); // Prevent page scrolling
+        bunny.jump();
+      } else if ((e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') && !gameState.isRunning) {
+        e.preventDefault();
+        startGame();
+      }
+    });
+    
+    // Mobile touch controls
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (gameState.isRunning) {
+        bunny.jump();
+      } else {
+        startGame();
+      }
+    });
+    
+    // Make canvas responsive
+    function resizeCanvas() {
+      const container = document.getElementById('game-container');
+      const containerWidth = container.clientWidth;
+      
+      if (containerWidth < 800) {
+        const ratio = canvas.height / canvas.width;
+        canvas.width = containerWidth - 20; // Padding
+        canvas.height = canvas.width * ratio;
+        config.groundLevel = canvas.height - 50;
+        bunny.y = config.groundLevel;
+      }
+    }
+    
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas(); // Initial resize
+    
+    // Draw initial screen
+    drawGame();
+  </script>
 </body>
 </html>
