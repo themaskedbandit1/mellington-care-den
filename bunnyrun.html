@@ -98,6 +98,83 @@
       color: #333;
     }
     
+    /* Mode toggle */
+    .mode-toggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 11;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+      margin-left: 10px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #87CEEB;
+      transition: .4s;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 24px;
+      width: 24px;
+      left: 4px;
+      bottom: 3px;
+      background-color: #FFD700;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: #383864;
+    }
+    
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(28px);
+      background-color: #FFFFFF;
+    }
+    
+    .toggle-sun {
+      color: #FF9800;
+      font-size: 14px;
+    }
+    
+    .toggle-moon {
+      color: white;
+      font-size: 14px;
+    }
+    
+    /* Night mode styles */
+    body.night-mode {
+      background-color: #262626;
+    }
+    
     /* Music player styles */
     .music-container {
       margin-top: 10px;
@@ -107,6 +184,10 @@
       align-items: center;
       background-color: rgba(255, 255, 255, 0.8);
       border-radius: 8px;
+    }
+    
+    .night-mode .music-container {
+      background-color: rgba(40, 40, 60, 0.8);
     }
     
     .music-title {
@@ -177,6 +258,17 @@
   </style>
 </head>
 <body>
+  <div class="mode-toggle">
+    <span id="mode-label">Day Mode</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="night-toggle">
+      <span class="toggle-slider">
+        <span class="toggle-sun">☀️</span>
+        <span class="toggle-moon">🌙</span>
+      </span>
+    </label>
+  </div>
+
   <div id="game-container">
     <div class="game-stats">
       <div id="score">Score: 0</div>
@@ -185,13 +277,33 @@
     
     <canvas id="game-canvas" width="800" height="300"></canvas>
     
-    <div class="music-container">
+    <div class="music-container" id="day-music">
       <div class="music-title">Choose Your Music</div>
       <div class="music-buttons">
         <button id="song1" class="music-button">Take On Me</button>
         <button id="song2" class="music-button">Let's Groove</button>
         <button id="song3" class="music-button">Smooth Operator</button>
+        <button id="song4" class="music-button">What You Won't Do for Love</button>
+        <button id="song5" class="music-button">My Ordinary Life</button>
         <button id="stop-music" class="music-button">Stop Music</button>
+      </div>
+      <div class="music-controls">
+        <div class="volume-control">
+          <label for="volume-slider">Volume:</label>
+          <input type="range" id="volume-slider" min="0" max="100" value="50">
+        </div>
+      </div>
+    </div>
+    
+    <div class="music-container" id="night-music" style="display: none;">
+      <div class="music-title">Choose Your Night Music</div>
+      <div class="music-buttons">
+        <button id="night-song1" class="music-button">RUN! (ODETARI)</button>
+        <button id="night-song2" class="music-button">MUTT (Leon Thomas)</button>
+        <button id="night-song3" class="music-button">Give It To Me (Timbaland)</button>
+        <button id="night-song4" class="music-button">Push Up (Creeds)</button>
+        <button id="night-song5" class="music-button">Jupiter (The Marías)</button>
+        <button id="night-stop-music" class="music-button">Stop Music</button>
       </div>
       <div class="music-controls">
         <div class="volume-control">
@@ -568,8 +680,12 @@
         config.speed + gameState.score * config.acceleration
       );
       
-      // Update bunny
-      bunny.update();
+      // Update character based on mode
+      if (isNightMode) {
+        coyote.update();
+      } else {
+        bunny.update();
+      }
       
       // Spawn obstacles
       gameState.obstacleSpawnTimer += gameState.speed;
@@ -585,7 +701,7 @@
         obstacle.x -= gameState.speed * obstacle.type.speedMultiplier;
         
         // Check if obstacle is passed for scoring
-        if (!obstacle.passed && obstacle.x < bunny.x) {
+        if (!obstacle.passed && obstacle.x < (isNightMode ? coyote.x : bunny.x)) {
           obstacle.passed = true;
           gameState.score += 10; // Bonus for passing obstacle
         }
@@ -603,8 +719,15 @@
           height: obstacle.type.height
         };
         
-        if (checkCollision(bunny, obstacleHitbox)) {
-          gameOver();
+        // Check collision with the appropriate character
+        if (isNightMode) {
+          if (checkCollision(coyote, obstacleHitbox)) {
+            gameOver();
+          }
+        } else {
+          if (checkCollision(bunny, obstacleHitbox)) {
+            gameOver();
+          }
         }
       }
       
@@ -624,35 +747,120 @@
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Draw sky
-      ctx.fillStyle = '#E3F2FD';
-      ctx.fillRect(0, 0, canvas.width, ground.y);
-      
-      // Draw clouds
-      ctx.fillStyle = 'white';
-      for (const cloud of clouds) {
+      if (isNightMode) {
+        // Draw night sky (dark with stars)
+        const nightSkyGradient = ctx.createLinearGradient(0, 0, 0, ground.y);
+        nightSkyGradient.addColorStop(0, '#0A0A2A'); // Deep blue at top
+        nightSkyGradient.addColorStop(1, '#383864'); // Lighter blue near horizon
+        
+        ctx.fillStyle = nightSkyGradient;
+        ctx.fillRect(0, 0, canvas.width, ground.y);
+        
+        // Draw stars
+        ctx.fillStyle = 'white';
+        for (let i = 0; i < 50; i++) {
+          const x = (Math.sin(i * 567) * 0.5 + 0.5) * canvas.width;
+          const y = (Math.cos(i * 789) * 0.5 + 0.5) * ground.y * 0.8;
+          const size = Math.abs(Math.sin(i * 123) * 1.5) + 1; // Ensure positive size with Math.abs()
+          
+          // Make stars twinkle
+          const twinkle = Math.sin(Date.now() * 0.001 + i) * 0.5 + 0.5;
+          
+          ctx.globalAlpha = 0.5 + twinkle * 0.5;
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
+        
+        // Draw moon
+        ctx.fillStyle = '#FFFFFF';
         ctx.beginPath();
-        ctx.arc(cloud.x, cloud.y, cloud.width / 3, 0, Math.PI * 2);
-        ctx.arc(cloud.x + cloud.width / 3, cloud.y - cloud.width / 6, cloud.width / 4, 0, Math.PI * 2);
-        ctx.arc(cloud.x + cloud.width / 1.5, cloud.y, cloud.width / 3.5, 0, Math.PI * 2);
+        ctx.arc(canvas.width - 50, 50, 30, 0, Math.PI * 2);
         ctx.fill();
+        
+        // Moon craters
+        ctx.fillStyle = '#E1E1E1';
+        ctx.beginPath();
+        ctx.arc(canvas.width - 60, 40, 8, 0, Math.PI * 2);
+        ctx.arc(canvas.width - 40, 60, 5, 0, Math.PI * 2);
+        ctx.arc(canvas.width - 55, 65, 7, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Draw day sky
+        ctx.fillStyle = '#E3F2FD';
+        ctx.fillRect(0, 0, canvas.width, ground.y);
+        
+        // Draw clouds
+        ctx.fillStyle = 'white';
+        for (const cloud of clouds) {
+          ctx.beginPath();
+          ctx.arc(cloud.x, cloud.y, cloud.width / 3, 0, Math.PI * 2);
+          ctx.arc(cloud.x + cloud.width / 3, cloud.y - cloud.width / 6, cloud.width / 4, 0, Math.PI * 2);
+          ctx.arc(cloud.x + cloud.width / 1.5, cloud.y, cloud.width / 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
       
-      // Draw ground
-      ground.draw();
+      // Draw ground with appropriate color based on mode
+      if (isNightMode) {
+        // Night mode ground
+        ctx.fillStyle = '#3C3C3C'; // Dark gray
+        ctx.fillRect(0, ground.y, canvas.width, canvas.height - ground.y);
+        
+        // Ground texture
+        ctx.strokeStyle = '#505050';
+        ctx.beginPath();
+        ctx.moveTo(0, ground.y + 5);
+        ctx.lineTo(canvas.width, ground.y + 5);
+        ctx.stroke();
+        
+        // Small rocks with glow
+        ctx.fillStyle = '#8F8F8F';
+        for (let i = 0; i < 20; i++) {
+          const x = (i * 100 + gameState.score * 0.5) % canvas.width;
+          ctx.beginPath();
+          ctx.arc(x, ground.y - 2, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        // Day mode ground
+        ground.draw();
+      }
       
-      // Draw obstacles
+      // Draw obstacles based on mode
       for (const obstacle of obstacles) {
-        obstacle.type.draw(obstacle.x, obstacle.y);
+        if (isNightMode) {
+          // Use night obstacle types for drawing in night mode
+          const nightType = nightObstacleTypes[obstacle.type.constructor.name.toLowerCase()];
+          if (nightType) {
+            nightType.draw(obstacle.x, obstacle.y);
+          } else {
+            // Fallback to regular obstacle if no night version found
+            obstacle.type.draw(obstacle.x, obstacle.y);
+          }
+        } else {
+          obstacle.type.draw(obstacle.x, obstacle.y);
+        }
       }
       
-      // Draw bunny
-      bunny.draw();
+      // Draw character based on mode
+      if (isNightMode) {
+        coyote.draw();
+      } else {
+        bunny.draw();
+      }
       
-      // Draw score
-      ctx.fillStyle = 'black';
+      // Draw score with appropriate color based on mode
       ctx.font = '20px Arial';
       ctx.textAlign = 'right';
+      
+      if (isNightMode) {
+        ctx.fillStyle = '#FFFFFF'; // White for night mode
+      } else {
+        ctx.fillStyle = 'black';
+      }
+      
       ctx.fillText(`${Math.floor(gameState.score)}`, canvas.width - 20, 30);
     }
     
@@ -665,11 +873,257 @@
       }
     }
     
+    // Game mode
+    let isNightMode = false;
+    const nightModeToggle = document.getElementById('night-toggle');
+    const modeLabel = document.getElementById('mode-label');
+    const dayMusic = document.getElementById('day-music');
+    const nightMusic = document.getElementById('night-music');
+    const gameTitle = document.querySelector('#start-screen h1');
+    const instructions = document.querySelector('#start-screen .instructions');
+    
+    // Coyote object for night mode
+    const coyote = {
+      x: 50,
+      y: config.groundLevel,
+      width: 40,
+      height: 50,
+      velocityY: 0,
+      isJumping: false,
+      jumpCount: 0,
+      maxJumps: 1,
+      frames: 2,
+      currentFrame: 0,
+      frameUpdateTime: 10,
+      frameTimer: 0,
+      
+      update() {
+        // Jumping physics
+        if (this.isJumping) {
+          this.velocityY += config.gravity;
+          this.y += this.velocityY;
+          
+          // Check if landed
+          if (this.y >= config.groundLevel) {
+            this.y = config.groundLevel;
+            this.velocityY = 0;
+            this.isJumping = false;
+            this.jumpCount = 0;
+          }
+        }
+        
+        // Animation frames
+        this.frameTimer++;
+        if (this.frameTimer >= this.frameUpdateTime) {
+          this.currentFrame = (this.currentFrame + 1) % this.frames;
+          this.frameTimer = 0;
+        }
+      },
+      
+      jump() {
+        if (this.jumpCount < this.maxJumps) {
+          this.velocityY = config.jumpStrength;
+          this.isJumping = true;
+          this.jumpCount++;
+        }
+      },
+      
+      draw() {
+        // Draw coyote
+        ctx.fillStyle = '#A0522D'; // Brown for coyote body
+        
+        // Body
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y - 15, 20, 15, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Head
+        ctx.beginPath();
+        ctx.ellipse(this.x + 15, this.y - 30, 15, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Ears (pointed, animating based on frame)
+        const earOffset = this.currentFrame * 2;
+        
+        // Left ear
+        ctx.beginPath();
+        ctx.moveTo(this.x + 10, this.y - 38);
+        ctx.lineTo(this.x + 5, this.y - 50 + earOffset);
+        ctx.lineTo(this.x + 15, this.y - 38);
+        ctx.fill();
+        
+        // Right ear
+        ctx.beginPath();
+        ctx.moveTo(this.x + 15, this.y - 38);
+        ctx.lineTo(this.x + 20, this.y - 48 - earOffset);
+        ctx.lineTo(this.x + 25, this.y - 38);
+        ctx.fill();
+        
+        // Eyes
+        ctx.fillStyle = 'yellow';
+        ctx.beginPath();
+        ctx.arc(this.x + 20, this.y - 32, 2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Feet
+        if (!this.isJumping) {
+          const footOffset = this.currentFrame * 5;
+          
+          // Left foot
+          ctx.fillStyle = '#A0522D';
+          ctx.fillRect(this.x - 10, this.y - 5, 10, 5);
+          
+          // Right foot (animated)
+          ctx.fillRect(this.x + 10 - footOffset, this.y - 5, 10, 5);
+        }
+      },
+      
+      getBounds() {
+        // Collision box smaller than visual representation
+        return {
+          x: this.x - 15,
+          y: this.y - 30,
+          width: 30,
+          height: 30
+        };
+      }
+    };
+    
+    // Night mode obstacles
+    const nightObstacleTypes = {
+      cactus: {
+        width: 20,
+        height: 40,
+        speedMultiplier: 1,
+        draw(x, y) {
+          // Draw cactus with neon purple color
+          ctx.fillStyle = '#B51AF0'; // Neon purple
+          ctx.fillRect(x - this.width / 2, y - this.height, this.width, this.height);
+          
+          // Cactus arms
+          ctx.fillRect(x - this.width / 2 - 10, y - this.height + 15, 10, 8);
+          ctx.fillRect(x + this.width / 2, y - this.height + 25, 10, 8);
+          
+          // Add glow effect
+          ctx.shadowColor = '#D300FE';
+          ctx.shadowBlur = 10;
+          ctx.strokeStyle = '#D300FE';
+          ctx.strokeRect(x - this.width / 2, y - this.height, this.width, this.height);
+          ctx.shadowBlur = 0;
+        }
+      },
+      tallCactus: {
+        width: 20,
+        height: 60,
+        speedMultiplier: 1,
+        draw(x, y) {
+          // Draw tall cactus with neon red color
+          ctx.fillStyle = '#FF003C'; // Neon red
+          ctx.fillRect(x - this.width / 2, y - this.height, this.width, this.height);
+          
+          // Cactus arms
+          ctx.fillRect(x - this.width / 2 - 10, y - this.height + 20, 10, 8);
+          ctx.fillRect(x + this.width / 2, y - this.height + 40, 10, 8);
+          
+          // Add glow effect
+          ctx.shadowColor = '#FF003C';
+          ctx.shadowBlur = 10;
+          ctx.strokeStyle = '#FF003C';
+          ctx.strokeRect(x - this.width / 2, y - this.height, this.width, this.height);
+          ctx.shadowBlur = 0;
+        }
+      },
+      bird: {
+        width: 40,
+        height: 20,
+        speedMultiplier: 1.2,
+        y: config.groundLevel - 50, // Flying height
+        frames: 2,
+        currentFrame: 0,
+        frameTimer: 0,
+        draw(x, y) {
+          // Update animation frame
+          this.frameTimer++;
+          if (this.frameTimer >= 15) {
+            this.currentFrame = (this.currentFrame + 1) % this.frames;
+            this.frameTimer = 0;
+          }
+          
+          // Draw night bird
+          ctx.fillStyle = '#36D6FF'; // Neon blue
+          
+          // Bird body
+          ctx.beginPath();
+          ctx.ellipse(x, y - 10, 15, 10, 0, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Bird head
+          ctx.beginPath();
+          ctx.arc(x + 15, y - 15, 8, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Beak
+          ctx.fillStyle = '#FFFF00'; // Neon yellow
+          ctx.beginPath();
+          ctx.moveTo(x + 23, y - 15);
+          ctx.lineTo(x + 30, y - 13);
+          ctx.lineTo(x + 23, y - 11);
+          ctx.fill();
+          
+          // Wings - animated
+          ctx.fillStyle = '#36D6FF';
+          if (this.currentFrame === 0) {
+            // Wings up
+            ctx.beginPath();
+            ctx.moveTo(x, y - 10);
+            ctx.lineTo(x - 5, y - 25);
+            ctx.lineTo(x + 10, y - 20);
+            ctx.fill();
+          } else {
+            // Wings down
+            ctx.beginPath();
+            ctx.moveTo(x, y - 10);
+            ctx.lineTo(x - 5, y);
+            ctx.lineTo(x + 10, y - 5);
+            ctx.fill();
+          }
+          
+          // Add glow effect
+          ctx.shadowColor = '#36D6FF';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(x + 5, y - 12, 15, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+        }
+      }
+    };
+    
+    // Toggle night mode
+    nightModeToggle.addEventListener('change', function() {
+      isNightMode = this.checked;
+      document.body.classList.toggle('night-mode', isNightMode);
+      modeLabel.textContent = isNightMode ? 'Night Mode' : 'Day Mode';
+      dayMusic.style.display = isNightMode ? 'none' : 'flex';
+      nightMusic.style.display = isNightMode ? 'flex' : 'none';
+      gameTitle.textContent = isNightMode ? 'Coyote Runner' : 'Bunny Runner';
+      instructions.textContent = isNightMode ? 
+        'Press SPACE or UP key to jump over neon obstacles in the night!' : 
+        'Press SPACE or UP key to jump over cacti and avoid birds!';
+      
+      // Stop any playing music
+      musicPlayer.stopMusic();
+      
+      // Redraw the game
+      drawGame();
+    });
+    
     // Music player
     const musicPlayer = {
       currentSong: null,
-      audioElement: null,
+      player: null,
       songs: {
+        // Day mode songs
         song1: {
           id: 'n-Xp75yJ6xc',
           title: 'Take On Me'
@@ -681,6 +1135,35 @@
         song3: {
           id: 'UNk6LTZYokk',
           title: 'Smooth Operator'
+        },
+        song4: {
+          id: 'n9DmdAwUbxc',
+          title: 'What You Won\'t Do for Love'
+        },
+        song5: {
+          id: 'H_6JU6vJMS0',
+          title: 'My Ordinary Life'
+        },
+        // Night mode songs
+        'night-song1': {
+          id: '3h0ilgEHWOA',
+          title: 'RUN! (ODETARI)'
+        },
+        'night-song2': {
+          id: 'f8X8v8F4qPI',
+          title: 'MUTT (Leon Thomas)'
+        },
+        'night-song3': {
+          id: 'RgoiSJ23cSc',
+          title: 'Give It To Me (Timbaland)'
+        },
+        'night-song4': {
+          id: 'mNrzmpA8JU4',
+          title: 'Push Up (Creeds)'
+        },
+        'night-song5': {
+          id: '_NTI8gpbYz8',
+          title: 'Jupiter (The Marías)'
         }
       },
       
@@ -698,11 +1181,21 @@
       },
       
       setupEventListeners() {
-        // Add event listeners for music buttons
+        // Add event listeners for day mode music buttons
         document.getElementById('song1').addEventListener('click', () => this.playSong('song1'));
         document.getElementById('song2').addEventListener('click', () => this.playSong('song2'));
         document.getElementById('song3').addEventListener('click', () => this.playSong('song3'));
+        document.getElementById('song4').addEventListener('click', () => this.playSong('song4'));
+        document.getElementById('song5').addEventListener('click', () => this.playSong('song5'));
         document.getElementById('stop-music').addEventListener('click', () => this.stopMusic());
+        
+        // Add event listeners for night mode music buttons
+        document.getElementById('night-song1').addEventListener('click', () => this.playSong('night-song1'));
+        document.getElementById('night-song2').addEventListener('click', () => this.playSong('night-song2'));
+        document.getElementById('night-song3').addEventListener('click', () => this.playSong('night-song3'));
+        document.getElementById('night-song4').addEventListener('click', () => this.playSong('night-song4'));
+        document.getElementById('night-song5').addEventListener('click', () => this.playSong('night-song5'));
+        document.getElementById('night-stop-music').addEventListener('click', () => this.stopMusic());
         
         // Volume control
         const volumeSlider = document.getElementById('volume-slider');
@@ -788,7 +1281,11 @@
     window.addEventListener('keydown', (e) => {
       if ((e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') && gameState.isRunning) {
         e.preventDefault(); // Prevent page scrolling
-        bunny.jump();
+        if (isNightMode) {
+          coyote.jump();
+        } else {
+          bunny.jump();
+        }
       } else if ((e.code === 'Space' || e.code === 'ArrowUp' || e.key === ' ') && !gameState.isRunning) {
         e.preventDefault();
         startGame();
@@ -799,7 +1296,11 @@
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       if (gameState.isRunning) {
-        bunny.jump();
+        if (isNightMode) {
+          coyote.jump();
+        } else {
+          bunny.jump();
+        }
       } else {
         startGame();
       }
